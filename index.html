@@ -1408,33 +1408,156 @@ $('c-ess').addEventListener('click',function(){ store.set('tdv_consent','essenti
    ============================================================ */
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function legalVars(t){ return t.replace(/\{\{(\w+)\}\}/g,function(_,k){ return esc(CFG[k.toUpperCase()]||''); }); }
-var DRAFT='<p><b class="text-mark">RASCUNHO.</b> Este texto é um modelo e precisa ser revisado por um advogado antes do lançamento. Preencha os dados do responsável no topo do arquivo.</p>';
 var LEGAL={
- termos:{t:'Termos de Uso',h:DRAFT+
- '<h3>1. O serviço</h3><p>O Tom da Voz ajuda você a estimar o tom da sua voz, a sua extensão vocal e o tom de músicas, e a ajustar músicas para cantar com mais conforto. É oferecido por {{responsavel}} (CNPJ/CPF: {{cnpj}}), de {{cidade}}.</p>'+
+ termos:{t:'Termos de Uso',h:
+<h3>1. O serviço e escopo da plataforma</h3>
+<p>
+  A plataforma <b>Tom da Voz</b> é uma ferramenta digital interativa desenvolvida para auxiliar estudantes de canto, músicos, professores, entusiastas e o público em geral na análise e adaptação musical. O serviço oferece funcionalidades que incluem, mas não se limitam a:
+</p>
+<ul>
+  <li><b>Estimativa do tom e alcance da voz:</b> Análise da frequência e das notas produzidas pelo usuário para identificar sua tessitura vocal e extensão estimada;</li>
+  <li><b>Análise do tom de músicas:</b> Identificação estimada do tom de arquivos de áudio para fins de prática musical;</li>
+  <li><b>Ajuste e transposição de tonalidade:</b> Ferramentas de manipulação de áudio diretamente no navegador para adequar músicas à tonalidade mais confortável para a extensão vocal do usuário.</li>
+</ul>
+<p>
+  O serviço é disponibilizado na modalidade de software baseado em navegador (SaaS) e é operado e mantido por <b>{{RESPONSAVEL}}</b>, estabelecido em {{CIDADE}}. 
+</p>
+<p>
+  Ao utilizar a plataforma, o usuário declara estar ciente de que o serviço se destina exclusivamente a fins recreativos, educacionais e de auxílio na prática musical informal.
+</p>
  '<h3>2. Estimativas</h3><p>Os resultados são estimativas feitas por algoritmos e podem conter erros. Não use como única base para decisões profissionais, médicas ou de saúde vocal.</p>'+
  '<h3>3. Conta e créditos</h3><p>Você precisa de uma conta (Google ou e-mail) para usar as análises. Cada conta recebe 100 créditos gratuitos por mês: 10 por análise de voz e 20 por análise de música. Os créditos renovam no dia 1º, não acumulam, não têm valor em dinheiro e não podem ser transferidos. Se a análise não gerar resultado ou falhar, os créditos não são descontados. Podemos alterar esses valores no futuro, avisando no site.</p>'+
- '<h3>4. Seus arquivos</h3><p>Envie apenas áudios que você tem direito de usar. A análise e o player rodam no seu navegador; o áudio não é enviado nem guardado por nós. O site não permite baixar o áudio alterado. Você é responsável pelo conteúdo que processa.</p>'+
- '<h3>5. Uso adequado</h3><p>Não tente burlar o controle de créditos, sobrecarregar o serviço ou usá-lo de forma ilegal. Podemos suspender contas que façam isso.</p>'+
- '<h3>6. Disponibilidade e responsabilidade</h3><p>O serviço é gratuito e oferecido "como está", sem garantia de funcionamento contínuo. Na medida permitida pela lei, não respondemos por danos indiretos decorrentes do uso.</p>'+
- '<h3>7. Anúncios</h3><p>O site exibe publicidade. Veja a seção "Cookies e anúncios".</p>'+
- '<h3>8. Mudanças e foro</h3><p>Podemos atualizar estes termos; a versão vigente fica sempre nesta página. Fica eleito o foro de {{cidade}} para dúvidas, salvo disposição legal em contrário (inclusive os direitos do consumidor).</p>'},
- privacidade:{t:'Política de Privacidade',h:DRAFT+
- '<h3>Quem é o controlador</h3><p>{{responsavel}} , {{cidade}}. Contato e encarregado de dados: {{email}}.</p>'+
- '<h3>Quais dados tratamos</h3><ul><li><b>Conta:</b> nome e e-mail (do Google ou informado por você), identificador da conta.</li><li><b>Créditos:</b> saldo do mês e registro das análises feitas (tipo e data).</li><li><b>Histórico:</b> título e resumo curto dos seus testes (por exemplo, "Tom: G, confiança alta"), até 100 itens.</li><li><b>Dados técnicos:</b> endereço IP e registros de acesso mantidos pelos provedores de hospedagem e autenticação.</li><li><b>Publicidade:</b> cookies e identificadores do Google AdSense, conforme a sua escolha no aviso de cookies.</li></ul>'+
- '<h3>O que NÃO tratamos</h3><p>O áudio da sua voz e das músicas é processado no seu navegador e <b>não é enviado, gravado nem armazenado</b> por nós.</p>'+
- '<h3>Para que usamos e em que base legal</h3><ul><li>Criar e manter a conta, controlar créditos e guardar o histórico: execução do serviço que você pediu (art. 7º, V, da LGPD).</li><li>Segurança e prevenção de abusos: legítimo interesse (art. 7º, IX).</li><li>Anúncios personalizados: seu consentimento (art. 7º, I), que você pode negar ou mudar quando quiser.</li></ul>'+
- '<h3>Com quem compartilhamos</h3><ul><li>Supabase (autenticação e banco de dados).</li><li>Google (login com Google e anúncios AdSense).</li></ul><p>Esses provedores podem processar dados em outros países. Adotamos as salvaguardas previstas na LGPD para transferência internacional.</p>'+
- '<h3>Por quanto tempo guardamos</h3><p>Enquanto a conta existir. Você pode apagar o histórico ou excluir a conta a qualquer momento no próprio site; a exclusão remove conta, créditos e histórico.</p>'+
- '<h3>Seus direitos (art. 18 da LGPD)</h3><p>Confirmar o tratamento, acessar, corrigir, anonimizar ou eliminar dados, pedir portabilidade, saber com quem compartilhamos e revogar consentimentos. Escreva para {{email}}. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</p>'+
- '<h3>Crianças e adolescentes</h3><p>O serviço não é voltado a menores de 12 anos. Adolescentes devem usá-lo com o conhecimento de um responsável.</p>'+
- '<h3>Mudanças</h3><p>Podemos atualizar esta política; a versão vigente fica nesta página.</p>'},
- cookies:{t:'Cookies e anúncios',h:DRAFT+
+<h3>4. Processamento de arquivos e direitos autorais</h3>
+<p>
+  Ao carregar ou processar qualquer arquivo de áudio na plataforma, o usuário declara e garante que possui todos os direitos autorais, licenças ou autorizações necessárias para utilizá-lo. O processamento dos áudios e a execução do player de áudio ocorrem **exclusivamente de forma local, no próprio navegador de internet do usuário**. 
+</p>
+<p>
+  Em nenhuma hipótese os arquivos de áudio são enviados, transmitidos, armazenados ou mantidos nos servidores do <b>Tom da Voz</b>. A plataforma não disponibiliza e não permite o download do áudio alterado ou processado. O usuário é o único e exclusivo responsável pelo conteúdo dos arquivos que submete e processa na plataforma, respondendo por eventuais violações de direitos de terceiros.
+</p>
+
+<h3>5. Uso adequado e condutas vedadas</h3>
+<p>
+  O usuário compromete-se a utilizar os serviços de maneira ética, legal e em conformidade com estes Termos de Uso. É estritamente proibido:
+</p>
+<ul>
+  <li>Tentar burlar, desativar, manipular ou fraudar o sistema de controle e limite de créditos mensais;</li>
+  <li>Utilizar scripts automatizados, bots, *scrapers* ou mecanismos de acesso não autorizados para sobrecarregar a infraestrutura do serviço;</li>
+  <li>Utilizar a plataforma para atividades ilícitas, que infrinjam direitos autorais de terceiros ou violem normas vigentes;</li>
+  <li>Tentar realizar engenharia reversa no código-fonte ou nos algoritmos de análise e processamento do site.</li>
+</ul>
+<p>
+  O <b>Tom da Voz</b> reserva-se o direito de suspender, bloquear ou cancelar o acesso de qualquer conta que viole estas regras, sem aviso prévio.
+</p>
+
+<h3>6. Isenção de garantias e limitação de responsabilidade</h3>
+<p>
+  O serviço é disponibilizado de forma gratuita, na modalidade "como está" (*as is*) e "conforme disponível" (*as available*), sem garantias implícitas ou expressas de funcionamento ininterrupto, livre de erros, falhas de sistema ou indisponibilidades temporárias.
+</p>
+<p>
+  Na máxima extensão permitida pela legislação aplicável (incluindo o Código de Defesa do Consumidor), o <b>Tom da Voz</b> e seus desenvolvedores não serão responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais ou consequentes decorrentes do uso, da incapacidade de uso ou de inconsistências nos resultados gerados pela plataforma.
+</p>
+
+<h3>7. Anúncios e monetização</h3>
+<p>
+  A manutenção e gratuidade do serviço são viabilizadas por meio da exibição de anúncios publicitários fornecidos por parceiros, como o Google AdSense. Ao utilizar o site, o usuário concorda com a exibição dessas publicidades. Para mais detalhes sobre como os dados de navegação e *cookies* são tratados para fins publicitários, consulte nossa <b>Política de Privacidade</b>.
+</p>
+
+<h3>8. Alterações nos termos e foro de eleição</h3>
+<p>
+  Podemos atualizar ou modificar estes Termos de Uso a qualquer momento, visando adequações legais ou melhorias no serviço. A versão atualizada estará sempre acessível nesta página, e o uso continuado da plataforma após a publicação de alterações constitui a aceitação dos novos termos.
+</p>
+<p>
+  Estes Termos são regidos e interpretados segundo as leis da República Federativa do Brasil. Fica eleito o Foro da Circunscrição Judiciária de <b>{{CIDADE}}</b> para sanar quaisquer dúvidas ou litígios decorrentes deste documento, ressalvadas as disposições de proteção ao consumidor que garantam o foro de domicílio do usuário.
+</p>
+ privacidade:{t:'Política de Privacidade',h:
+ <h3>1. Identificação do Controlador e Encarregado de Dados</h3>
+<p>
+  A plataforma <b>Tom da Voz</b>, operada por <b>{{RESPONSAVEL}}</b>, com sede ou atuação em <b>{{CIDADE}}</b>, é a controladora responsável pelo tratamento dos dados pessoais coletados no âmbito deste site. 
+</p>
+<p>
+  Para quaisquer dúvidas, solicitações ou esclarecimentos referentes à privacidade e à proteção de dados pessoais, o usuário poderá entrar em contato diretamente com o encarregado por meio do canal oficial de atendimento: <b>{{EMAIL}}</b>.
+</p>
+
+<h3>2. Dados pessoais tratados e finalidades</h3>
+<p>
+  O <b>Tom da Voz</b> coleta apenas os dados estritamente necessários para o funcionamento e a segurança da plataforma, divididos nas seguintes categorias:
+</p>
+<ul>
+  <li><b>Dados de Cadastro e Conta:</b> Nome e endereço de e-mail (obtidos via autenticação Google ou informados diretamente pelo usuário), além de um identificador único de conta para gerenciamento de acesso.</li>
+  <li><b>Controle de Créditos:</b> Saldo atual de créditos mensais e registros operacionais referentes ao tipo e à data das análises realizadas.</li>
+  <li><b>Histórico de Utilização:</b> Título e resumo simplificado dos testes realizados pelo usuário (por exemplo, "Tom: G, confiança alta"), limitado ao armazenamento máximo de até 100 itens recentes.</li>
+  <li><b>Dados Técnicos de Navegação:</b> Endereço IP, registros de acesso (*logs*) e metadados técnicos mantidos automaticamente pelos provedores de infraestrutura, hospedagem e autenticação.</li>
+  <li><b>Publicidade e Cookies:</b> Identificadores de dispositivos, cookies de navegação e dados coletados por parceiros de publicidade (como o Google AdSense), condicionados às escolhas e preferências registradas pelo usuário no aviso de cookies da plataforma.</li>
+</ul>
+
+<h3>3. O que NÃO coletamos ou armazenamos</h3>
+<p>
+  Em absoluta conformidade com a privacidade do usuário, reiteramos que <b>os arquivos de áudio (da voz ou de músicas) enviados para análise são processados exclusivamente de forma local, no próprio navegador do usuário</b>. Os áudios originais ou modificados <b>não são enviados, gravados, transmitidos ou armazenados</b> em nossos servidores ou bancos de dados.
+</p>
+
+<h3>4. Bases legais para o tratamento de dados (LGPD)</h3>
+<p>
+  O tratamento de dados realizado pela plataforma fundamenta-se nas hipóteses previstas pela Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD), englobando:
+</p>
+<ul>
+  <li><b>Execução de Contrato ou Procedimentos Preliminares (Art. 7º, V):</b> Necessário para criar e manter a conta do usuário, gerenciar o saldo de créditos e salvar o histórico de testes solicitado.</li>
+  <li><b>Legítimo Interesse (Art. 7º, IX):</b> Aplicado a atividades de segurança, melhoria contínua da experiência de uso, prevenção a fraudes e controle de abusos técnicos.</li>
+  <li><b>Consentimento (Art. 7º, I):</b> Utilizado especificamente para a exibição de anúncios personalizados e inserção de cookies de rastreometria publicitária, podendo ser revogado a qualquer momento pelo usuário.</li>
+</ul>
+
+<h3>5. Compartilhamento de dados e transferência internacional</h3>
+<p>
+  Para viabilizar a prestação de serviços com segurança, alta disponibilidade e suporte tecnológico, utilizamos parceiros e provedores de infraestrutura de reconhecida confiabilidade:
+</p>
+<ul>
+  <li><b>Supabase:</b> Responsável pela infraestrutura de autenticação segura de usuários e armazenamento do banco de dados operacional.</li>
+  <li><b>Google (Google Cloud e Google AdSense):</b> Responsável pelo ecossistema de login federado e pela exibição de anúncios publicitários.</li>
+</ul>
+<p>
+  Alguns desses parceiros globais podem processar dados em servidores localizados fora do Brasil. Nesses casos, adotamos rigorosamente as salvaguardas e exigências legais previstas na LGPD relativas à segurança e à transferência internacional de dados.
+</p>
+
+<h3>6. Prazo de retenção e armazenamento</h3>
+<p>
+  Os dados pessoais são mantidos armazenados apenas pelo período estritamente necessário para cumprir as finalidades descritas nesta Política, ou enquanto a conta do usuário estiver ativa. 
+</p>
+<p>
+  O usuário possui autonomia total para apagar o histórico de testes ou solicitar a exclusão integral da sua conta a qualquer momento diretamente pelas configurações do site. A exclusão da conta acarreta a remoção definitiva do perfil, dos créditos remanescentes e do histórico associado.
+</p>
+
+<h3>7. Direitos dos titulares de dados (Art. 18 da LGPD)</h3>
+<p>
+  Nos termos do artigo 18 da LGPD, o usuário, na qualidade de titular de dados, tem o direito de requisitar a qualquer momento:
+</p>
+<ul>
+  <li>A confirmação da existência de tratamento de dados;</li>
+  <li>O acesso facilitado aos seus dados pessoais;</li>
+  <li>A correção de dados incompletos, inexatos ou desatualizados;</li>
+  <li>A anonimização, bloqueio ou eliminação de dados desnecessários ou excessivos;</li>
+  <li>A portabilidade dos dados a outro fornecedor de serviço;</li>
+  <li>A eliminação dos dados pessoais tratados com base no consentimento;</li>
+  <li>A obtenção de informações sobre o compartilhamento com entidades públicas ou privadas;</li>
+  <li>A revogação do consentimento a qualquer momento.</li>
+</ul>
+<p>
+  Para exercer qualquer um desses direitos, basta enviar uma mensagem para o e-mail de contato: <b>{{EMAIL}}</b>. O titular também possui o direito de apresentar petições ou reclamações diretamente à Autoridade Nacional de Proteção de Dados (ANPD).
+</p>
+
+<h3>8. Privacidade de menores</h3>
+<p>
+  O <b>Tom da Voz</b> é um serviço de caráter cultural e educacional que não se destina expressamente a menores de 12 (doze) anos. Menores e adolescentes devem utilizar as ferramentas com o acompanhamento e a ciência de seus pais ou responsáveis legais.
+</p>
+
+<h3>9. Atualizações desta Política de Privacidade</h3>
+<p>
+  Reservamo-nos o direito de modificar, atualizar ou revisar esta Política de Privacidade periodicamente, para refletir melhorias técnicas, novas funcionalidades ou adequações legais. A versão vigente estará sempre publicada e atualizada nesta mesma página.
+</p></p>'},
+ cookies:{t:'Cookies e anúncios',h:
  '<h3>Cookies essenciais</h3><p>Usamos armazenamento do navegador para manter a sua sessão de login e lembrar suas escolhas (como o aviso de cookies). Sem isso o site não funciona direito.</p>'+
  '<h3>Anúncios</h3><p>Este site pode exibir anúncios do Google AdSense, que usam cookies e identificadores para mostrar e medir anúncios. No aviso de cookies você escolhe entre anúncios personalizados ou apenas não personalizados. Para mudar a escolha, apague os dados do site no navegador e o aviso volta a aparecer.</p>'+
  '<p>Saiba como o Google usa dados de sites parceiros em <a class="link" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>. Você também pode gerenciar anúncios personalizados em <a class="link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>'},
- contato:{t:'Contato',h:DRAFT+
- '<p><b>Responsável:</b> {{responsavel}}</p><p><b>CNPJ/CPF:</b> {{cnpj}}</p><p><b>Cidade:</b> {{cidade}}</p><p><b>E-mail para dúvidas, pedidos sobre seus dados e suporte:</b> {{email}}</p>'}
+ contato:{t:'Contato',h:
+ '<p><b>E-mail para dúvidas, pedidos sobre seus dados e suporte:</b> {{email}}</p>'}
 };
 function openLegal(k){ var d=LEGAL[k]; if(!d) return; $('legal-h').textContent=d.t; $('legal-body').innerHTML=legalVars(d.h); if(!$('dlg-legal').open) $('dlg-legal').showModal(); }
 document.addEventListener('click',function(e){ var a=e.target.closest('[data-legal]'); if(a){ e.preventDefault(); openLegal(a.dataset.legal); } });
