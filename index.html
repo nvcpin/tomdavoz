@@ -27,7 +27,7 @@ window.TDV_CONFIG = {
   /* Identificação do responsável (aparece em Termos, Privacidade e Contato). Preencha antes de lançar. */
   RESPONSAVEL: 'Tom da Voz',
   EMAIL: 'tomdavozbr@gmail.com',
-  CIDADE: 'Brasília/DF'
+  CIDADE: 'Brasilia/DF'
 };
 </script>
 
@@ -40,12 +40,14 @@ tailwind.config={darkMode:'class',theme:{extend:{
   fontFamily:{display:['"Instrument Serif"','Georgia','serif'],sans:['Figtree','system-ui','sans-serif']}}}};
 </script>
 <style>
-:root{--background:165 14% 6%;--foreground:150 20% 94%;--card:165 11% 9%;--border:165 8% 18%;--muted:165 9% 13%;--muted-foreground:160 8% 64%;
+:root{--background:230 25% 5%;--foreground:150 20% 94%;--card:228 18% 9%;--border:225 12% 18%;--muted:225 14% 13%;--muted-foreground:220 10% 64%;
   --primary:162 52% 60%;--primary-foreground:165 30% 8%;--mark:32 88% 62%;color-scheme:dark}
 body{
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+  padding-bottom:env(safe-area-inset-bottom);
   background: radial-gradient(circle at top center, #1a1b26 0%, #0d0e15 60%, #050508 100%);
   background-attachment: fixed;
-  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom);
 }
 [hidden]{display:none!important}
 dialog::backdrop{background:rgb(0 0 0 / .72)}
@@ -82,7 +84,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   .btn-p{@apply bg-primary text-primary-foreground hover:bg-primary/90}
   .btn-o{@apply border border-border hover:bg-muted}
   .btn-g{@apply h-9 px-3 hover:bg-muted}
-  .card{@apply rounded-xl border border-border bg-card text-foreground}
+  .card{@apply rounded-xl border border-border bg-card/80 backdrop-blur-md text-foreground}
   .chip{@apply h-10 px-4 rounded-full border border-border text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring}
   .chip[aria-pressed=true]{@apply bg-primary text-primary-foreground border-primary hover:bg-primary}
   .badge{@apply inline-flex items-center rounded-md bg-mark/15 text-mark px-2 py-0.5 text-xs font-medium}
@@ -95,7 +97,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 </head>
 <body class="bg-background text-foreground font-sans antialiased">
 
-<header class="border-b border-border">
+<header class="border-b border-border bg-card/60 backdrop-blur-md">
   <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
     <a href="#" class="font-display text-2xl">Tom da Voz</a>
     <nav class="flex items-center gap-1" aria-label="Principal">
@@ -114,7 +116,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   </section>
 
   <div id="demo-banner" class="rounded-lg border border-mark/40 bg-mark/10 px-4 py-3 text-sm" hidden>
-    <b class="text-mark">Modo de demonstração.</b> Os créditos e o histórico ficam só neste navegador e não são seguros. Para valer de verdade, configure o Supabase no topo do arquivo (veja o passo a passo que acompanha o site).
+    <b class="text-mark">Modo de demonstração.</b> Os créditos e o histórico ficam só neste navegador e não são seguros. Para valer de verdade, configure o Supabase no topo do arquivo.
   </div>
 
   <section class="card flex flex-col gap-3 p-5" aria-label="Seus créditos">
@@ -246,3 +248,1262 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
         </div>
       </div>
       <p id="p-capo" class="max-w-prose text-sm"></p>
+    </div>
+  </section>
+
+  <section id="r-key" class="card flex flex-col gap-6 p-5 sm:p-6" aria-label="Tom estimado da sua voz">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold">O tom da sua voz</h2><span class="badge" id="badge">Exemplo</span>
+    </div>
+    <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
+      <div id="k-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
+      <div class="flex min-w-0 flex-col gap-1 pb-1">
+        <div id="k-pt" class="text-2xl font-semibold"></div>
+        <div id="k-conf" class="text-sm text-muted-foreground"></div>
+        <button id="b-keyplay" type="button" class="btn btn-o mt-2 h-9 self-start px-3">Ouvir este tom no piano</button>
+      </div>
+    </div>
+    <div id="cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
+      <p id="cands-msg" class="text-sm"></p>
+      <div id="chips" class="flex flex-wrap gap-2"></div>
+    </div>
+    <p id="k-sum" class="max-w-prose"></p>
+    <div>
+      <h3 class="lbl mb-3">Notas que você mais cantou</h3>
+      <div class="hist" id="hist"></div>
+    </div>
+    <div class="flex flex-col gap-3 border-t border-border pt-5">
+      <h3 class="text-base font-semibold">Transpor a música</h3>
+      <label for="orig" class="lbl">Tom original da música (opcional)</label>
+      <select id="orig" class="inp max-w-xs"></select>
+      <p id="trans-out" class="max-w-prose"></p>
+    </div>
+  </section>
+
+  <section id="r-range" class="card flex flex-col gap-5 p-5 sm:p-6" aria-label="Extensão vocal">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold">Sua extensão vocal</h2><span class="badge" id="badge2">Exemplo</span>
+    </div>
+    <div class="flex flex-col gap-1">
+      <div id="v-type" class="font-display text-5xl leading-none"></div>
+      <p id="r-sum" class="max-w-prose text-muted-foreground"></p>
+      <p id="r-conf" class="text-sm text-muted-foreground"></p>
+    </div>
+    <div>
+      <div class="piano" id="piano" role="group" aria-label="Teclado com a extensão da voz. Toque nas teclas para ouvir"></div>
+      <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
+        <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#3f9a82"></i>Extensão alcançada</span>
+        <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#5fd4b0"></i>Faixa confortável</span>
+        <span><i class="mr-1.5 inline-block h-3 w-3 rounded-full align-[-1px] bg-mark"></i>Nota mais grave e mais aguda</span>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button id="p-lo" type="button" class="btn btn-o h-10 px-4"></button>
+      <button id="p-hi" type="button" class="btn btn-o h-10 px-4"></button>
+      <button id="p-all" type="button" class="btn btn-o h-10 px-4">Ouvir toda a extensão</button>
+    </div>
+    <p class="text-sm text-muted-foreground">Toque em qualquer tecla para ouvir a nota e cantar junto. O som é de piano sintetizado, e a classificação de voz é aproximada.</p>
+    <button type="button" id="b-range2" class="btn btn-p self-start">Descobrir minha extensão vocal</button>
+  </section>
+
+  <div>
+    <p class="mb-1 text-center text-xs text-muted-foreground">Publicidade</p>
+    <aside class="ad" aria-label="Publicidade" data-ad="A">Espaço para anúncio</aside>
+  </div>
+
+  <section id="historico" class="card flex flex-col gap-4 p-5 sm:p-6" hidden>
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 class="text-lg font-semibold">Seu histórico</h2>
+      <div class="flex gap-1">
+        <button id="b-clear" type="button" class="btn btn-g text-muted-foreground">Limpar histórico</button>
+        <button id="b-delacc" type="button" class="btn btn-g text-muted-foreground">Excluir minha conta</button>
+      </div>
+    </div>
+    <ul id="hist-list" class="flex flex-col divide-y divide-border"></ul>
+  </section>
+
+  <section class="flex flex-col gap-6" aria-labelledby="h-como">
+    <h2 id="h-como" class="font-display text-4xl leading-none">Como funciona</h2>
+    <ol class="grid gap-4 sm:grid-cols-3">
+      <li class="card p-5"><div class="font-display text-4xl text-primary">1</div><h3 class="mt-1 font-semibold">Descubra a sua voz</h3><p class="mt-1 text-sm text-muted-foreground">Cante um trecho de uma música ou deslize do grave ao agudo. O site mostra o seu tom e a faixa em que você canta com conforto.</p></li>
+      <li class="card p-5"><div class="font-display text-4xl text-primary">2</div><h3 class="mt-1 font-semibold">Descubra a música</h3><p class="mt-1 text-sm text-muted-foreground">Envie a música. O site estima o tom, avisa quando há mais de uma possibilidade e mostra se o tom muda no meio.</p></li>
+      <li class="card p-5"><div class="font-display text-4xl text-primary">3</div><h3 class="mt-1 font-semibold">Ajuste e cante</h3><p class="mt-1 text-sm text-muted-foreground">Suba ou desça a música em semitons sem mudar a velocidade, ouça as notas no piano e veja onde pôr o capotraste.</p></li>
+    </ol>
+    <div class="flex flex-col gap-2">
+      <h3 class="text-lg font-semibold">Perguntas frequentes</h3>
+      <details class="card p-4"><summary class="font-medium">O resultado é exato?</summary><p class="mt-2 text-sm text-muted-foreground">É uma estimativa. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção; ouça cada uma no piano e escolha a que combina. A confiança aparece junto de cada resultado.</p></details>
+      <details class="card p-4"><summary class="font-medium">Por que mudanças acima de ±4 semitons soam piores?</summary><p class="mt-2 text-sm text-muted-foreground">Mudar o tom sem mudar a velocidade exige processar o som. Quanto maior a mudança, mais o áudio pode ficar metálico ou com ecos. Até ±4 costuma soar bem.</p></details>
+      <details class="card p-4"><summary class="font-medium">Posso baixar a música alterada?</summary><p class="mt-2 text-sm text-muted-foreground">Nesta versão, não. O ajuste de tom serve para você ouvir e cantar junto no próprio site.</p></details>
+      <details class="card p-4"><summary class="font-medium">Quando os créditos renovam?</summary><p class="mt-2 text-sm text-muted-foreground">No dia 1º de cada mês você volta a ter 100 créditos. Os que sobraram do mês anterior não acumulam.</p></details>
+    </div>
+  </section>
+
+  <div>
+    <p class="mb-1 text-center text-xs text-muted-foreground">Publicidade</p>
+    <aside class="ad" aria-label="Publicidade" data-ad="B">Espaço para anúncio</aside>
+  </div>
+
+  <footer class="flex flex-col gap-3 border-t border-border pt-6 text-sm text-muted-foreground">
+    <p>A estimativa vem das notas da melodia e da música. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção.</p>
+    <nav class="flex flex-wrap gap-x-5 gap-y-2" aria-label="Informações legais">
+      <a class="link" data-legal="termos" role="button" tabindex="0">Termos de Uso</a>
+      <a class="link" data-legal="privacidade" role="button" tabindex="0">Política de Privacidade</a>
+      <a class="link" data-legal="cookies" role="button" tabindex="0">Cookies e anúncios</a>
+      <a class="link" data-legal="contato" role="button" tabindex="0">Contato</a>
+    </nav>
+  </footer>
+</main>
+
+<div id="cookie" class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card p-4" hidden>
+  <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-3">
+    <p class="flex-1 basis-64 text-sm">Usamos cookies para exibir anúncios. Você pode aceitar anúncios personalizados ou ficar só com anúncios não personalizados. <a class="link" data-legal="cookies" role="button" tabindex="0">Saiba mais</a></p>
+    <button id="c-ess" type="button" class="btn btn-o h-10">Só o essencial</button>
+    <button id="c-all" type="button" class="btn btn-p h-10">Aceitar</button>
+  </div>
+</div>
+
+<dialog id="dlg-login" class="card m-auto w-[min(92vw,26rem)] p-6" aria-labelledby="login-h">
+  <div class="flex flex-col gap-4">
+    <h2 id="login-h" class="text-xl font-semibold">Entrar</h2>
+    <p id="login-msg" class="text-sm text-muted-foreground">Entre para usar seus 100 créditos gratuitos por mês e guardar o histórico dos seus testes. O saldo vale em todos os seus aparelhos.</p>
+    <div id="login-sb" class="flex flex-col gap-3" hidden>
+      <button id="b-google" type="button" class="btn btn-o w-full">Continuar com o Google</button>
+      <div class="flex items-center gap-3 text-xs text-muted-foreground"><i class="h-px flex-1 bg-border"></i>ou<i class="h-px flex-1 bg-border"></i></div>
+      <form id="f-mail" class="flex flex-col gap-3">
+        <label for="m-mail" class="lbl">E-mail (enviamos um link, sem senha)</label>
+        <input id="m-mail" type="email" class="inp" required autocomplete="email" placeholder="voce@exemplo.com">
+        <button type="submit" class="btn btn-p w-full">Receber o link por e-mail</button>
+      </form>
+      <p id="mail-status" role="status" class="text-sm"></p>
+    </div>
+    <form id="f-demo" class="flex flex-col gap-3" hidden>
+      <div class="flex flex-col gap-1.5"><label for="u-name" class="lbl">Nome</label><input id="u-name" class="inp" required autocomplete="name"></div>
+      <div class="flex flex-col gap-1.5"><label for="u-mail" class="lbl">E-mail</label><input id="u-mail" type="email" class="inp" required autocomplete="email"></div>
+      <button type="submit" class="btn btn-p w-full">Entrar (demonstração)</button>
+    </form>
+    <p class="text-xs text-muted-foreground">Ao entrar você concorda com os <a class="link" data-legal="termos" role="button" tabindex="0">Termos de Uso</a> e com a <a class="link" data-legal="privacidade" role="button" tabindex="0">Política de Privacidade</a>.</p>
+    <div class="flex justify-end"><button id="b-login-x" type="button" class="btn btn-g">Fechar</button></div>
+  </div>
+</dialog>
+
+<dialog id="dlg-limit" class="card m-auto w-[min(92vw,26rem)] p-6" aria-labelledby="limit-h">
+  <form method="dialog" class="flex flex-col gap-4">
+    <h2 id="limit-h" class="font-display text-3xl">Créditos insuficientes</h2>
+    <p id="limit-msg" class="text-sm text-muted-foreground"></p>
+    <div class="flex justify-end"><button class="btn btn-p">Entendi</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-legal" class="card m-auto w-[min(94vw,40rem)] p-6" aria-labelledby="legal-h">
+  <div class="flex flex-col gap-4">
+    <h2 id="legal-h" class="font-display text-3xl"></h2>
+    <div id="legal-body" class="prose-l text-sm text-muted-foreground"></div>
+    <div class="flex justify-end"><button id="b-legal-x" type="button" class="btn btn-p">Fechar</button></div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+/* ===== NÚCLEO DE ANÁLISE (sem DOM; testado em Node) ===== */
+var SHARP=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+var TON=['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+var TON_PT=['Dó','Ré♭','Ré','Mi♭','Mi','Fá','Fá♯','Sol','Lá♭','Lá','Si♭','Si'];
+var MAJ=[6.35,2.23,3.48,2.33,4.38,4.09,2.52,5.19,2.39,3.66,2.29,2.88];
+var MIN=[6.33,2.68,3.52,5.38,2.60,3.53,2.54,4.75,3.98,2.69,3.34,3.17];
+var SC_MAJ=[0,2,4,5,7,9,11], SC_MIN=[0,2,3,5,7,8,10];
+var LEVELS=['baixa','média','alta'];
+var VOICES=[['Baixo',52],['Barítono',57],['Tenor',60],['Contralto',65],['Mezzo-soprano',69],['Soprano',72]];
+
+function mod12(n){ return ((n%12)+12)%12; }
+function noteName(m){ var r=Math.round(m); return SHARP[mod12(r)]+(Math.floor(r/12)-1); }
+function keyShort(t,mi){ return TON[t]+(mi?'m':''); }
+function keyPT(t,mi){ return TON_PT[t]+(mi?' menor':' maior'); }
+function majRoot(t,mi){ return mi?(t+3)%12:t; }
+function shortestDiff(from,to){ return mod12(to-from+6)-6; }
+function hzToMidi(h){ return 69+12*Math.log2(h/440); }
+function median(a){ if(!a.length) return 0; var s=a.slice().sort(function(x,y){return x-y;}); return s[s.length>>1]; }
+function levelMin(a,b){ return LEVELS[Math.min(LEVELS.indexOf(a),LEVELS.indexOf(b))]; }
+
+/* ---------- FFT (radix-2, no lugar) ---------- */
+function makeFFT(n){
+  var levels=Math.round(Math.log(n)/Math.LN2), rev=new Uint32Array(n), cosT=new Float64Array(n/2), sinT=new Float64Array(n/2), i, b, r, x;
+  for(i=0;i<n;i++){ r=0; x=i; for(b=0;b<levels;b++){ r=(r<<1)|(x&1); x>>=1; } rev[i]=r; }
+  for(i=0;i<n/2;i++){ cosT[i]=Math.cos(2*Math.PI*i/n); sinT[i]=Math.sin(2*Math.PI*i/n); }
+  return function(re,im){
+    var i,j,k,size,half,step,tre,tim,t;
+    for(i=0;i<n;i++){ j=rev[i]; if(j>i){ t=re[i]; re[i]=re[j]; re[j]=t; t=im[i]; im[i]=im[j]; im[j]=t; } }
+    for(size=2;size<=n;size<<=1){
+      half=size>>1; step=n/size;
+      for(i=0;i<n;i+=size){
+        for(j=i,k=0;j<i+half;j++,k+=step){
+          tre=re[j+half]*cosT[k]+im[j+half]*sinT[k];
+          tim=im[j+half]*cosT[k]-re[j+half]*sinT[k];
+          re[j+half]=re[j]-tre; im[j+half]=im[j]-tim; re[j]+=tre; im[j]+=tim;
+        }
+      }
+    }
+  };
+}
+
+/* ---------- afinação da voz (YIN), com confiança por quadro ---------- */
+function yin(buf,fs,gate){
+  var N=buf.length, W=N>>1, i, j, rms=0;
+  for(i=0;i<N;i++) rms+=buf[i]*buf[i];
+  if(Math.sqrt(rms/N)<gate) return null;
+  var tauMin=Math.max(2,Math.floor(fs/1000)), tauMax=Math.min(W-3,Math.floor(fs/70)), d=new Float32Array(tauMax+2), sum=0, tau, s, df;
+  for(tau=1;tau<=tauMax+1;tau++){ s=0; for(j=0;j<W;j++){ df=buf[j]-buf[j+tau]; s+=df*df; } sum+=s; d[tau]=sum>0?s*tau/sum:1; }
+  tau=tauMin;
+  while(tau<=tauMax){ if(d[tau]<0.15){ while(tau+1<=tauMax&&d[tau+1]<d[tau]) tau++; break; } tau++; }
+  if(tau>tauMax) return null;
+  var a=d[tau-1], b=d[tau], c=d[tau+1], den=a-2*b+c, sh=den!==0?(a-c)/(2*den):0;
+  if(sh>1||sh<-1) sh=0;
+  return {hz:fs/(tau+sh), clarity:1-Math.min(1,d[tau])};
+}
+function downsample(buf,f){ if(f<=1) return buf; var n=Math.floor(buf.length/f), o=new Float32Array(n), i, k, s; for(i=0;i<n;i++){ s=0; for(k=0;k<f;k++) s+=buf[i*f+k]; o[i]=s/f; } return o; }
+
+/* sequência de alturas detectadas (cada quadro tentado conta em "attempts") */
+function newTrack(frameSec){ return {midis:[],clar:[],attempts:0,frameSec:frameSec}; }
+function trackAdd(tr,r){ tr.attempts++; if(r){ tr.midis.push(hzToMidi(r.hz)); tr.clar.push(r.clarity); } }
+function trackRange(tr,data,fs,gate,from,to){ var N=1024,H=512,p; for(p=from;p<to&&p+N<=data.length;p+=H) trackAdd(tr,yin(data.subarray(p,p+N),fs,gate)); }
+
+/* ---------- tons ---------- */
+function pearson(x,y){
+  var n=x.length, mx=0, my=0, i; for(i=0;i<n;i++){ mx+=x[i]; my+=y[i]; } mx/=n; my/=n;
+  var sxy=0, sxx=0, syy=0, dx, dy; for(i=0;i<n;i++){ dx=x[i]-mx; dy=y[i]-my; sxy+=dx*dy; sxx+=dx*dx; syy+=dy*dy; }
+  return sxy/(Math.sqrt(sxx*syy)||1);
+}
+function keyProfile(t,minor){ var prof=minor?MIN:MAJ, p=[], pc; for(pc=0;pc<12;pc++) p.push(prof[(pc-t+12)%12]); return p; }
+var PROF=(function(){ var o=[],t,m; for(t=0;t<12;t++) for(m=0;m<2;m++) o.push(keyProfile(t,m===1)); return o; })();
+function rankKeys(hist){
+  var out=[], t, m;
+  for(t=0;t<12;t++) for(m=0;m<2;m++) out.push({t:t,minor:m===1,r:pearson(hist,PROF[t*2+m])});
+  return out.sort(function(a,b){ return b.r-a.r; });
+}
+function conf(keys){
+  var b=keys[0], rt=b.minor?(b.t+3)%12:(b.t+9)%12, o=null, i;
+  for(i=1;i<keys.length;i++){ if(keys[i].t===rt&&keys[i].minor!==b.minor) continue; o=keys[i]; break; }
+  var mg=b.r-(o?o.r:0);
+  if(b.r>=.8&&mg>=.08) return 'alta'; if(b.r>=.65&&mg>=.04) return 'média'; return 'baixa';
+}
+function options(keys,lvl){
+  var b=keys[0], rt=b.minor?(b.t+3)%12:(b.t+9)%12, out=[b], i, rel=null;
+  lvl=lvl||conf(keys);
+  for(i=1;i<keys.length;i++) if(keys[i].t===rt&&keys[i].minor===!b.minor){ rel=keys[i]; break; }
+  var target=lvl==='baixa'?3:lvl==='média'?2:1;
+  if(rel&&b.r-rel.r<.05) target=Math.max(target,2);
+  if(rel&&target>1) out.push(rel);
+  for(i=1;i<keys.length&&out.length<target;i++) if(out.indexOf(keys[i])<0) out.push(keys[i]);
+  return out;
+}
+function capoOptions(t,minor){
+  var easy=minor?[9,4,2]:[0,7,2,9,4], out=[], c, s;
+  for(c=0;c<=7;c++){ s=mod12(t-c); if(easy.indexOf(s)>=0) out.push({fret:c,shape:s}); }
+  return out.slice(0,3);
+}
+
+/* ---------- voz: limpeza, qualidade e resumos ---------- */
+function cleanTrack(tr){
+  var mi=tr.midis, cl=tr.clar, n=mi.length, om=[], oc=[], i, w, med;
+  if(n<25) return null;
+  for(i=0;i<n;i++){
+    w=mi.slice(Math.max(0,i-2),Math.min(n,i+3)).sort(function(a,b){return a-b;}); med=w[w.length>>1];
+    if(Math.abs(mi[i]-med)<=1){ om.push(mi[i]); oc.push(cl[i]); }
+  }
+  return om.length<20?null:{m:om,c:oc,ratio:om.length/n};
+}
+function voiceQuality(sm,tr){
+  var secs=sm.m.length*tr.frameSec, mc=median(sm.c), lvl;
+  if(secs>=12&&mc>=.9&&sm.ratio>=.8) lvl='alta';
+  else if(secs>=6&&mc>=.85&&sm.ratio>=.6) lvl='média';
+  else lvl='baixa';
+  return {level:lvl,secs:secs,clarity:mc,ratio:sm.ratio};
+}
+function quant(sorted){ return function(p){ return sorted[Math.min(sorted.length-1,Math.floor(p*(sorted.length-1)))]; }; }
+function sortedCopy(a){ return a.slice().sort(function(x,y){return x-y;}); }
+function summarizeKey(tr){
+  var sm=cleanTrack(tr); if(!sm) return null;
+  var q=voiceQuality(sm,tr), m=sm.m;
+  var hist=[0,0,0,0,0,0,0,0,0,0,0,0]; m.forEach(function(v){ hist[mod12(Math.round(v))]++; });
+  var tl=Math.max(6,Math.round(m.length*.04)), tail=sortedCopy(m.slice(-tl)), tpc=mod12(Math.round(tail[tail.length>>1]));
+  var hk=hist.slice(); hk[tpc]+=m.length*.06;
+  var qq=quant(sortedCopy(m)), keys=rankKeys(hk), lvl=levelMin(conf(keys),q.level);
+  return {hist:hist,keys:keys,lo:qq(.03),hi:qq(.97),frames:m.length,quality:q,level:lvl,secs:q.secs};
+}
+function summarizeRange(tr){
+  var sm=cleanTrack(tr); if(!sm) return null;
+  var q=voiceQuality(sm,tr), m=sm.m, hi=[], i;
+  for(i=0;i<m.length;i++) if(sm.c[i]>=.85) hi.push(m[i]);
+  if(hi.length>=20) m=hi;
+  var qq=quant(sortedCopy(m)), lo=qq(.02), up=qq(.98), mid=(lo+up)/2, best=VOICES[0];
+  for(i=1;i<VOICES.length;i++) if(Math.abs(VOICES[i][1]-mid)<Math.abs(best[1]-mid)) best=VOICES[i];
+  return {lo:lo,hi:up,clo:lo+(up-lo)*.2,chi:lo+(up-lo)*.8,type:best[0],frames:m.length,quality:q,level:q.level,secs:q.secs};
+}
+function idealRoot(ref){
+  var c=ref.clo!=null?(ref.clo+ref.chi)/2:(ref.lo+ref.hi)/2;
+  return mod12(Math.round(c-4));
+}
+
+/* ---------- música: croma por picos espectrais ---------- */
+async function analyzeChroma(x,fs,hook){
+  var N=8192, H=4096, nF=x.length>=N?Math.floor((x.length-N)/H)+1:0;
+  if(nF<4) return null;
+  var fft=makeFFT(N), re=new Float64Array(N), im=new Float64Array(N), win=new Float64Array(N), mag=new Float64Array(N/2+2), i, f, k;
+  for(i=0;i<N;i++) win[i]=.5-.5*Math.cos(2*Math.PI*i/(N-1));
+  var binHz=fs/N, kMin=Math.ceil(60/binHz), kMax=Math.min(N/2-2,Math.floor(2000/binHz));
+  var peaks=new Array(nF), bassPk=new Array(nF);
+  for(f=0;f<nF;f++){
+    var off=f*H, e=0, v;
+    for(i=0;i<N;i++){ v=x[off+i]; re[i]=v*win[i]; im[i]=0; e+=v*v; }
+    if(Math.sqrt(e/N)<.005){ peaks[f]=null; bassPk[f]=null; continue; }
+    fft(re,im);
+    var mx=0;
+    for(k=kMin-1;k<=kMax+1;k++){ mag[k]=Math.sqrt(re[k]*re[k]+im[k]*im[k]); if(mag[k]>mx) mx=mag[k]; }
+    var th=mx*.02, fr=[], wt=[], bHz=0, bW=0;
+    for(k=kMin;k<=kMax;k++){
+      if(mag[k]>th&&mag[k]>=mag[k-1]&&mag[k]>mag[k+1]){
+        var a=Math.log(mag[k-1]+1e-12), b=Math.log(mag[k]+1e-12), c=Math.log(mag[k+1]+1e-12), den=a-2*b+c, d=den!==0?.5*(a-c)/den:0;
+        if(d>.5||d<-.5) d=0;
+        var hz=(k+d)*binHz, w=Math.sqrt(mag[k]/mx);
+        fr.push(hz); wt.push(w/Math.sqrt(Math.max(1,hz/200)));
+        if(hz<=250&&w>bW){ bW=w; bHz=hz; }
+      }
+    }
+    peaks[f]={f:fr,w:wt}; bassPk[f]=bW>=.1?bHz:0;
+    if(hook&&f%40===0) await hook(f/nF);
+  }
+  var sx=0, sy=0, j, p, m, ang;
+  for(f=0;f<nF;f++){ p=peaks[f]; if(!p) continue;
+    for(j=0;j<p.f.length;j++){ if(p.f[j]<100||p.f[j]>1600) continue; m=hzToMidi(p.f[j]); ang=2*Math.PI*(m-Math.round(m)); sx+=p.w[j]*Math.cos(ang); sy+=p.w[j]*Math.sin(ang); }
+  }
+  var tuning=(sx||sy)?Math.atan2(sy,sx)/(2*Math.PI):0;
+  var chroma=new Float32Array(nF*12), bass=new Float32Array(nF*12), nValid=0, s;
+  for(f=0;f<nF;f++){
+    p=peaks[f]; if(!p) continue;
+    s=0; for(j=0;j<p.f.length;j++){ var pc=mod12(Math.round(hzToMidi(p.f[j])-tuning)); chroma[f*12+pc]+=p.w[j]; s+=p.w[j]; }
+    if(s<=0) continue;
+    for(k=0;k<12;k++) chroma[f*12+k]/=s;
+    if(bassPk[f]) bass[f*12+mod12(Math.round(hzToMidi(bassPk[f])-tuning))]=1;
+    nValid++;
+  }
+  return {chroma:chroma,bass:bass,n:nF,hop:H/fs,t0:(N-H)/(2*fs),tuning:tuning,nValid:nValid,pc:prefixSums(chroma,nF),pb:prefixSums(bass,nF)};
+}
+function prefixSums(arr,n){ var p=new Float64Array((n+1)*12), i, k; for(i=0;i<n;i++) for(k=0;k<12;k++) p[(i+1)*12+k]=p[i*12+k]+arr[i*12+k]; return p; }
+function rangeHist(p,i0,i1){ var h=[], k; for(k=0;k<12;k++) h.push(p[i1*12+k]-p[i0*12+k]); return h; }
+function combineHist(h,b){ var sh=0, sb=0, k, o=[]; for(k=0;k<12;k++){ sh+=h[k]; sb+=b[k]; } for(k=0;k<12;k++) o.push((sh?h[k]/sh:0)+(sb?.35*b[k]/sb:0)); return o; }
+function mixHist(A,i0,i1){ return combineHist(rangeHist(A.pc,i0,i1),rangeHist(A.pb,i0,i1)); }
+
+/* ---------- música: mudanças de tom ---------- */
+function setOf(s){ return majRoot(s>>1,(s&1)===1); }
+function segKey(A,r){
+  var h=mixHist(A,r.from,r.to), best=null;
+  [r.set,(r.set+9)%12].forEach(function(t,idx){ var rr=pearson(h,keyProfile(t,idx===1)); if(!best||rr>best.r) best={t:t,minor:idx===1,r:rr}; });
+  return best;
+}
+function pairBest(h,set){ var a=pearson(h,keyProfile(set,false)), b=pearson(h,keyProfile((set+9)%12,true)); return Math.max(a,b); }
+function detectChanges(A){
+  var n=A.n, hop=A.hop, W=Math.max(8,Math.round(12/hop)), S=Math.max(2,Math.round(3/hop));
+  var s0=Math.floor(n*.05), s1=Math.ceil(n*.95), minLen=Math.round(15/hop), LAMBDA=.6;
+  if(s1-s0<2*minLen+W) return {segments:[],changes:[]};
+  var wins=[], p, s, h, e, tot, i, a, v;
+  for(p=s0;p+W<=s1;p+=S){
+    h=mixHist(A,p,p+W); tot=0; var raw=rangeHist(A.pc,p,p+W); for(s=0;s<12;s++) tot+=raw[s];
+    e=new Float64Array(24);
+    if(tot>.3*W) for(s=0;s<24;s++) e[s]=pearson(h,PROF[s]);
+    wins.push({p:p,e:e});
+  }
+  var L=wins.length; if(L<3) return {segments:[],changes:[]};
+  var prev=new Float64Array(24), back=[], best, bi;
+  for(s=0;s<24;s++) prev[s]=wins[0].e[s];
+  for(i=1;i<L;i++){
+    var cur=new Float64Array(24), bk=new Uint8Array(24);
+    for(s=0;s<24;s++){
+      best=-1e9; bi=0;
+      for(a=0;a<24;a++){ v=prev[a]-(a===s?0:(setOf(a)===setOf(s)?.1:LAMBDA)); if(v>best){ best=v; bi=a; } }
+      cur[s]=best+wins[i].e[s]; bk[s]=bi;
+    }
+    back.push(bk); prev=cur;
+  }
+  best=-1e9; bi=0; for(s=0;s<24;s++) if(prev[s]>best){ best=prev[s]; bi=s; }
+  var path=new Array(L); path[L-1]=bi; for(i=L-1;i>0;i--) path[i-1]=back[i-1][path[i]];
+  var off=(W-S)>>1, runs=[{from:s0,set:setOf(path[0])}], st;
+  for(i=1;i<L;i++){ st=setOf(path[i]); if(st!==runs[runs.length-1].set){ runs[runs.length-1].to=wins[i].p+off; runs.push({from:wins[i].p+off,set:st}); } }
+  runs[runs.length-1].to=s1;
+  function mergeEqual(){ var j; for(j=runs.length-1;j>0;j--) if(runs[j].set===runs[j-1].set){ runs[j-1].to=runs[j].to; runs.splice(j,1); } }
+  var k, ml, len, left, right, tgt, j;
+  while(runs.length>1){
+    k=-1; ml=1e9;
+    for(j=0;j<runs.length;j++){ len=runs[j].to-runs[j].from; if(len<minLen&&len<ml){ ml=len; k=j; } }
+    if(k<0) break;
+    left=k>0?runs[k-1]:null; right=k<runs.length-1?runs[k+1]:null;
+    tgt=(left&&right)?((left.to-left.from)>=(right.to-right.from)?left:right):(left||right);
+    if(tgt===left) left.to=runs[k].to; else right.from=runs[k].from;
+    runs.splice(k,1); mergeEqual();
+  }
+  var changed=true, hA, hB, gapB, gapA, B, Aa;
+  while(changed&&runs.length>1){
+    changed=false;
+    for(j=1;j<runs.length;j++){
+      Aa=runs[j-1]; B=runs[j]; hA=mixHist(A,Aa.from,Aa.to); hB=mixHist(A,B.from,B.to);
+      gapB=pairBest(hB,B.set)-pairBest(hB,Aa.set); gapA=pairBest(hA,Aa.set)-pairBest(hA,B.set);
+      if(Math.min(gapA,gapB)<.05||pairBest(hB,B.set)<.5){
+        if((Aa.to-Aa.from)>=(B.to-B.from)){ Aa.to=B.to; runs.splice(j,1); }
+        else { B.from=Aa.from; runs.splice(j-1,1); }
+        mergeEqual(); changed=true; break;
+      }
+    }
+  }
+  function tmpl(key){ var pr=keyProfile(key.t,key.minor), m=0, q=0, i; for(i=0;i<12;i++) m+=pr[i]; m/=12; var o=[]; for(i=0;i<12;i++){ o.push(pr[i]-m); q+=(pr[i]-m)*(pr[i]-m); } q=Math.sqrt(q)||1; return o.map(function(v){ return v/q; }); }
+  for(j=1;j<runs.length;j++){
+    var tA=tmpl(segKey(A,runs[j-1])), tB=tmpl(segKey(A,runs[j])), lo=runs[j-1].from, hi=runs[j].to, bnd=runs[j].from, bb=bnd, cum=0, bestCum=1e9, f, g, pcx;
+    var c0=Math.max(lo+Math.round(minLen/2),bnd-3*S), c1=Math.min(hi-Math.round(minLen/2),bnd+3*S);
+    for(f=lo;f<c0;f++){ g=0; for(pcx=0;pcx<12;pcx++) g+=(A.chroma[f*12+pcx]+.35*A.bass[f*12+pcx])*(tB[pcx]-tA[pcx]); cum+=g; }
+    for(f=c0;f<=c1;f++){
+      if(cum<bestCum){ bestCum=cum; bb=f; }
+      g=0; for(pcx=0;pcx<12;pcx++) g+=(A.chroma[f*12+pcx]+.35*A.bass[f*12+pcx])*(tB[pcx]-tA[pcx]); cum+=g;
+    }
+    runs[j-1].to=bb; runs[j].from=bb;
+  }
+  var segs=runs.map(function(r){ return {from:r.from*hop+A.t0,to:r.to*hop+A.t0,f0:r.from,f1:r.to,key:segKey(A,r)}; });
+  var changes=[];
+  for(j=1;j<segs.length;j++) changes.push({time:segs[j].from,from:segs[j-1].key,to:segs[j].key,semis:shortestDiff(majRoot(segs[j-1].key.t,segs[j-1].key.minor),majRoot(segs[j].key.t,segs[j].key.minor))});
+  return {segments:segs,changes:changes};
+}
+
+async function analyzeMusic(x,fs,hook){
+  var A=await analyzeChroma(x,fs,hook); if(!A||A.nValid<12) return null;
+  var n=A.n, dur=x.length/fs, a0=Math.floor(n*(dur>=120?.2:.1)), a1=Math.ceil(n*(dur>=120?.8:.9));
+  if(a1-a0<4){ a0=0; a1=n; }
+  var chromaHist=rangeHist(A.pc,a0,a1), tot=0, k; for(k=0;k<12;k++) tot+=chromaHist[k];
+  if(tot<8) return null;
+  var keys=rankKeys(combineHist(chromaHist,rangeHist(A.pb,a0,a1))), lvl=conf(keys);
+  if(dur<30) lvl=levelMin(lvl,'média');
+  var ch=detectChanges(A), opts=options(keys,lvl), from=a0*A.hop+A.t0, to=a1*A.hop+A.t0;
+  if(ch.segments.length>1){
+    var best=null, bo=0, i, o;
+    for(i=0;i<ch.segments.length;i++){ o=Math.min(ch.segments[i].f1,a1)-Math.max(ch.segments[i].f0,a0); if(o>bo){ bo=o; best=ch.segments[i]; } }
+    if(best&&bo>=4){
+      var f0=Math.max(best.f0,a0), f1=Math.min(best.f1,a1), sk=rankKeys(mixHist(A,f0,f1)), sl=conf(sk);
+      keys=sk; lvl=dur<30?levelMin(sl,'média'):sl; opts=options(sk,lvl); chromaHist=rangeHist(A.pc,f0,f1);
+      from=f0*A.hop+A.t0; to=f1*A.hop+A.t0;
+      ch.segments.forEach(function(sg){
+        var dup=opts.some(function(x){ return x.t===sg.key.t&&x.minor===sg.key.minor; });
+        if(!dup&&opts.length<3) opts.push({t:sg.key.t,minor:sg.key.minor,r:sg.key.r});
+      });
+    }
+  }
+  return {keys:keys,opts:opts,level:lvl,hist:chromaHist,tuning:A.tuning*100,dur:dur,from:from,to:to,segments:ch.segments,changes:ch.changes};
+}
+
+/* ===== PITCH SHIFTER EM TEMPO REAL ===== */
+function tdvPitchWorkletBody(){
+  var FFT_N=4096, HALF=FFT_N/2, TWO_PI=2*Math.PI;
+  var fft=makeFFT(FFT_N);
+  var win=new Float64Array(FFT_N), i;
+  for(i=0;i<FFT_N;i++) win[i]=.5-.5*Math.cos(TWO_PI*i/FFT_N);
+
+  function Chan(osamp){
+    this.osamp=osamp; this.hop=FFT_N/osamp; this.lat=FFT_N-this.hop; this.expct=TWO_PI*this.hop/FFT_N;
+    this.gain=1/(HALF*osamp*.375);
+    this.re=new Float64Array(FFT_N); this.im=new Float64Array(FFT_N);
+    this.inFifo=new Float64Array(FFT_N); this.outFifo=new Float64Array(this.hop); this.accum=new Float64Array(2*FFT_N);
+    this.lastPhase=new Float64Array(HALF+1); this.sumPhase=new Float64Array(HALF+1);
+    this.anaMagn=new Float64Array(HALF+1); this.anaFreq=new Float64Array(HALF+1);
+    this.synMagn=new Float64Array(HALF+1); this.synFreq=new Float64Array(HALF+1); this.xr=new Float64Array(HALF+1); this.xi=new Float64Array(HALF+1);
+    this.pk=new Int32Array(HALF+1); this.newQ=new Int32Array(HALF+1); this.newPh=new Float64Array(HALF+1); this.prevQ=new Int32Array(HALF+1); this.prevPh=new Float64Array(HALF+1); this.used=new Uint8Array(HALF+1); this.nPrev=0;
+    this.reset();
+  }
+  Chan.prototype.reset=function(){
+    this.rover=this.lat; this.inFifo.fill(0); this.outFifo.fill(0); this.accum.fill(0);
+    this.lastPhase.fill(0); this.sumPhase.fill(0); this.nPrev=0;
+  };
+  Chan.prototype.run=function(input,output,n,ratio){
+    var k, lat=this.lat;
+    for(k=0;k<n;k++){
+      this.inFifo[this.rover]=input[k];
+      output[k]=this.outFifo[this.rover-lat];
+      this.rover++;
+      if(this.rover>=FFT_N){ this.rover=lat; this.frame(ratio); }
+    }
+  };
+  Chan.prototype.frame=function(ratio){
+    var re=this.re, im=this.im, osamp=this.osamp, expct=this.expct, hop=this.hop, k, t, r, m, idx, ph;
+    for(k=0;k<FFT_N;k++){ re[k]=this.inFifo[k]*win[k]; im[k]=0; }
+    fft(re,im);
+    for(k=0;k<=HALF;k++){
+      r=re[k]; m=im[k];
+      ph=Math.atan2(m,r);
+      t=ph-this.lastPhase[k]; this.lastPhase[k]=ph;
+      t-=k*expct;
+      t-=TWO_PI*Math.round(t/TWO_PI);
+      this.anaMagn[k]=Math.sqrt(r*r+m*m);
+      this.anaFreq[k]=k+osamp*t/TWO_PI;
+    }
+    var xr=this.xr, xi=this.xi, mg=this.anaMagn, pk=this.pk, np=0, mx=0;
+    for(k=0;k<=HALF;k++){ xr[k]=re[k]; xi[k]=im[k]; if(mg[k]>mx) mx=mg[k]; }
+    for(k=0;k<=HALF;k++){ re[k]=0; im[k]=0; }
+    if(mx>1e-9){
+      var th=mx*1e-4;
+      for(k=2;k<=HALF-2;k++) if(mg[k]>th&&mg[k]>mg[k-1]&&mg[k]>mg[k-2]&&mg[k]>=mg[k+1]&&mg[k]>=mg[k+2]) pk[np++]=k;
+      var newQ=this.newQ, newPh=this.newPh, nn=0, j, lo, hi, q, sh, base, adv, best, bd, rot, cr, ci, kk, tk;
+      for(j=0;j<np;j++){
+        k=pk[j]; lo=j===0?0:((pk[j-1]+k)>>1)+1; hi=j===np-1?HALF:(k+pk[j+1])>>1;
+        q=Math.round(this.anaFreq[k]*ratio); sh=q-k;
+        adv=this.anaFreq[k]*ratio*expct;
+        best=-1; bd=3;
+        for(kk=0;kk<this.nPrev;kk++){ var dd=Math.abs(this.prevQ[kk]-q); if(dd<bd&&!this.used[kk]){ bd=dd; best=kk; } }
+        if(best>=0){ this.used[best]=1; base=this.prevPh[best]+adv; }
+        else base=Math.atan2(xi[k],xr[k]);
+        base-=TWO_PI*Math.floor(base/TWO_PI);
+        newQ[nn]=q; newPh[nn]=base; nn++;
+        rot=base-Math.atan2(xi[k],xr[k]); cr=Math.cos(rot); ci=Math.sin(rot);
+        for(kk=lo;kk<=hi;kk++){
+          tk=kk+sh; if(tk<0||tk>HALF) continue;
+          re[tk]+=xr[kk]*cr-xi[kk]*ci; im[tk]+=xr[kk]*ci+xi[kk]*cr;
+        }
+      }
+      for(kk=0;kk<nn;kk++){ this.prevQ[kk]=newQ[kk]; this.prevPh[kk]=newPh[kk]; this.used[kk]=0; }
+      this.nPrev=nn;
+    } else { this.nPrev=0; }
+    for(k=HALF+1;k<FFT_N;k++){ re[k]=0; im[k]=0; }
+    fft(im,re);
+    for(k=0;k<FFT_N;k++) this.accum[k]+=win[k]*re[k]*this.gain;
+    for(k=0;k<hop;k++) this.outFifo[k]=this.accum[k];
+    this.accum.copyWithin(0,hop,hop+FFT_N);
+    for(k=FFT_N;k<FFT_N+hop;k++) this.accum[k]=0;
+    this.inFifo.copyWithin(0,hop,FFT_N);
+  };
+
+  class TdvPitch extends AudioWorkletProcessor {
+    static get parameterDescriptors(){
+      return [{name:'pitch',defaultValue:0,minValue:-12,maxValue:12,automationRate:'k-rate'}];
+    }
+    constructor(options){
+      super();
+      var os=(options&&options.processorOptions&&options.processorOptions.osamp)||4;
+      this.ch=[new Chan(os),new Chan(os)];
+      this.zero=new Float32Array(128);
+      this.port.onmessage=(e)=>{ if(e.data==='reset'){ this.ch[0].reset(); this.ch[1].reset(); } };
+    }
+    process(inputs,outputs,params){
+      var inp=inputs[0]||[], out=outputs[0], ratio=Math.pow(2,params.pitch[0]/12), n=out[0].length, c, src;
+      if(this.zero.length<n) this.zero=new Float32Array(n);
+      for(c=0;c<out.length&&c<2;c++){
+        src=inp[c]||inp[0]||this.zero;
+        this.ch[c].run(src,out[c],n,ratio);
+      }
+      return true;
+    }
+  }
+  registerProcessor('tdv-pitch',TdvPitch);
+}
+
+var CFG=window.TDV_CONFIG||{};
+var $=function(id){ return document.getElementById(id); };
+function el(t,c,x){ var e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e; }
+var LO=36, HI=84, MAX_FILE=150*1024*1024, MAX_MUSIC_SEC=900, MAX_VOICE_SEC=300, ANA_SR=11025;
+var store={ get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+            set:function(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} },
+            del:function(k){ try{ localStorage.removeItem(k); }catch(e){} } };
+function fmt(s){ s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+function ptDate(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'long'}); }
+
+/* ---------- piano sintetizado ---------- */
+var actx;
+function audio(){ if(!actx){ var AC=window.AudioContext||window.webkitAudioContext; actx=new AC(); } if(actx.state==='suspended') actx.resume(); return actx; }
+function tone(m,t0,dur){
+  var a=audio(), f=440*Math.pow(2,(m-69)/12), g=a.createGain(), lp=a.createBiquadFilter();
+  lp.type='lowpass'; lp.frequency.value=Math.min(9000,f*7);
+  g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(.34,t0+.01); g.gain.exponentialRampToValueAtTime(.0008,t0+dur);
+  [[1,'triangle',1],[2,'sine',.35],[3,'sine',.12],[4,'sine',.05]].forEach(function(h){
+    var o=a.createOscillator(), hg=a.createGain(); o.type=h[1]; o.frequency.value=f*h[0]; hg.gain.value=h[2];
+    o.connect(hg); hg.connect(g); o.start(t0); o.stop(t0+dur+.05);
+  });
+  g.connect(lp); lp.connect(a.destination);
+}
+function play(list,step,dur){ var t=audio().currentTime+.05; list.forEach(function(m,i){ tone(m,t+i*step,dur||1.8); }); }
+function playKey(t,minor){ var r=48+t; play([r,r+(minor?3:4),r+7,r+12],.32,1.8); }
+
+function buildPiano(box,lo,hi,cls,dotAt){
+  box.textContent=''; var total=0, idx=0, m, pc, isW;
+  for(m=lo;m<=hi;m++) if(SC_MAJ.indexOf(mod12(m))>=0) total++;
+  var w=100/total, bw=w*.62;
+  for(m=lo;m<=hi;m++){
+    pc=mod12(m); isW=SC_MAJ.indexOf(pc)>=0;
+    var b=el('button',(isW?'wk':'bk')+' '+cls(m));
+    b.type='button'; b.dataset.m=m; b.setAttribute('aria-label',noteName(m));
+    if(isW){ if(pc===0) b.appendChild(el('em',null,'C'+(Math.floor(m/12)-1))); idx++; }
+    else { b.style.width=bw+'%'; b.style.left=(idx*w-bw/2)+'%'; }
+    if(dotAt(m)) b.appendChild(el('span','dot'));
+    box.appendChild(b);
+  }
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.piano button'); if(!b) return;
+  play([+b.dataset.m],0,1.8); b.classList.add('hit'); setTimeout(function(){ b.classList.remove('hit'); },180);
+});
+
+/* ============================================================
+   BACKEND: Supabase ou demonstração
+   ============================================================ */
+function periodSP(){ return new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}).slice(0,7); }
+function nextResetSP(){ var p=periodSP().split('-'), y=+p[0], m=+p[1]; return new Date(Date.UTC(m===12?y+1:y,m%12,1)).toISOString().slice(0,10); }
+var COSTS={voice:10,music:20}, MONTHLY=100;
+function stateOf(bal){ return {balance:bal,monthly:MONTHLY,voice_cost:COSTS.voice,music_cost:COSTS.music,resets_on:nextResetSP()}; }
+
+var Demo={
+  mode:'demo',
+  init:function(){ return Promise.resolve(); },
+  user:function(){ return store.get('tdv_user'); },
+  signInLocal:function(n,m){ store.set('tdv_user',{name:n,email:m}); },
+  signOut:function(){ store.del('tdv_user'); return Promise.resolve(); },
+  key:function(){ return 'tdv_demo_'+this.user().email.toLowerCase(); },
+  load:function(){ var s=store.get(this.key())||{}, cur=periodSP();
+    if(s.period!==cur){ s.period=cur; s.balance=MONTHLY; s.jobs={}; } s.hist=s.hist||[]; s.jobs=s.jobs||{}; return s; },
+  credits:function(){ return Promise.resolve(stateOf(this.load().balance)); },
+  start:function(kind){ var s=this.load(), c=COSTS[kind];
+    if(s.balance<c) return Promise.resolve(Object.assign(stateOf(s.balance),{ok:false,error:'insufficient',cost:c}));
+    s.balance-=c; var id='j'+Date.now()+Math.random().toString(36).slice(2,6); s.jobs[id]=c; store.set(this.key(),s);
+    return Promise.resolve(Object.assign(stateOf(s.balance),{ok:true,job_id:id,cost:c})); },
+  finish:function(id,hk,title,detail){ var s=this.load(); delete s.jobs[id];
+    s.hist.unshift({kind:hk,title:title,detail:detail,created_at:new Date().toISOString()}); s.hist=s.hist.slice(0,100); store.set(this.key(),s);
+    return Promise.resolve(Object.assign(stateOf(s.balance),{ok:true})); },
+  fail:function(id){ var s=this.load(); if(s.jobs[id]){ s.balance+=s.jobs[id]; delete s.jobs[id]; store.set(this.key(),s); } return Promise.resolve(stateOf(s.balance)); },
+  history:function(){ return Promise.resolve(this.load().hist); },
+  clearHistory:function(){ var s=this.load(); s.hist=[]; store.set(this.key(),s); return Promise.resolve(); },
+  deleteAccount:function(){ store.del(this.key()); store.del('tdv_user'); return Promise.resolve(); }
+};
+
+var SB={
+  mode:'supabase', sb:null, u:null,
+  init:function(onAuth){
+    var self=this;
+    return new Promise(function(res,rej){
+      var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js'; s.onload=res; s.onerror=function(){ rej(new Error('cdn')); };
+      document.head.appendChild(s);
+    }).then(function(){
+      self.sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+      self.sb.auth.onAuthStateChange(function(ev,sess){ self.u=sess?sess.user:null; onAuth(); });
+      return self.sb.auth.getSession();
+    }).then(function(r){ self.u=(r.data&&r.data.session&&r.data.session.user)||null; });
+  },
+  user:function(){ var u=this.u; if(!u) return null; var md=u.user_metadata||{}; return {name:md.full_name||md.name||(u.email||'').split('@')[0]||'Você',email:u.email}; },
+  here:function(){ return location.origin+location.pathname; },
+  signInGoogle:function(){ return this.sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:this.here()}}); },
+  signInEmail:function(mail){ return this.sb.auth.signInWithOtp({email:mail,options:{emailRedirectTo:this.here()}}); },
+  signOut:function(){ return this.sb.auth.signOut(); },
+  rpc:function(fn,args){ return this.sb.rpc(fn,args||{}).then(function(r){ if(r.error) throw r.error; return r.data; }); },
+  credits:function(){ return this.rpc('get_credits'); },
+  start:function(k){ return this.rpc('start_analysis',{p_kind:k}); },
+  finish:function(id,hk,t,d){ return this.rpc('finish_analysis',{p_job:id,p_hist_kind:hk,p_title:t,p_detail:d}); },
+  fail:function(id){ return this.rpc('fail_analysis',{p_job:id}); },
+  history:function(){ return this.sb.from('history').select('kind,title,detail,created_at').order('created_at',{ascending:false}).limit(50).then(function(r){ if(r.error) throw r.error; return r.data; }); },
+  clearHistory:function(){ return this.sb.from('history').delete().gte('created_at','1970-01-01').then(function(r){ if(r.error) throw r.error; }); },
+  deleteAccount:function(){ var self=this; return this.rpc('delete_my_account').then(function(){ return self.sb.auth.signOut(); }); }
+};
+var B=(CFG.SUPABASE_URL&&CFG.SUPABASE_KEY)?SB:Demo;
+
+/* ============================================================
+   ESTADO E MENSAGENS
+   ============================================================ */
+var S={user:null,credits:null,busy:false};
+function setStatus(msg,err){ var s=$('status'); s.textContent=msg||''; s.className='text-sm'+(err?' rounded-md bg-mark/15 px-3 py-2 text-mark':' text-muted-foreground'); }
+function setProgress(p){ var b=$('prog'); b.hidden=p==null; if(p!=null) $('prog-i').style.width=Math.round(p*100)+'%'; }
+function setBusy(b){
+  S.busy=b;
+  ['b-key','b-range','b-range2','m-key','m-range'].forEach(function(i){ $(i).disabled=b; });
+  [$('file-voice'),$('file-music')].forEach(function(i){ i.disabled=b; i.parentNode.classList.toggle('opacity-50',b); });
+}
+function tick(){ return new Promise(function(r){ setTimeout(r,0); }); }
+function levelPT(l){ return l; }
+function qualityHint(q){
+  if(!q||q.level==='alta') return '';
+  var why=[];
+  if(q.secs<12) why.push('poucos segundos de voz ('+Math.round(q.secs)+' s)');
+  if(q.clarity<.9) why.push('voz baixa ou com ruído');
+  if(q.ratio<.8) why.push('a altura oscilou muito');
+  return why.length?': '+why.join(', ')+'. Tente de novo mais perto do microfone, num lugar silencioso, por pelo menos 15 segundos':'';
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+function openLogin(msg){
+  $('login-msg').textContent=msg||'Entre para usar seus 100 créditos gratuitos por mês e guardar o histórico dos seus testes. O saldo vale em todos os seus aparelhos.';
+  $('login-sb').hidden=B.mode!=='supabase'; $('f-demo').hidden=B.mode!=='demo'; $('mail-status').textContent='';
+  if(!$('dlg-login').open) $('dlg-login').showModal();
+}
+$('b-login-x').addEventListener('click',function(){ $('dlg-login').close(); });
+$('b-login').addEventListener('click',function(){
+  if(S.user){ B.signOut().then(function(){ S.user=null; S.credits=null; afterAuth(); }); } else openLogin();
+});
+document.addEventListener('click',function(e){ if(e.target.closest('[data-login]')) openLogin(); });
+$('f-demo').addEventListener('submit',function(e){
+  e.preventDefault(); var n=$('u-name').value.trim(), m=$('u-mail').value.trim(); if(!n||!m) return;
+  Demo.signInLocal(n,m); $('dlg-login').close(); afterAuth();
+});
+$('b-google').addEventListener('click',function(){
+  B.signInGoogle().catch(function(){ $('mail-status').textContent='Não consegui abrir o login do Google agora. Tente o e-mail.'; });
+});
+$('f-mail').addEventListener('submit',function(e){
+  e.preventDefault(); var m=$('m-mail').value.trim(), st=$('mail-status'); if(!m) return;
+  st.textContent='Enviando...'; st.className='text-sm text-muted-foreground';
+  B.signInEmail(m).then(function(r){
+    if(r&&r.error) throw r.error;
+    st.textContent='Pronto! Abra o e-mail que enviamos e toque no link para entrar. Se não achar, olhe o spam.';
+  }).catch(function(){ st.textContent='Não consegui enviar o e-mail agora. Confira o endereço e tente de novo.'; st.className='text-sm text-mark'; });
+});
+
+function renderUser(){
+  var u=S.user;
+  $('b-login').textContent=u?'Sair ('+u.name.split(' ')[0]+')':'Entrar';
+  $('n-hist').hidden=!u; $('historico').hidden=!u; $('credit-pill').hidden=!u;
+  renderCredits();
+}
+function renderCredits(){
+  var c=S.credits, u=S.user;
+  if(!u){ $('credit-text').textContent='Entre para usar seus créditos'; $('usage-bar').style.width='0%'; return; }
+  if(!c){ $('credit-text').textContent='Carregando...'; return; }
+  $('credit-text').textContent=c.balance+' de '+c.monthly+' créditos · renovam em '+ptDate(c.resets_on);
+  $('usage-bar').style.width=Math.max(0,Math.min(100,c.balance/c.monthly*100))+'%';
+  $('credit-pill').textContent=c.balance+' créditos';
+  COSTS.voice=c.voice_cost||COSTS.voice; COSTS.music=c.music_cost||COSTS.music;
+}
+function refreshCredits(){
+  return B.credits().then(function(c){ S.credits=c; renderCredits(); return c; });
+}
+function afterAuth(){
+  S.user=B.user(); renderUser();
+  if(S.user){ refreshCredits().catch(function(){}); loadHistory(); }
+  renderCompare();
+}
+
+/* ---------- cobrança ---------- */
+function showInsufficient(kind,c){
+  c=c||S.credits||{};
+  $('limit-msg').textContent='Você tem '+(c.balance!=null?c.balance:0)+' créditos e esta análise custa '+COSTS[kind]+'. Os créditos renovam em '+(c.resets_on?ptDate(c.resets_on):'1º do próximo mês')+'.';
+  $('dlg-limit').showModal();
+}
+function guard(kind){
+  if(S.busy) return Promise.resolve(false);
+  if(!S.user){ openLogin('Entre para fazer esta análise. Você ganha 100 créditos grátis todo mês.'); return Promise.resolve(false); }
+  return refreshCredits().then(function(c){
+    if(c.balance<COSTS[kind]){ showInsufficient(kind,c); return false; }
+    return true;
+  }).catch(function(){ setStatus('Não consegui verificar seus créditos agora. Tente de novo em instantes. Nada foi descontado.',true); return false; });
+}
+function charge(kind,hk,title,detail){
+  return B.start(kind).then(function(r){
+    S.credits=r; renderCredits();
+    if(!r.ok){ showInsufficient(kind,r); return false; }
+    var done=function(){ return B.finish(r.job_id,hk,title,detail); };
+    return done().catch(done).then(function(f){ if(f&&f.balance!=null){ S.credits=f; renderCredits(); } loadHistory(); return true; },
+      function(){ loadHistory(); return true; });
+  }).catch(function(){ setStatus('Não consegui confirmar seus créditos, então o resultado não foi exibido e nada foi descontado. Tente de novo.',true); return false; });
+}
+
+/* ---------- histórico ---------- */
+function loadHistory(){
+  if(!S.user) return;
+  B.history().then(function(list){
+    var ul=$('hist-list'); ul.textContent='';
+    if(!list.length){ ul.appendChild(el('li','py-3 text-sm text-muted-foreground','Nenhum teste ainda. Faça o primeiro e ele aparece aqui.')); return; }
+    list.forEach(function(h){
+      var li=el('li','flex items-baseline justify-between gap-4 py-3'), l=el('div');
+      l.appendChild(el('div','font-medium',h.title)); l.appendChild(el('div','text-sm text-muted-foreground',h.detail));
+      li.appendChild(l); li.appendChild(el('span','shrink-0 text-sm text-muted-foreground',new Date(h.created_at).toLocaleDateString('pt-BR'))); ul.appendChild(li);
+    });
+  }).catch(function(){});
+}
+$('b-clear').addEventListener('click',function(){ if(S.user&&confirm('Apagar todo o seu histórico?')) B.clearHistory().then(loadHistory).catch(function(){ setStatus('Não consegui apagar agora.',true); }); });
+$('b-delacc').addEventListener('click',function(){
+  if(!S.user||!confirm('Excluir sua conta, seus créditos e todo o histórico? Isso não pode ser desfeito.')) return;
+  B.deleteAccount().then(function(){ S.user=null; S.credits=null; afterAuth(); setStatus('Sua conta e seus dados foram excluídos.'); }).catch(function(){ setStatus('Não consegui excluir agora. Tente de novo ou fale conosco pelo contato.',true); });
+});
+
+/* ============================================================
+   VOZ: tom e extensão
+   ============================================================ */
+var EX=[10,1,18,1,12,3,6,22,1,14,1,16], exk=rankKeys(EX);
+var K={res:{hist:EX,keys:exk,lo:55,hi:69,frames:0,level:conf(exk)},opts:options(exk),sel:0,example:true};
+var R={res:{lo:48,hi:69,clo:52,chi:64,type:'Barítono',level:'alta'},example:true};
+
+function renderRange(){
+  var r=R.res; $('badge2').hidden=!R.example;
+  $('v-type').textContent=r.type;
+  $('r-sum').textContent='Você alcançou de '+noteName(r.lo)+' a '+noteName(r.hi)+', e canta com mais conforto de '+noteName(r.clo)+' a '+noteName(r.chi)+'.';
+  var rc=$('r-conf'); rc.textContent=R.example?'':'Confiança '+r.level+qualityHint(r.quality); rc.className='text-sm '+(r.level==='baixa'?'text-mark':'text-muted-foreground');
+  $('p-lo').textContent='Ouvir a mais grave ('+noteName(r.lo)+')';
+  $('p-hi').textContent='Ouvir a mais aguda ('+noteName(r.hi)+')';
+  var rl=Math.round(r.lo), rh=Math.round(r.hi), cl=Math.round(r.clo), ch=Math.round(r.chi);
+  buildPiano($('piano'),LO,HI,function(m){ return m>=cl&&m<=ch?'cmf':(m>=rl&&m<=rh?'rng':''); },function(m){ return m===rl||m===rh; });
+  renderCompare();
+}
+$('p-lo').addEventListener('click',function(){ play([Math.round(R.res.lo)],0,2.2); });
+$('p-hi').addEventListener('click',function(){ play([Math.round(R.res.hi)],0,2.2); });
+$('p-all').addEventListener('click',function(){ var l=[],m; for(m=Math.round(R.res.lo);m<=Math.round(R.res.hi);m+=2) l.push(m); play(l,.34,1.2); });
+
+function renderKey(){
+  var res=K.res, c=K.opts[K.sel], lvl=res.level;
+  $('badge').hidden=!K.example;
+  $('k-big').textContent=keyShort(c.t,c.minor); $('k-pt').textContent=keyPT(c.t,c.minor);
+  $('k-conf').textContent=K.example?'':'Confiança '+lvl+(lvl==='baixa'?qualityHint(res.quality)||': cante mais da melodia':'');
+  var box=$('cands'), chips=$('chips'); chips.textContent=''; box.hidden=K.opts.length<2;
+  if(K.opts.length>1){
+    $('cands-msg').textContent=lvl==='alta'?'Estes tons usam as mesmas notas. Ouça cada um e escolha o que combina com a sua voz:':'Não deu para ter certeza de um só tom. Ouça cada opção no piano, cante junto e fique com a que soar mais natural:';
+    K.opts.forEach(function(o,i){
+      var b=el('button','chip',keyShort(o.t,o.minor)+' · '+keyPT(o.t,o.minor)); b.type='button'; b.setAttribute('aria-pressed',i===K.sel);
+      b.addEventListener('click',function(){ K.sel=i; renderKey(); playKey(o.t,o.minor); }); chips.appendChild(b);
+    });
+  }
+  $('k-sum').textContent=K.example?'':'Você cantou de '+noteName(res.lo)+' a '+noteName(res.hi)+'.';
+  var sc=c.minor?SC_MIN:SC_MAJ, mx=Math.max.apply(null,res.hist)||1, hs=$('hist'), pc;
+  hs.textContent='';
+  for(pc=0;pc<12;pc++){
+    var d=el('div',pc===c.t?'ton':(sc.indexOf((pc-c.t+12)%12)>=0?'in':'')), b=el('b'); b.style.height=Math.max(2,Math.round(res.hist[pc]/mx*88))+'%';
+    d.appendChild(b); d.appendChild(el('span',null,SHARP[pc])); hs.appendChild(d);
+  }
+  transpose(); renderCompare();
+}
+$('b-keyplay').addEventListener('click',function(){ var c=K.opts[K.sel]; playKey(c.t,c.minor); });
+function transpose(){
+  var out=$('trans-out'), v=$('orig').value, c=K.opts[K.sel]; out.textContent='';
+  if(v===''){ out.textContent='Escolha o tom original para ver quanto subir ou descer e onde colocar o capotraste.'; return; }
+  var p=v.split('-'), ot=+p[0], om=p[1]==='1', diff=shortestDiff(majRoot(ot,om),majRoot(c.t,c.minor)), fret=mod12(majRoot(c.t,c.minor)-majRoot(ot,om));
+  var orig=keyShort(ot,om), sung=keyShort(c.t,c.minor), p1=el('p');
+  if(diff===0){ p1.textContent='O seu tom ('+sung+') é o tom original. Não precisa transpor.'; out.appendChild(p1); return; }
+  var n=Math.abs(diff); p1.appendChild(el('strong',null,sung));
+  p1.appendChild(document.createTextNode(' fica '+n+(n===1?' semitom ':' semitons ')+(diff>0?'acima':'abaixo')+' de '+orig+'. Transponha as cifras '+(diff>0?'para cima':'para baixo')+' em '+n+'.'));
+  out.appendChild(p1);
+  out.appendChild(el('p','mt-2',fret>=1&&fret<=7?'No violão: capotraste na casa '+fret+', tocando as formas de '+orig+'.':'No violão: o capotraste passaria da casa 7. Prefira transpor as cifras.'));
+}
+(function(){
+  var s=$('orig'), o=el('option',null,'Não sei / pular'); o.value=''; s.appendChild(o);
+  [false,true].forEach(function(mi){ for(var t=0;t<12;t++){ var op=el('option',null,keyShort(t,mi)+' · '+keyPT(t,mi)); op.value=t+'-'+(mi?1:0); s.appendChild(op); } });
+  s.addEventListener('change',transpose);
+})();
+
+function concludeVoice(mode,tr){
+  var res=mode==='range'?summarizeRange(tr):summarizeKey(tr);
+  if(!res){ setStatus('Pouca voz detectada. Cante mais perto do microfone, por pelo menos 15 segundos, e tente de novo. Nada foi descontado.',true); return Promise.resolve(); }
+  var hk,title,detail;
+  if(mode==='range'){ hk='voice_range'; title='Extensão vocal: '+res.type; detail=noteName(res.lo)+' a '+noteName(res.hi)+' · confiança '+res.level; }
+  else { var c0=res.keys.length?options(res.keys,res.level)[0]:null; hk='voice_key'; title='Tom da voz: '+keyShort(c0.t,c0.minor)+' ('+keyPT(c0.t,c0.minor)+')'; detail='Confiança '+res.level+', de '+noteName(res.lo)+' a '+noteName(res.hi); }
+  return charge('voice',hk,title,detail).then(function(ok){
+    if(!ok) return;
+    if(mode==='range'){
+      R={res:res,example:false}; renderRange();
+      setStatus('Pronto. Sua extensão foi medida (confiança '+res.level+'). Toque no piano para ouvir as notas.');
+      $('r-range').scrollIntoView({behavior:'smooth',block:'start'});
+    } else {
+      K={res:res,opts:options(res.keys,res.level),sel:0,example:false}; renderKey();
+      setStatus('Pronto. Tom estimado a partir de '+Math.round(res.secs)+' segundos de voz.');
+      $('r-key').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+}
+
+/* ---------- decodificação ---------- */
+function validFile(f){
+  if(!f) return false;
+  if(f.size>MAX_FILE){ setStatus('O arquivo tem mais de 150 MB. Envie um menor.',true); return false; }
+  if(!/\.(mp3|m4a|wav|ogg|flac|mp4|mov|webm)$/i.test(f.name)&&!/^(audio|video)\//.test(f.type||'')){ setStatus('Formato não aceito. Envie MP3, M4A, WAV, OGG, FLAC, MP4, MOV ou WebM.',true); return false; }
+  return true;
+}
+function decodeFile(file){
+  return file.arrayBuffer().then(function(ab){
+    var ctx=audio();
+    return new Promise(function(res,rej){ var p=ctx.decodeAudioData(ab,res,rej); if(p&&p.catch) p.catch(rej); });
+  });
+}
+function resampleMono(buf,sr,from,dur){
+  var OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext, len=Math.max(1,Math.ceil(dur*sr)), oc=new OAC(1,len,sr), src=oc.createBufferSource();
+  src.buffer=buf; src.connect(oc.destination); src.start(0,from,dur);
+  return oc.startRendering().then(function(r){
+    var d=new Float32Array(r.getChannelData(0)), pk=0, i; for(i=0;i<d.length;i++){ var a=Math.abs(d[i]); if(a>pk) pk=a; }
+    if(pk>0){ var g=.9/pk; for(i=0;i<d.length;i++) d[i]*=g; } return d;
+  });
+}
+
+function analyzeVoiceFile(file,mode){
+  if(!validFile(file)) return;
+  guard('voice').then(function(ok){
+    if(!ok) return; setBusy(true); setStatus('Lendo o áudio...'); setProgress(0);
+    return decodeFile(file).then(function(buf){
+      var dur=Math.min(buf.duration,MAX_VOICE_SEC);
+      return resampleMono(buf,ANA_SR,0,dur).then(function(x){
+        setStatus('Analisando a voz...');
+        var tr=newTrack(512/ANA_SR), p, N=1024, H=512, n=0;
+        for(p=0;p+N<=x.length;p+=H){ trackAdd(tr,yin(x.subarray(p,p+N),ANA_SR,.02)); if(++n%150===0) setProgress(p/x.length); }
+        return tick().then(function(){ setProgress(null); return concludeVoice(mode,tr); });
+      });
+    },function(){ setProgress(null); setStatus('Não consegui ler esse áudio. Nada foi descontado. Tente outro arquivo (MP3, M4A, WAV, OGG...).',true); });
+  }).catch(function(){ setProgress(null); setStatus('Algo deu errado na análise. Nada foi descontado.',true); }).then(function(){ setBusy(false); });
+}
+var upMode='key';
+function setUpMode(m){ upMode=m; $('m-key').setAttribute('aria-pressed',m==='key'); $('m-range').setAttribute('aria-pressed',m==='range'); }
+$('m-key').addEventListener('click',function(){ setUpMode('key'); });
+$('m-range').addEventListener('click',function(){ setUpMode('range'); });
+$('file-voice').addEventListener('change',function(e){ var f=e.target.files&&e.target.files[0]; e.target.value=''; if(f) analyzeVoiceFile(f,upMode); });
+
+/* ---------- microfone ---------- */
+var live=false, micMode='key', stream, mctx, raf=0, micTrack=null, t0=0, cv=$('wave'), g2=cv.getContext('2d');
+function drawWave(buf){
+  var w=cv.clientWidth, h=cv.clientHeight, d=window.devicePixelRatio||1, n=1024, i, y;
+  if(cv.width!==Math.round(w*d)){ cv.width=Math.round(w*d); cv.height=Math.round(h*d); }
+  g2.setTransform(d,0,0,d,0,0); g2.clearRect(0,0,w,h);
+  g2.strokeStyle='rgba(95,212,176,.25)'; g2.lineWidth=1; g2.beginPath(); g2.moveTo(0,h/2); g2.lineTo(w,h/2); g2.stroke();
+  g2.strokeStyle='#5fd4b0'; g2.lineWidth=2; g2.lineJoin='round'; g2.beginPath();
+  for(i=0;i<n;i++){ y=h/2-Math.max(-1,Math.min(1,buf[i]*4))*h*.45; if(i===0) g2.moveTo(0,y); else g2.lineTo(i/(n-1)*w,y); }
+  g2.stroke();
+}
+function blocked(){ setBusy(false); setStatus('Não consegui usar o microfone. Libere a permissão no navegador (o site precisa estar em https) ou grave no celular e use "Escolher a gravação". Nada foi descontado.',true); }
+function startMic(m){
+  guard('voice').then(function(ok){
+    if(!ok) return;
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ blocked(); return; }
+    setBusy(true);
+    return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}).then(function(s){
+      stream=s; var AC=window.AudioContext||window.webkitAudioContext; mctx=new AC();
+      return Promise.resolve(mctx.resume()).catch(function(){}).then(function(){
+        var src=mctx.createMediaStreamSource(stream), an=mctx.createAnalyser(); an.fftSize=4096; src.connect(an);
+        var f=Math.max(1,Math.round(mctx.sampleRate/11000)), fs=mctx.sampleRate/f, buf=new Float32Array(an.fftSize), last=0;
+        micMode=m; micTrack=newTrack(.046); live=true; t0=performance.now();
+        $('actions').hidden=true; $('rec').hidden=false; setStatus('');
+        $('rec-hint').textContent=m==='range'?'Cante a nota mais grave que conseguir, segure um instante e deslize devagar até a mais aguda. Use a voz natural, sem forçar.':'Cante a melodia da música em volume normal, sem instrumento.';
+        (function loop(){
+          if(!live) return; raf=requestAnimationFrame(loop);
+          an.getFloatTimeDomainData(buf); drawWave(buf);
+          var now=performance.now(), sec=Math.floor((now-t0)/1000); $('rec-t').textContent=Math.floor(sec/60)+':'+('0'+(sec%60)).slice(-2);
+          if(now-last<45) return; last=now;
+          var r=yin(downsample(buf,f),fs,.01); trackAdd(micTrack,r);
+          if(r){ var mi=hzToMidi(r.hz); $('live-n').textContent=noteName(mi); var ct=Math.round((mi-Math.round(mi))*100); $('live-c').textContent=(ct>0?'+':'')+ct+' cents'; }
+          else { $('live-n').textContent='--'; $('live-c').textContent='cante uma nota'; }
+        })();
+      });
+    },blocked);
+  });
+}
+function stopMic(){
+  live=false; cancelAnimationFrame(raf);
+  try{ stream.getTracks().forEach(function(t){ t.stop(); }); }catch(_){}
+  try{ mctx.close(); }catch(_){}
+  $('rec').hidden=true; $('actions').hidden=false;
+  if(micTrack.attempts>0) micTrack.frameSec=(performance.now()-t0)/1000/micTrack.attempts;
+  concludeVoice(micMode,micTrack).catch(function(){ setStatus('Algo deu errado na análise. Nada foi descontado.',true); }).then(function(){ setBusy(false); });
+}
+$('b-key').addEventListener('click',function(){ startMic('key'); });
+$('b-range').addEventListener('click',function(){ startMic('range'); });
+$('b-range2').addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); startMic('range'); });
+$('b-stop').addEventListener('click',stopMic);
+
+/* ============================================================
+   MÚSICA: análise
+   ============================================================ */
+var M=null;
+var P={buf:null,src:null,sg:null,node:null,ready:false,playing:false,offset:0,startedAt:0,semis:0,raf:0,viaNode:false,tried:false};
+
+function analyzeMusicFile(file){
+  if(!validFile(file)) return;
+  guard('music').then(function(ok){
+    if(!ok) return; setBusy(true); stopPlayback(); setStatus('Lendo o áudio...'); setProgress(0);
+    return decodeFile(file).then(function(buf){
+      if(buf.duration>MAX_MUSIC_SEC){ setProgress(null); setStatus('Essa música tem mais de 15 minutos. Envie um arquivo menor. Nada foi descontado.',true); return; }
+      setStatus('Analisando as notas (pode levar um pouco)...');
+      return resampleMono(buf,ANA_SR,0,buf.duration).then(function(x){
+        return analyzeMusic(x,ANA_SR,function(p){ setProgress(p); return tick(); });
+      }).then(function(res){
+        setProgress(null);
+        if(!res){ setStatus('Não consegui identificar o tom dessa música (pouco conteúdo musical ou muito silêncio). Nada foi descontado.',true); return; }
+        var top=res.opts[0], name=file.name.replace(/\.[^.]+$/,'');
+        return charge('music','music','Música: '+keyShort(top.t,top.minor)+' ('+keyPT(top.t,top.minor)+')',(name.length>60?name.slice(0,57)+'...':name)+' · confiança '+res.level).then(function(ok){
+          if(!ok) return;
+          M={res:res,sel:0,name:file.name}; P.buf=buf; P.offset=0; P.semis=0;
+          renderMusic(); setStatus('Pronto. Tom da música estimado (confiança '+res.level+'). Use o player para ajustar o tom.');
+          $('r-music').scrollIntoView({behavior:'smooth',block:'start'});
+        });
+      });
+    },function(){ setProgress(null); setStatus('Não consegui ler esse arquivo. Nada foi descontado. Tente MP3, M4A, WAV ou OGG.',true); });
+  }).catch(function(){ setProgress(null); setStatus('Algo deu errado na análise. Nada foi descontado.',true); }).then(function(){ setBusy(false); });
+}
+$('file-music').addEventListener('change',function(e){ var f=e.target.files&&e.target.files[0]; e.target.value=''; if(f) analyzeMusicFile(f); });
+
+function mKey(){ return M.res.opts[M.sel]; }
+function curKey(){ var k=mKey(); return {t:mod12(k.t+P.semis),minor:k.minor}; }
+function semisText(n){ return n===0?'Sem alteração':(n>0?'+':'−')+Math.abs(n)+(Math.abs(n)===1?' semitom':' semitons')+(n>0?' (mais agudo)':' (mais grave)'); }
+
+function renderMusic(){
+  var r=M.res, k=mKey(); $('r-music').hidden=false; $('m-file').textContent=M.name;
+  $('m-big').textContent=keyShort(k.t,k.minor); $('m-pt').textContent=keyPT(k.t,k.minor);
+  $('m-conf').textContent='Confiança '+r.level+(r.level==='baixa'?': ouça as opções abaixo':'');
+  $('m-where').textContent=(r.changes.length?'Tom do trecho principal, de ':'Analisei a parte central, de ')+fmt(r.from)+' a '+fmt(r.to)+' (a música dura '+fmt(r.dur)+')'+(r.changes.length?'. A música muda de tom, veja abaixo':'')+(Math.abs(r.tuning)>=15?'. A gravação está '+Math.abs(Math.round(r.tuning))+' centésimos de semitom '+(r.tuning>0?'acima':'abaixo')+' do afinado.':'.');
+  var box=$('m-cands'), chips=$('m-chips'); chips.textContent=''; box.hidden=r.opts.length<2;
+  if(r.opts.length>1){
+    $('m-cands-msg').textContent=r.level==='alta'?'Estes tons usam as mesmas notas. Toque em cada um para ouvir no piano e escolha o que soa certo com a música:':'Não deu para ter certeza de um só tom. Toque em cada opção para ouvir no piano, compare com a música e fique com a que combinar:';
+    r.opts.forEach(function(o,i){
+      var b=el('button','chip',keyShort(o.t,o.minor)+' · '+keyPT(o.t,o.minor)); b.type='button'; b.setAttribute('aria-pressed',i===M.sel);
+      b.addEventListener('click',function(){ M.sel=i; renderMusic(); playKey(o.t,o.minor); }); chips.appendChild(b);
+    });
+  }
+  renderChanges(); renderPlayer(true);
+}
+function renderChanges(){
+  var r=M.res, box=$('m-changes'); box.textContent='';
+  if(!r.changes.length){ box.appendChild(el('p','text-sm','Não encontrei mudanças de tom. A música parece ficar em '+keyShort(mKey().t,mKey().minor)+' do começo ao fim.')); return; }
+  var tl=el('div','tl'), dur=r.dur;
+  tl.setAttribute('role','img'); tl.setAttribute('aria-label','Linha do tempo dos tons da música');
+  r.segments.forEach(function(s,i){
+    var a=i===0?0:s.from, b=i===r.segments.length-1?dur:r.segments[i+1].from, seg=el('i',null,keyShort(s.key.t,s.key.minor));
+    seg.style.width=((b-a)/dur*100)+'%'; tl.appendChild(seg);
+  });
+  box.appendChild(tl);
+  var ul=el('ul','mt-3 flex flex-col gap-1 text-sm');
+  r.changes.forEach(function(c){
+    var n=Math.abs(c.semis), txt=c.semis===0?'muda para o tom relativo':(c.semis>0?'sobe ':'desce ')+n+(n===1?' semitom':' semitons');
+    ul.appendChild(el('li',null,fmt(c.time)+' · '+txt+': '+keyShort(c.from.t,c.from.minor)+' → '+keyShort(c.to.t,c.to.minor)));
+  });
+  box.appendChild(ul);
+  box.appendChild(el('p','mt-2 text-sm text-muted-foreground','As mudanças são estimadas e podem errar em trechos curtos. O tom grande acima vale para o trecho principal.'));
+}
+
+/* comparação com a voz */
+function renderCompare(){
+  var box=$('p-cmp'); if(!box) return; box.textContent='';
+  if(!M||M.res==null){ box.hidden=true; return; }
+  var cur=curKey(), curRoot=majRoot(cur.t,cur.minor), lines=[];
+  if(!K.example){
+    var vk=K.opts[K.sel], d=shortestDiff(curRoot,majRoot(vk.t,vk.minor));
+    lines.push(d===0?'O tom da música ('+keyShort(cur.t,cur.minor)+') é o mesmo que você cantou ('+keyShort(vk.t,vk.minor)+').':
+      'Você cantou em '+keyShort(vk.t,vk.minor)+' e a música está em '+keyShort(cur.t,cur.minor)+': a música está '+Math.abs(d)+(Math.abs(d)===1?' semitom ':' semitons ')+(d>0?'abaixo':'acima')+' do seu tom. Para igualar, '+(d>0?'suba ':'desça ')+Math.abs(d)+'.');
+  }
+  if(!R.example){
+    var ideal=idealRoot(R.res), d2=shortestDiff(curRoot,ideal);
+    lines.push('Pela sua região confortável ('+noteName(R.res.clo)+' a '+noteName(R.res.chi)+'), um tom aproximado para cantar é '+keyShort(ideal,false)+'. '+(Math.abs(d2)<=1?'A música já está perto disso.':'A música está '+Math.abs(d2)+' semitons '+(d2>0?'abaixo':'acima')+' desse tom (estimativa aproximada).'));
+  }
+  if(!lines.length){ box.hidden=true; return; }
+  box.appendChild(el('div','font-medium','Comparação com a sua voz'));
+  lines.forEach(function(t){ box.appendChild(el('p',null,t)); });
+  box.hidden=false;
+}
+
+/* ============================================================
+   PLAYER com ajuste de tom
+   ============================================================ */
+function workletURL(){
+  var code=makeFFT.toString()+';'+tdvPitchWorkletBody.toString()+';tdvPitchWorkletBody();';
+  return URL.createObjectURL(new Blob([code],{type:'application/javascript'}));
+}
+function setupWorklet(){
+  if(P.node) return Promise.resolve(true);
+  if(P.tried) return Promise.resolve(false);
+  P.tried=true; var ctx=audio();
+  if(!ctx.audioWorklet||typeof AudioWorkletNode==='undefined') return Promise.resolve(false);
+  return ctx.audioWorklet.addModule(workletURL()).then(function(){
+    P.node=new AudioWorkletNode(ctx,'tdv-pitch',{numberOfInputs:1,numberOfOutputs:1,outputChannelCounts:[2],channelCount:2,channelCountMode:'explicit',channelInterpretation:'speakers',processorOptions:{osamp:4}});
+    P.node.connect(ctx.destination); return true;
+  }).catch(function(){ return false; });
+}
+function position(){ return P.playing?Math.min(P.buf.duration,audio().currentTime-P.startedAt):P.offset; }
+function killSource(fast){
+  var s=P.src, g=P.sg; P.src=null; P.sg=null; if(!s) return;
+  try{ s.onended=null; var t=audio().currentTime; g.gain.cancelScheduledValues(t); g.gain.setTargetAtTime(0,t,.008); s.stop(t+.05); }catch(e){}
+}
+function startAt(off){
+  var ctx=audio(); killSource();
+  var s=ctx.createBufferSource(), g=ctx.createGain(); s.buffer=P.buf;
+  var shifted=P.semis!==0&&!!P.node;
+  s.connect(g); g.connect(shifted?P.node:ctx.destination); P.viaNode=shifted;
+  if(P.node){ P.node.parameters.get('pitch').value=P.semis; P.node.port.postMessage('reset'); }
+  var t=ctx.currentTime; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(1,t+.02);
+  s.onended=function(){ if(P.src!==s) return; P.src=null; P.playing=false; P.offset=0; cancelAnimationFrame(P.raf); updateTransport(); };
+  s.start(0,off); P.src=s; P.sg=g; P.offset=off; P.startedAt=ctx.currentTime-off; P.playing=true; loopTransport(); updateTransport();
+}
+function pausePlayback(){ if(!P.playing) return; P.offset=position(); killSource(); P.playing=false; cancelAnimationFrame(P.raf); updateTransport(); }
+function stopPlayback(){ if(P.buf){ killSource(); P.playing=false; P.offset=0; cancelAnimationFrame(P.raf); } }
+function loopTransport(){ cancelAnimationFrame(P.raf); (function l(){ if(!P.playing) return; updateTransport(); P.raf=requestAnimationFrame(l); })(); }
+function updateTransport(){
+  if(!M||!P.buf) return;
+  var pos=position(), seek=$('p-seek');
+  $('p-time').textContent=fmt(pos); if(document.activeElement!==seek||!seek.dataset.drag) seek.value=pos;
+  var pb=$('p-play'); pb.textContent=P.playing?'Pausar':'Tocar'; pb.setAttribute('aria-label',P.playing?'Pausar':'Tocar');
+  var seg=$('p-seg'); seg.textContent='';
+  if(M.res.changes.length){ var i, cur=null; for(i=0;i<M.res.segments.length;i++) if(pos>=M.res.segments[i].from) cur=M.res.segments[i];
+    if(cur) seg.textContent='Trecho agora: '+keyShort(mod12(cur.key.t+P.semis),cur.key.minor); }
+}
+function renderPlayer(first){
+  if(first){ var seek=$('p-seek'); seek.max=P.buf.duration; seek.value=0; $('p-dur').textContent=fmt(P.buf.duration); $('p-time').textContent='0:00'; }
+  var k=mKey(), c=curKey();
+  $('p-orig').textContent=keyShort(k.t,k.minor); $('p-cur').textContent=keyShort(c.t,c.minor);
+  $('p-semi').value=P.semis; $('p-semi-lbl').textContent=semisText(P.semis);
+  $('p-warn').hidden=Math.abs(P.semis)<=4; $('p-reset').disabled=P.semis===0;
+  var sc=c.minor?SC_MIN:SC_MAJ;
+  buildPiano($('p-piano'),48,71,function(m){ return sc.indexOf(mod12(m-c.t))>=0?'cmf':''; },function(m){ return mod12(m)===c.t; });
+  var caps=capoOptions(c.t,c.minor), p=$('p-capo'); p.textContent='';
+  if(!caps.length) p.textContent='Capotraste: este tom não tem uma boa opção até a casa 7. Prefira tocar as cifras transpostas.';
+  else { p.appendChild(el('strong',null,'Capotraste para tocar junto em '+keyShort(c.t,c.minor)+': ')); p.appendChild(document.createTextNode(caps.map(function(o){ return o.fret===0?'sem capotraste, formas de '+keyShort(o.shape,c.minor):'casa '+o.fret+', formas de '+keyShort(o.shape,c.minor); }).join(' · ')+'.')); }
+  renderCompare(); updateTransport();
+}
+function setSemis(n){
+  n=Math.max(-6,Math.min(6,n|0)); if(n===P.semis) return;
+  var was=P.semis; P.semis=n;
+  if(P.node) P.node.parameters.get('pitch').value=n;
+  if(P.playing&&((was===0)!==(n===0))) startAt(position());
+  renderPlayer();
+}
+$('p-play').addEventListener('click',function(){
+  if(!P.buf) return; audio();
+  if(P.playing){ pausePlayback(); return; }
+  setupWorklet().then(function(ok){
+    if(!ok&&P.semis!==0){ P.semis=0; renderPlayer(); setStatus('Seu navegador não permite ajustar o tom aqui. Use um Chrome, Edge, Firefox ou Safari atualizado.',true); }
+    startAt(P.offset>=P.buf.duration-.2?0:P.offset);
+  });
+});
+$('p-seek').addEventListener('input',function(e){ e.target.dataset.drag='1'; $('p-time').textContent=fmt(+e.target.value); });
+$('p-seek').addEventListener('change',function(e){ delete e.target.dataset.drag; var v=+e.target.value; if(P.playing) startAt(v); else { P.offset=v; updateTransport(); } });
+$('p-semi').addEventListener('input',function(e){
+  var n=+e.target.value;
+  if(n!==0&&!P.node){ setupWorklet().then(function(ok){ if(!ok){ e.target.value=0; P.semis=0; setStatus('Seu navegador não permite ajustar o tom aqui. Use um Chrome, Edge, Firefox ou Safari atualizado.',true); renderPlayer(); } else setSemis(n); }); P.semis=P.semis; return; }
+  setSemis(n);
+});
+$('p-minus').addEventListener('click',function(){ var n=P.semis-1; if(n<-6) return; if(!P.node&&n!==0) setupWorklet().then(function(){ setSemis(n); }); else setSemis(n); });
+$('p-plus').addEventListener('click',function(){ var n=P.semis+1; if(n>6) return; if(!P.node&&n!==0) setupWorklet().then(function(){ setSemis(n); }); else setSemis(n); });
+$('p-reset').addEventListener('click',function(){ setSemis(0); });
+$('p-chord').addEventListener('click',function(){ var c=curKey(); playKey(c.t,c.minor); });
+
+/* ============================================================
+   ANÚNCIOS E COOKIES
+   ============================================================ */
+function loadAds(mode){
+  if(window.__tdvAds) return; window.__tdvAds=1;
+  window.adsbygoogle=window.adsbygoogle||[]; if(mode!=='all') window.adsbygoogle.requestNonPersonalizedAds=1;
+  var s=document.createElement('script'); s.async=true; s.crossOrigin='anonymous';
+  s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+encodeURIComponent(CFG.ADSENSE_CLIENT); document.head.appendChild(s);
+  document.querySelectorAll('[data-ad]').forEach(function(a){
+    var slot=CFG['AD_SLOT_'+a.dataset.ad]; if(!slot) return;
+    a.textContent=''; a.className='min-h-[90px]';
+    var ins=document.createElement('ins'); ins.className='adsbygoogle'; ins.style.display='block';
+    ins.setAttribute('data-ad-client',CFG.ADSENSE_CLIENT); ins.setAttribute('data-ad-slot',slot); ins.setAttribute('data-ad-format','auto'); ins.setAttribute('data-full-width-responsive','true');
+    a.appendChild(ins); try{ window.adsbygoogle.push({}); }catch(e){}
+  });
+}
+function initAds(){
+  if(!CFG.ADSENSE_CLIENT) return;
+  var c=store.get('tdv_consent');
+  if(c) loadAds(c); else $('cookie').hidden=false;
+}
+$('c-all').addEventListener('click',function(){ store.set('tdv_consent','all'); $('cookie').hidden=true; loadAds('all'); });
+$('c-ess').addEventListener('click',function(){ store.set('tdv_consent','essential'); $('cookie').hidden=true; loadAds('essential'); });
+
+/* ============================================================
+   TEXTOS LEGAIS (Termos de Uso e Política de Privacidade estendidos)
+   ============================================================ */
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function legalVars(t){ return t.replace(/\{\{(\w+)\}\}/g,function(_,k){ return esc(CFG[k.toUpperCase()]||''); }); }
+
+var LEGAL={
+ termos:{t:'Termos de Uso',h:
+ '<h3>1. O serviço e escopo da plataforma</h3>'+
+ '<p>A plataforma <b>Tom da Voz</b> é uma ferramenta digital interativa desenvolvida para auxiliar estudantes de canto, músicos, professores, entusiastas e o público em geral na análise e adaptação musical. O serviço oferece funcionalidades que incluem, mas não se limitam a:</p>'+
+ '<ul>'+
+   '<li><b>Estimativa do tom e alcance da voz:</b> Análise da frequência e das notas produzidas pelo usuário para identificar sua tessitura vocal e extensão estimada;</li>'+
+   '<li><b>Análise do tom de músicas:</b> Identificação estimada do tom de arquivos de áudio para fins de prática musical;</li>'+
+   '<li><b>Ajuste e transposição de tonalidade:</b> Ferramentas de manipulação de áudio diretamente no navegador para adequar músicas à tonalidade mais confortável para a extensão vocal do usuário.</li>'+
+ '</ul>'+
+ '<p>O serviço é disponibilizado na modalidade de software baseado em navegador (SaaS) e é operado e mantido por <b>{{RESPONSAVEL}}</b>, estabelecido em <b>{{CIDADE}}</b>.</p>'+
+ '<p>Ao utilizar a plataforma, o usuário declara estar ciente de que o serviço se destina exclusivamente a fins recreativos, educacionais e de auxílio na prática musical informal.</p>'+
+
+ '<h3>2. Estimativas</h3><p>Os resultados gerados pela plataforma são estimativas computacionais baseadas em algoritmos de análise de áudio e podem conter variações ou erros. Não utilize as análises como única base para decisões profissionais, médicas ou de saúde vocal.</p>'+
+
+ '<h3>3. Conta e créditos</h3><p>Para utilizar as ferramentas de análise, o usuário precisa registrar uma conta (via login federado do Google ou e-mail). Cada conta recebe 100 créditos gratuitos por mês (10 créditos por análise de voz e 20 créditos por análise de música). Os créditos renovam no dia 1º de cada mês, não acumulam, não possuem valor monetário e não podem ser transferidos. Se uma análise falhar, os créditos correspondentes não são descontados.</p>'+
+
+ '<h3>4. Processamento de arquivos e direitos autorais</h3>'+
+ '<p>Ao carregar ou processar qualquer arquivo de áudio na plataforma, o usuário declara e garante que possui todos os direitos autorais, licenças ou autorizações necessárias para utilizá-lo. O processamento dos áudios e a execução do player ocorrem <b>exclusivamente de forma local, no próprio navegador de internet do usuário</b>.</p>'+
+ '<p>Em nenhuma hipótese os arquivos de áudio são enviados, transmitidos, armazenados ou mantidos nos servidores do Tom da Voz. A plataforma não disponibiliza e não permite o download do áudio alterado. O usuário é o único e exclusivo responsável pelo conteúdo que submete e processa na plataforma.</p>'+
+
+ '<h3>5. Uso adequado e condutas vedadas</h3>'+
+ '<p>O usuário compromete-se a utilizar os serviços de maneira ética, legal e em conformidade com estes Termos de Uso. É estritamente proibido:</p>'+
+ '<ul>'+
+   '<li>Tentar burlar, desativar, manipular ou fraudar o sistema de controle e limite de créditos mensais;</li>'+
+   '<li>Utilizar scripts automatizados, bots, scrapers ou mecanismos de acesso não autorizados para sobrecarregar a infraestrutura do serviço;</li>'+
+   '<li>Utilizar a plataforma para atividades ilícitas ou que infrinjam direitos autorais de terceiros;</li>'+
+   '<li>Tentar realizar engenharia reversa no código-fonte ou nos algoritmos de análise do site.</li>'+
+ '</ul>'+
+ '<p>O Tom da Voz reserva-se o direito de suspender ou cancelar o acesso de qualquer conta que viole estas regras, sem aviso prévio.</p>'+
+
+ '<h3>6. Isenção de garantias e limitação de responsabilidade</h3>'+
+ '<p>O serviço é disponibilizado de forma gratuita, na modalidade "como está" (as is) e "conforme disponível" (as available), sem garantias implícitas de funcionamento ininterrupto, livre de erros ou falhas de sistema.</p>'+
+ '<p>Na máxima extensão permitida pela legislação aplicável, o Tom da Voz e seus desenvolvedores não serão responsáveis por quaisquer danos diretos, indiretos, incidentais ou consequentes decorrentes do uso ou da incapacidade de uso da plataforma.</p>'+
+
+ '<h3>7. Anúncios e monetização</h3>'+
+ '<p>A manutenção e gratuidade do serviço são viabilizadas por meio da exibição de anúncios publicitários fornecidos por parceiros, como o Google AdSense. Ao utilizar o site, o usuário concorda com a exibição dessas publicidades. Para detalhes sobre o tratamento de dados publicitários, consulte nossa Política de Privacidade.</p>'+
+
+ '<h3>8. Alterações nos termos e foro de eleição</h3>'+
+ '<p>Podemos atualizar estes Termos de Uso a qualquer momento. A versão atualizada estará sempre acessível nesta página. Estão eleitos as leis da República Federativa do Brasil e o Foro da Circunscrição Judiciária de <b>{{CIDADE}}</b> para sanar eventuais dúvidas ou litígios, ressalvadas as disposições legais de proteção ao consumidor.</p>'},
+
+ privacidade:{t:'Política de Privacidade',h:
+ '<h3>1. Identificação do Controlador e Encarregado de Dados</h3>'+
+ '<p>A plataforma <b>Tom da Voz</b>, operada por <b>{{RESPONSAVEL}}</b>, com sede/atuação em <b>{{CIDADE}}</b>, é a controladora responsável pelo tratamento dos dados pessoais coletados neste site. Para solicitações referente à privacidade e LGPD, entre em contato via e-mail: <b>{{EMAIL}}</b>.</p>'+
+
+ '<h3>2. Dados pessoais tratados e finalidades</h3>'+
+ '<p>Coletamos apenas os dados estritamente necessários para o funcionamento e a segurança da plataforma:</p>'+
+ '<ul>'+
+   '<li><b>Dados de Cadastro e Conta:</b> Nome e e-mail (via autenticação Google ou informado diretamente), além de um identificador único de conta.</li>'+
+   '<li><b>Controle de Créditos:</b> Saldo atual de créditos mensais e registros do tipo e data das análises.</li>'+
+   '<li><b>Histórico de Utilização:</b> Título e resumo simplificado dos testes realizados (ex.: "Tom: G, confiança alta"), limitado a até 100 itens.</li>'+
+   '<li><b>Dados Técnicos de Navegação:</b> Endereço IP e registros de acesso mantidos automaticamente pelos provedores de infraestrutura e hospedagem.</li>'+
+   '<li><b>Publicidade e Cookies:</b> Identificadores de dispositivos e cookies do Google AdSense, conforme preferências registradas no aviso de cookies.</li>'+
+ '</ul>'+
+
+ '<h3>3. O que NÃO coletamos ou armazenamos</h3>'+
+ '<p><b>Os arquivos de áudio (da voz ou de músicas) enviados para análise são processados exclusivamente de forma local, no próprio navegador do usuário.</b> Os áudios não são enviados, gravados, transmitidos ou armazenados em nossos servidores.</p>'+
+
+ '<h3>4. Bases legais para o tratamento de dados (LGPD)</h3>'+
+ '<ul>'+
+   '<li><b>Execução de Contrato (Art. 7º, V da LGPD):</b> Necessário para criar/manter a conta, gerenciar os créditos e guardar o histórico solicitado.</li>'+
+   '<li><b>Legítimo Interesse (Art. 7º, IX da LGPD):</b> Aplicado à segurança do site e prevenção de abusos técnicos.</li>'+
+   '<li><b>Consentimento (Art. 7º, I da LGPD):</b> Utilizado para a exibição de anúncios personalizados e cookies publicitários, revogável a qualquer momento.</li>'+
+ '</ul>'+
+
+ '<h3>5. Compartilhamento de dados e transferência internacional</h3>'+
+ '<p>Compartilhamos dados exclusivamente com provedores de infraestrutura essenciais:</p>'+
+ '<ul>'+
+   '<li><b>Supabase:</b> Autenticação de usuários e banco de dados operacional.</li>'+
+   '<li><b>Google (Google Cloud e Google AdSense):</b> Login federado e exibições publicitárias.</li>'+
+ '</ul>'+
+ '<p>Esses parceiros seguem padrões rigorosos de segurança e salvaguardas para transferência internacional de dados previstas na LGPD.</p>'+
+
+ '<h3>6. Prazo de retenção e exclusão</h3>'+
+ '<p>Os dados são mantidos enquanto a conta estiver ativa. O usuário pode apagar o histórico de testes ou excluir integralmente a sua conta nas configurações do site a qualquer momento, o que remove o perfil, saldos e histórico de forma definitiva.</p>'+
+
+ '<h3>7. Seus direitos (Art. 18 da LGPD)</h3>'+
+ '<p>Você tem o direito de confirmar a existência de tratamento, acessar, corrigir, anonimizar, pedir portabilidade ou solicitar a eliminação dos seus dados pessoais. Para exercer esses direitos, escreva para <b>{{EMAIL}}</b>. Você também pode apresentar petições à Autoridade Nacional de Proteção de Dados (ANPD).</p>'+
+
+ '<h3>8. Menores de idade e atualizações</h3>'+
+ '<p>O serviço não é voltado a menores de 12 anos. Adolescentes devem utilizar a ferramenta com acompanhamento de um responsável. Esta Política pode ser atualizada periodicamente nesta mesma página.</p>'},
+
+ cookies:{t:'Cookies e anúncios',h:
+ '<h3>Cookies essenciais</h3><p>Usamos armazenamento do navegador para manter a sua sessão de login e lembrar suas escolhas (como o aviso de cookies). Sem isso o site não funciona direito.</p>'+
+ '<h3>Anúncios</h3><p>Este site pode exibir anúncios do Google AdSense, que usam cookies e identificadores para mostrar e medir anúncios. No aviso de cookies você escolhe entre anúncios personalizados ou apenas não personalizados. Para mudar a escolha, apague os dados do site no navegador e o aviso volta a aparecer.</p>'+
+ '<p>Saiba como o Google usa dados de sites parceiros em <a class="link" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>. Você também pode gerenciar anúncios personalizados em <a class="link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>'},
+
+ contato:{t:'Contato',h:
+ '<p><b>Responsável:</b> {{RESPONSAVEL}}</p><p><b>Cidade:</b> {{CIDADE}}</p><p><b>E-mail para dúvidas, suporte e LGPD:</b> {{EMAIL}}</p>'}
+};
+
+function openLegal(k){ var d=LEGAL[k]; if(!d) return; $('legal-h').textContent=d.t; $('legal-body').innerHTML=legalVars(d.h); if(!$('dlg-legal').open) $('dlg-legal').showModal(); }
+document.addEventListener('click',function(e){ var a=e.target.closest('[data-legal]'); if(a){ e.preventDefault(); openLegal(a.dataset.legal); } });
+document.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ var a=e.target.closest&&e.target.closest('[data-legal]'); if(a){ e.preventDefault(); openLegal(a.dataset.legal); } } });
+$('b-legal-x').addEventListener('click',function(){ $('dlg-legal').close(); });
+
+/* ============================================================
+   INÍCIO
+   ============================================================ */
+(function(){
+  $('demo-banner').hidden=B.mode!=='demo';
+  renderKey(); renderRange(); renderUser(); initAds();
+  B.init(function(){ afterAuth(); }).then(function(){ afterAuth(); },function(){ setStatus('Não consegui carregar o sistema de login. Recarregue a página.',true); });
+})();
+
+})();
+</script>
+</body>
+</html>
