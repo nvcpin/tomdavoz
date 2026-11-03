@@ -16,7 +16,7 @@
 window.TDV_CONFIG = {
   /* Supabase: Project Settings > API. A chave "publishable" (sb_publishable_...) ou "anon" é pública e pode ficar aqui.
      NUNCA cole a chave "secret" ou "service_role". Vazio = modo de demonstração (créditos só neste navegador). */
-  SUPABASE_URL: 'https://xpylwuubxxzfjjcfxcdx.supabase.co/rest/v1/',
+  SUPABASE_URL: 'https://xpylwuubxxzfjjcfxcdx.supabase.co',
   SUPABASE_KEY: 'sb_publishable_zh9LDD5_AkZz1noI1z5TtA_5d_uOO2r',
 
   /* Google AdSense. Vazio = os dois espaços ficam reservados e nenhum script de anúncio é carregado. */
@@ -25,7 +25,7 @@ window.TDV_CONFIG = {
   AD_SLOT_B: '',        /* ID do bloco do segundo espaço (final da página) */
 
   /* Identificação do responsável (aparece em Termos, Privacidade e Contato). Preencha antes de lançar. */
-  RESPONSAVEL: 'Tom da Voz - Natália Carvalho',
+  RESPONSAVEL: 'Tom da Voz',
   EMAIL: 'tomdavozbr@gmail.com',
   CIDADE: 'Brasilia/DF'
 };
@@ -1486,7 +1486,7 @@ var LEGAL={
  '<p>Saiba como o Google usa dados de sites parceiros em <a class="link" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>. Você também pode gerenciar anúncios personalizados em <a class="link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>'},
 
  contato:{t:'Contato',h:
- '<p><b>E-mail para dúvidas, suporte e LGPD:</b> {{EMAIL}}</p>'}
+ '<p><b>Responsável:</b> {{RESPONSAVEL}}</p><p><b>Cidade:</b> {{CIDADE}}</p><p><b>E-mail para dúvidas, suporte e LGPD:</b> {{EMAIL}}</p>'}
 };
 
 function openLegal(k){ var d=LEGAL[k]; if(!d) return; $('legal-h').textContent=d.t; $('legal-body').innerHTML=legalVars(d.h); if(!$('dlg-legal').open) $('dlg-legal').showModal(); }
