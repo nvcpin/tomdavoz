@@ -6,6 +6,13 @@
 <meta name="color-scheme" content="dark">
 <title>Tom da Voz: descubra o tom da sua voz e das suas músicas</title>
 <meta name="description" content="Descubra em que tom você canta, a sua extensão vocal e o tom de qualquer música, e ajuste a música para cantar com mais conforto. Sem tocar nenhum instrumento.">
+<meta name="google-adsense-account" content="ca-pub-3700786821756111">
+<link rel="canonical" href="https://tomdavoz.com.br/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://tomdavoz.com.br/">
+<meta property="og:title" content="Tom da Voz: descubra o tom da sua voz e das suas músicas">
+<meta property="og:description" content="Descubra em que tom você canta, a sua extensão vocal e o tom de qualquer música, e ajuste a música para cantar com mais conforto.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Instrument+Serif&display=swap">
@@ -20,12 +27,13 @@ window.TDV_CONFIG = {
   SUPABASE_KEY: 'sb_publishable_zh9LDD5_AkZz1noI1z5TtA_5d_uOO2r',
 
   /* Google AdSense. Vazio = os dois espaços ficam reservados e nenhum script de anúncio é carregado. */
-  ADSENSE_CLIENT: '',   /* ex.: 'ca-pub-0000000000000000' */
+  ADSENSE_CLIENT: 'ca-pub-3700786821756111',   /* ex.: 'ca-pub-0000000000000000' */
   AD_SLOT_A: '',        /* ID do bloco do primeiro espaço (depois dos resultados) */
   AD_SLOT_B: '',        /* ID do bloco do segundo espaço (final da página) */
 
   /* Identificação do responsável (aparece em Termos, Privacidade e Contato). Preencha antes de lançar. */
   RESPONSAVEL: 'Tom da Voz',
+  CONTROLADOR: 'Natalia Pinheiro',
   EMAIL: 'tomdavozbr@gmail.com',
   CIDADE: 'Brasilia/DF'
 };
@@ -102,6 +110,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
     <a href="#" class="font-display text-2xl">Tom da Voz</a>
     <nav class="flex items-center gap-1" aria-label="Principal">
       <span id="credit-pill" class="badge mr-1" hidden></span>
+      <a href="artigos/" class="btn btn-g hidden sm:inline-flex">Artigos</a>
       <a id="n-hist" href="#historico" class="btn btn-g" hidden>Histórico</a>
       <button id="b-login" type="button" class="btn btn-g">Entrar</button>
     </nav>
@@ -338,6 +347,21 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
     </div>
   </section>
 
+  <section class="flex flex-col gap-4" aria-labelledby="h-aprenda">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h2 id="h-aprenda" class="font-display text-4xl leading-none">Aprenda mais</h2>
+      <a href="artigos/" class="link text-sm text-muted-foreground">Ver todos os artigos</a>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <a href="artigos/importancia-da-musica.html" class="card block p-5 transition-colors hover:bg-muted"><h3 class="font-semibold">A importância da música</h3><p class="mt-1 text-sm text-muted-foreground">Emoção, aprendizado e convivência: por que vale a pena fazer música, mesmo sem ser profissional.</p></a>
+      <a href="artigos/extensao-vocal-e-tipos-de-voz.html" class="card block p-5 transition-colors hover:bg-muted"><h3 class="font-semibold">Extensão vocal e tipos de voz</h3><p class="mt-1 text-sm text-muted-foreground">Faixas de referência de baixo a soprano e como medir a sua extensão sem forçar.</p></a>
+      <a href="artigos/como-escolher-o-tom-para-cantar.html" class="card block p-5 transition-colors hover:bg-muted"><h3 class="font-semibold">Como escolher o tom para cantar</h3><p class="mt-1 text-sm text-muted-foreground">O passo a passo para encaixar uma música na sua voz, contando semitons.</p></a>
+      <a href="artigos/tecnica-vocal-dicas.html" class="card block p-5 transition-colors hover:bg-muted"><h3 class="font-semibold">Técnica vocal: 10 dicas</h3><p class="mt-1 text-sm text-muted-foreground">Postura, respiração, relaxamento e afinação: dez dicas práticas para cantar melhor.</p></a>
+      <a href="artigos/aquecimento-vocal.html" class="card block p-5 transition-colors hover:bg-muted"><h3 class="font-semibold">Aquecimento vocal</h3><p class="mt-1 text-sm text-muted-foreground">Uma rotina de 8 a 10 minutos para preparar a voz com segurança.</p></a>
+      <a href="artigos/como-cantar-em-coral.html" class="card block p-5 transition-colors hover:bg-muted"><h3 class="font-semibold">Como cantar em coral</h3><p class="mt-1 text-sm text-muted-foreground">Naipes, preparação, escuta e boas práticas para quem vai cantar em grupo.</p></a>
+    </div>
+  </section>
+
   <div>
     <p class="mb-1 text-center text-xs text-muted-foreground">Publicidade</p>
     <aside class="ad" aria-label="Publicidade" data-ad="B">Espaço para anúncio</aside>
@@ -346,17 +370,18 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   <footer class="flex flex-col gap-3 border-t border-border pt-6 text-sm text-muted-foreground">
     <p>A estimativa vem das notas da melodia e da música. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção.</p>
     <nav class="flex flex-wrap gap-x-5 gap-y-2" aria-label="Informações legais">
-      <a class="link" data-legal="termos" role="button" tabindex="0">Termos de Uso</a>
-      <a class="link" data-legal="privacidade" role="button" tabindex="0">Política de Privacidade</a>
-      <a class="link" data-legal="cookies" role="button" tabindex="0">Cookies e anúncios</a>
-      <a class="link" data-legal="contato" role="button" tabindex="0">Contato</a>
+      <a class="link" href="artigos/">Artigos</a>
+      <a class="link" href="termos.html" data-legal="termos">Termos de Uso</a>
+      <a class="link" href="privacidade.html" data-legal="privacidade">Política de Privacidade</a>
+      <a class="link" href="cookies.html" data-legal="cookies">Cookies e anúncios</a>
+      <a class="link" href="contato.html" data-legal="contato">Contato</a>
     </nav>
   </footer>
 </main>
 
 <div id="cookie" class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card p-4" hidden>
   <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-3">
-    <p class="flex-1 basis-64 text-sm">Usamos cookies para exibir anúncios. Você pode aceitar anúncios personalizados ou ficar só com anúncios não personalizados. <a class="link" data-legal="cookies" role="button" tabindex="0">Saiba mais</a></p>
+    <p class="flex-1 basis-64 text-sm">Usamos cookies para exibir anúncios. Você pode aceitar anúncios personalizados ou ficar só com anúncios não personalizados. <a class="link" href="cookies.html" data-legal="cookies">Saiba mais</a></p>
     <button id="c-ess" type="button" class="btn btn-o h-10">Só o essencial</button>
     <button id="c-all" type="button" class="btn btn-p h-10">Aceitar</button>
   </div>
@@ -381,7 +406,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
       <div class="flex flex-col gap-1.5"><label for="u-mail" class="lbl">E-mail</label><input id="u-mail" type="email" class="inp" required autocomplete="email"></div>
       <button type="submit" class="btn btn-p w-full">Entrar (demonstração)</button>
     </form>
-    <p class="text-xs text-muted-foreground">Ao entrar você concorda com os <a class="link" data-legal="termos" role="button" tabindex="0">Termos de Uso</a> e com a <a class="link" data-legal="privacidade" role="button" tabindex="0">Política de Privacidade</a>.</p>
+    <p class="text-xs text-muted-foreground">Ao entrar você concorda com os <a class="link" href="termos.html" data-legal="termos">Termos de Uso</a> e com a <a class="link" href="privacidade.html" data-legal="privacidade">Política de Privacidade</a>.</p>
     <div class="flex justify-end"><button id="b-login-x" type="button" class="btn btn-g">Fechar</button></div>
   </div>
 </dialog>
@@ -1440,8 +1465,20 @@ var LEGAL={
  '<p>Podemos atualizar estes Termos de Uso a qualquer momento. A versão atualizada estará sempre acessível nesta página. Estão eleitos as leis da República Federativa do Brasil e o Foro da Circunscrição Judiciária de <b>{{CIDADE}}</b> para sanar eventuais dúvidas ou litígios, ressalvadas as disposições legais de proteção ao consumidor.</p>'},
 
  privacidade:{t:'Política de Privacidade',h:
+ '<h3>Introdução: a LGPD e a proteção dos seus dados</h3>'+
+'<p>A Lei Geral de Proteção de Dados Pessoais (LGPD, Lei nº 13.709, de 14 de agosto de 2018) é a norma brasileira que regula o uso de informações relacionadas a pessoas naturais identificadas ou identificáveis, nos meios físicos e digitais, por empresas, profissionais e órgãos públicos. Ela entrou em vigor de forma gradual a partir de 2020 e é fiscalizada pela Autoridade Nacional de Proteção de Dados (ANPD). Seu objetivo é garantir que cada pessoa saiba quais dados dela são usados, por quem, para qual finalidade e por quanto tempo.</p>'+
+'<p>O artigo 1º da lei estabelece: “Art. 1º Esta Lei dispõe sobre o tratamento de dados pessoais, inclusive nos meios digitais, por pessoa natural ou por pessoa jurídica de direito público ou privado, com o objetivo de proteger os direitos fundamentais de liberdade e de privacidade e o livre desenvolvimento da personalidade da pessoa natural.”</p>'+
+'<p>O artigo 2º indica os fundamentos da proteção de dados pessoais: “Art. 2º A disciplina da proteção de dados pessoais tem como fundamentos: I - o respeito à privacidade; II - a autodeterminação informativa; III - a liberdade de expressão, de informação, de comunicação e de opinião; IV - a inviolabilidade da intimidade, da honra e da imagem; V - o desenvolvimento econômico e tecnológico e a inovação; VI - a livre iniciativa, a livre concorrência e a defesa do consumidor; e VII - os direitos humanos, o livre desenvolvimento da personalidade, a dignidade e o exercício da cidadania pelas pessoas naturais.”</p>'+
+'<p>O artigo 5º define termos usados nesta Política: dado pessoal é a “informação relacionada a pessoa natural identificada ou identificável”; titular é a “pessoa natural a quem se referem os dados pessoais que são objeto de tratamento”; controlador é a “pessoa natural ou jurídica, de direito público ou privado, a quem competem as decisões referentes ao tratamento de dados pessoais”; e encarregado é a “pessoa indicada pelo controlador e operador para atuar como canal de comunicação entre o controlador, os titulares dos dados e a Autoridade Nacional de Proteção de Dados (ANPD)”.</p>'+
+'<p>O artigo 6º determina que as atividades de tratamento de dados pessoais observem a boa-fé e os princípios da finalidade, adequação, necessidade, livre acesso, qualidade dos dados, transparência, segurança, prevenção, não discriminação e responsabilização e prestação de contas. As seções a seguir explicam, em linguagem simples, como o Tom da Voz aplica esses princípios: quem é o responsável, quais dados são tratados, para quê, por quanto tempo e como você exerce os seus direitos.</p>'+
+'<p>As transcrições acima têm caráter informativo. O texto oficial e atualizado da lei está disponível no Portal do Planalto.</p>'+
+
  '<h3>1. Identificação do Controlador e Encarregado de Dados</h3>'+
- '<p>A plataforma <b>Tom da Voz</b>, operada por <b>{{RESPONSAVEL}}</b>, com sede/atuação em <b>{{CIDADE}}</b>, é a controladora responsável pelo tratamento dos dados pessoais coletados neste site. Para solicitações referente à privacidade e LGPD, entre em contato via e-mail: <b>{{EMAIL}}</b>.</p>'+
+ '<p>A plataforma <b>Tom da Voz</b> é operada por <b>{{CONTROLADOR}}</b>, com atuação em <b>{{CIDADE}}</b>, que é a controladora responsável pelo tratamento dos dados pessoais coletados neste site.</p>'+
+ '<ul>'+
+   '<li><b>Responsável (controladora):</b> {{CONTROLADOR}}</li>'+
+   '<li><b>Canal de contato do encarregado, para privacidade e LGPD:</b> {{EMAIL}}</li>'+
+ '</ul>'+
 
  '<h3>2. Dados pessoais tratados e finalidades</h3>'+
  '<p>Coletamos apenas os dados estritamente necessários para o funcionamento e a segurança da plataforma:</p>'+
@@ -1486,7 +1523,7 @@ var LEGAL={
  '<p>Saiba como o Google usa dados de sites parceiros em <a class="link" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>. Você também pode gerenciar anúncios personalizados em <a class="link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>'},
 
  contato:{t:'Contato',h:
- '<p><b>Responsável:</b> {{RESPONSAVEL}}</p><p><b>Cidade:</b> {{CIDADE}}</p><p><b>E-mail para dúvidas, suporte e LGPD:</b> {{EMAIL}}</p>'}
+ '<p><b>E-mail para dúvidas, suporte e LGPD:</b> {{EMAIL}}</p>'}
 };
 
 function openLegal(k){ var d=LEGAL[k]; if(!d) return; $('legal-h').textContent=d.t; $('legal-body').innerHTML=legalVars(d.h); if(!$('dlg-legal').open) $('dlg-legal').showModal(); }
