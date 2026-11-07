@@ -25,6 +25,9 @@ a:focus-visible,button:focus-visible{outline:2px solid #f08a24;outline-offset:2p
 }
 .side[data-filled]::before,.ad-inline[data-filled]::before{content:'Publicidade';display:block;text-align:center;font-size:.72rem;color:var(--soft);margin-bottom:4px}
 .ad-inline{min-height:0;margin:1.6rem 0}
+.bgimg::before{content:'';position:fixed;inset:0;z-index:-1;background:url(fundo-artigos.jpg?v=3) center/cover no-repeat}
+.bgimg .paper{background:rgba(255,255,255,.93);backdrop-filter:blur(8px)}
+.hero{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:cover;object-position:62% 50%;border-radius:12px;margin:0 0 22px}
 .crumbs{font-size:.85rem;color:var(--soft);margin:0 0 14px}
 .crumbs a{color:var(--soft)}
 h1{font:400 clamp(2.1rem,6vw,3.1rem)/1.08 "Instrument Serif",Georgia,serif;margin:0 0 10px;text-wrap:balance;color:var(--ink)}
