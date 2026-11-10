@@ -977,7 +977,7 @@ function qualityHint(q){
   if(q.secs<12) why.push('poucos segundos de voz ('+Math.round(q.secs)+' s)');
   if(q.clarity<.9) why.push('voz baixa ou com ruído');
   if(q.ratio<.8) why.push('a altura oscilou muito');
-  return why.length?': '+why.join(', ')+'. Tente de novo mais perto do microfone, num lugar silencioso, por pelo menos 15 segundos':'';
+  return 'Para um resultado ainda mais preciso, cante por 15 segundos ou mais, perto do microfone e num lugar silencioso.';
 }
 
 /* ============================================================
@@ -1087,7 +1087,7 @@ function renderRange(){
   var r=R.res; $('badge2').hidden=!R.example;
   $('v-type').textContent=r.type;
   $('r-sum').textContent='Você alcançou de '+noteName(r.lo)+' a '+noteName(r.hi)+', e canta com mais conforto de '+noteName(r.clo)+' a '+noteName(r.chi)+'.';
-  var rc=$('r-conf'); rc.textContent=R.example?'':'Confiança '+r.level+qualityHint(r.quality); rc.className='text-sm '+(r.level==='baixa'?'text-mark':'text-muted-foreground');
+  var rc=$('r-conf'); rc.textContent=R.example?'':(r.level==='baixa'?qualityHint(r.quality):'Confiança '+r.level); rc.className='text-sm '+(r.level==='baixa'?'text-mark':'text-muted-foreground');
   $('p-lo').textContent='Ouvir a mais grave ('+noteName(r.lo)+')';
   $('p-hi').textContent='Ouvir a mais aguda ('+noteName(r.hi)+')';
   var rl=Math.round(r.lo), rh=Math.round(r.hi), cl=Math.round(r.clo), ch=Math.round(r.chi);
@@ -1102,10 +1102,10 @@ function renderKey(){
   var res=K.res, c=K.opts[K.sel], lvl=res.level;
   $('badge').hidden=!K.example;
   $('k-big').textContent=keyShort(c.t,c.minor); $('k-pt').textContent=keyPT(c.t,c.minor);
-  $('k-conf').textContent=K.example?'':'Confiança '+lvl+(lvl==='baixa'?qualityHint(res.quality)||': cante mais da melodia':'');
+  $('k-conf').textContent=K.example?'':(lvl==='baixa'?qualityHint(res.quality):'Confiança '+lvl);
   var box=$('cands'), chips=$('chips'); chips.textContent=''; box.hidden=K.opts.length<2;
   if(K.opts.length>1){
-    $('cands-msg').textContent=lvl==='alta'?'Estes tons usam as mesmas notas. Ouça cada um e escolha o que combina com a sua voz:':'Não deu para ter certeza de um só tom. Ouça cada opção no piano, cante junto e fique com a que soar mais natural:';
+    $('cands-msg').textContent=lvl==='alta'?'Tons que usam as mesmas notas. Toque no piano e escolha o que soa melhor:':'Outros tons que também combinam com a sua voz. Toque no piano e escolha o que soa melhor:';
     K.opts.forEach(function(o,i){
       var b=el('button','chip',keyShort(o.t,o.minor)+' · '+keyPT(o.t,o.minor)); b.type='button'; b.setAttribute('aria-pressed',i===K.sel);
       b.addEventListener('click',function(){ K.sel=i; renderKey(); playKey(o.t,o.minor); }); chips.appendChild(b);
@@ -1290,11 +1290,11 @@ function semisText(n){ return n===0?'Sem alteração':(n>0?'+':'−')+Math.abs(n
 function renderMusic(){
   var r=M.res, k=mKey(); $('r-music').hidden=false; $('m-file').textContent=M.name;
   $('m-big').textContent=keyShort(k.t,k.minor); $('m-pt').textContent=keyPT(k.t,k.minor);
-  $('m-conf').textContent='Confiança '+r.level+(r.level==='baixa'?': ouça as opções abaixo':'');
+  $('m-conf').textContent=r.level==='baixa'?'Veja abaixo outros tons que também combinam com a música.':'Confiança '+r.level;
   $('m-where').textContent=(r.changes.length?'Tom do trecho principal, de ':'Analisei a parte central, de ')+fmt(r.from)+' a '+fmt(r.to)+' (a música dura '+fmt(r.dur)+')'+(r.changes.length?'. A música muda de tom, veja abaixo':'')+(Math.abs(r.tuning)>=15?'. A gravação está '+Math.abs(Math.round(r.tuning))+' centésimos de semitom '+(r.tuning>0?'acima':'abaixo')+' do afinado.':'.');
   var box=$('m-cands'), chips=$('m-chips'); chips.textContent=''; box.hidden=r.opts.length<2;
   if(r.opts.length>1){
-    $('m-cands-msg').textContent=r.level==='alta'?'Estes tons usam as mesmas notas. Toque em cada um para ouvir no piano e escolha o que soa certo com a música:':'Não deu para ter certeza de um só tom. Toque em cada opção para ouvir no piano, compare com a música e fique com a que combinar:';
+    $('m-cands-msg').textContent=r.level==='alta'?'Tons que usam as mesmas notas. Toque em cada um no piano e escolha o que soa certo com a música:':'Outros tons que também combinam com a música. Toque no piano, compare com a música e escolha o que soa melhor:';
     r.opts.forEach(function(o,i){
       var b=el('button','chip',keyShort(o.t,o.minor)+' · '+keyPT(o.t,o.minor)); b.type='button'; b.setAttribute('aria-pressed',i===M.sel);
       b.addEventListener('click',function(){ M.sel=i; renderMusic(); playKey(o.t,o.minor); }); chips.appendChild(b);
