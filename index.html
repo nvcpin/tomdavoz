@@ -80,6 +80,10 @@ dialog{max-height:90vh;overflow:auto}
 .hist b{display:block;width:100%;background:hsl(var(--border));border-radius:3px 3px 0 0;min-height:2px}
 .hist .in b{background:hsl(var(--primary) / .55)}.hist .ton b{background:hsl(var(--mark))}
 .hist span{font-size:.72rem;color:hsl(var(--muted-foreground))}.hist .ton span{color:hsl(var(--foreground));font-weight:600}
+.ta{width:100%;min-height:180px;resize:vertical;border:1px solid hsl(var(--border));border-radius:6px;background:hsl(var(--background));color:inherit;padding:10px 12px;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ta:focus-visible{outline:2px solid hsl(var(--mark));outline-offset:1px}
+.cifra-out{white-space:pre;overflow:auto;max-height:480px;border:1px solid hsl(var(--border));border-radius:8px;background:hsl(var(--background));padding:12px;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.cifra-out .ch{color:hsl(var(--primary));font-weight:600}
 .rdot{animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.rdot{animation:none}}
@@ -115,6 +119,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
     <nav class="flex items-center gap-1" aria-label="Principal">
       <span id="credit-pill" class="badge mr-1" hidden></span>
       <a href="artigos.html" class="btn btn-g hidden sm:inline-flex">Artigos</a>
+      <a id="n-rep" href="#repertorio" class="btn btn-g" hidden>Repertório</a>
       <a id="n-hist" href="#historico" class="btn btn-g" hidden>Histórico</a>
       <button id="b-login" type="button" class="btn btn-g">Entrar</button>
     </nav>
@@ -185,7 +190,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
         <li>Formatos: MP3, M4A, WAV, OGG, FLAC, MP4, MOV e WebM (até 150 MB).</li>
         <li>Vale a parte central da música: introdução e final são deixados de lado.</li>
       </ul>
-      <p class="text-sm text-muted-foreground">Custo: <b class="text-foreground">20 créditos</b> por música.</p>
+      <p class="text-sm text-muted-foreground">Custo: <b class="text-foreground">20 créditos</b> por música. Baixar a música com o tom ajustado custa <b class="text-foreground">30 créditos</b>.</p>
     </section>
   </div>
 
@@ -231,6 +236,8 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
         <input id="p-seek" type="range" min="0" max="1" step="0.25" value="0" aria-label="Posição na música">
       </div>
 
+      <div id="p-ideal" class="flex flex-col gap-2 rounded-lg border border-primary/40 bg-primary/10 p-4" hidden></div>
+
       <div class="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
         <div class="flex flex-col gap-2">
           <label for="p-semi" class="lbl">Subir ou descer o tom (−6 a +6 semitons), sem mudar a velocidade</label>
@@ -251,6 +258,13 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
       </div>
 
       <div id="p-cmp" class="flex flex-col gap-1 rounded-lg border border-border p-4 text-sm" hidden></div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="p-save" type="button" class="btn btn-o h-10 px-4">Salvar no repertório</button>
+        <button id="p-dl" type="button" class="btn btn-p h-10 px-4">Baixar áudio transposto (30 créditos)</button>
+      </div>
+      <p id="p-msg" role="status" class="text-sm text-muted-foreground"></p>
+      <p class="text-xs text-muted-foreground">O arquivo é gerado no seu navegador (MP3), para uso pessoal, em músicas de até 10 minutos. O download usa o tom que está no player. O repertório guarda o tom atual do player.</p>
 
       <div class="flex flex-col gap-3">
         <div class="piano sm" id="p-piano" role="group" aria-label="Teclado com as notas do tom atual. Toque nas teclas para ouvir"></div>
@@ -316,13 +330,55 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
       <button id="p-all" type="button" class="btn btn-o h-10 px-4">Ouvir toda a extensão</button>
     </div>
     <p class="text-sm text-muted-foreground">Toque em qualquer tecla para ouvir a nota e cantar junto. O som é de piano sintetizado, e a classificação de voz é aproximada.</p>
-    <button type="button" id="b-range2" class="btn btn-p self-start">Descobrir minha extensão vocal</button>
+    <div class="flex flex-wrap items-center gap-2">
+      <button type="button" id="b-range2" class="btn btn-p self-start">Descobrir minha extensão vocal</button>
+      <button type="button" id="b-pdf" class="btn btn-o self-start" hidden>Baixar relatório em PDF</button>
+      <span id="pdf-msg" role="status" class="text-sm text-muted-foreground"></span>
+    </div>
+  </section>
+
+  <section id="r-cifra" class="card flex flex-col gap-5 p-5 sm:p-6" aria-labelledby="h-cifra">
+    <div>
+      <h2 id="h-cifra" class="font-display text-3xl leading-none">Cifra transposta</h2>
+      <p class="mt-2 text-sm text-muted-foreground">Cole a cifra, escolha o novo tom e, se quiser, o capotraste. Os acordes são trocados e o alinhamento com a letra é mantido. Gratuito e feito no seu navegador: o texto não é enviado para lugar nenhum.</p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="c-in" class="lbl">Cole a cifra aqui</label>
+      <textarea id="c-in" class="ta" spellcheck="false" placeholder="Cole aqui a cifra. Exemplo:&#10;&#10;G        D&#10;Letra da primeira linha&#10;Em       C&#10;Letra da segunda linha"></textarea>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-3">
+      <div class="flex flex-col gap-1.5"><label for="c-orig" class="lbl">Tom original</label><select id="c-orig" class="inp"></select></div>
+      <div class="flex flex-col gap-1.5"><label for="c-dest" class="lbl">Transpor para</label><select id="c-dest" class="inp"></select></div>
+      <div class="flex flex-col gap-1.5"><label for="c-capo" class="lbl">Capotraste</label><select id="c-capo" class="inp"></select></div>
+    </div>
+    <p id="c-info" class="text-sm text-muted-foreground"></p>
+    <div id="c-capo-sug" class="flex flex-wrap items-center gap-2" hidden></div>
+    <div id="c-out" class="cifra-out" hidden></div>
+    <div class="flex flex-wrap items-center gap-2">
+      <button id="c-copy" type="button" class="btn btn-p h-10 px-4" disabled>Copiar</button>
+      <button id="c-txt" type="button" class="btn btn-o h-10 px-4" disabled>Baixar .txt</button>
+      <button id="c-player" type="button" class="btn btn-o h-10 px-4" hidden>Usar o ajuste do player</button>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <input id="c-title" class="inp max-w-xs" maxlength="120" placeholder="Nome da música (para o repertório)" aria-label="Nome da música para o repertório">
+      <button id="c-save" type="button" class="btn btn-o h-10 px-4">Salvar no repertório</button>
+    </div>
+    <p id="c-msg" role="status" class="text-sm text-muted-foreground"></p>
+    <p class="text-xs text-muted-foreground">Reconhece acordes escritos com letras (C, Dm7, F#m, Bb/D, G7M...). Cifras escritas com Dó, Ré, Mi não são reconhecidas.</p>
   </section>
 
   <div>
     <p class="mb-1 text-center text-xs text-muted-foreground">Publicidade</p>
     <aside class="ad" aria-label="Publicidade" data-ad="A">Espaço para anúncio</aside>
   </div>
+
+  <section id="repertorio" class="card flex flex-col gap-4 p-5 sm:p-6" aria-labelledby="h-rep" hidden>
+    <div>
+      <h2 id="h-rep" class="text-lg font-semibold">Seu repertório</h2>
+      <p class="mt-1 text-sm text-muted-foreground">Músicas salvas com o tom para você cantar. Salve pelo player ou pela cifra, sem gastar créditos.</p>
+    </div>
+    <ul id="rep-list" class="flex flex-col divide-y divide-border"></ul>
+  </section>
 
   <section id="historico" class="card flex flex-col gap-4 p-5 sm:p-6" hidden>
     <div class="flex flex-wrap items-center justify-between gap-2">
@@ -346,7 +402,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
       <h3 class="text-lg font-semibold">Perguntas frequentes</h3>
       <details class="card p-4"><summary class="font-medium">O resultado é exato?</summary><p class="mt-2 text-sm text-muted-foreground">É uma estimativa. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção; ouça cada uma no piano e escolha a que combina. A confiança aparece junto de cada resultado.</p></details>
       <details class="card p-4"><summary class="font-medium">Por que mudanças acima de ±4 semitons soam piores?</summary><p class="mt-2 text-sm text-muted-foreground">Mudar o tom sem mudar a velocidade exige processar o som. Quanto maior a mudança, mais o áudio pode ficar metálico ou com ecos. Até ±4 costuma soar bem.</p></details>
-      <details class="card p-4"><summary class="font-medium">Posso baixar a música alterada?</summary><p class="mt-2 text-sm text-muted-foreground">Nesta versão, não. O ajuste de tom serve para você ouvir e cantar junto no próprio site.</p></details>
+      <details class="card p-4"><summary class="font-medium">Posso baixar a música alterada?</summary><p class="mt-2 text-sm text-muted-foreground">Sim. Depois de analisar a música e ajustar o tom no player, use o botão “Baixar áudio transposto”. Custa 30 créditos, o arquivo é gerado no seu navegador (MP3) e vale para uso pessoal, só em músicas que você tem direito de usar. Limite: músicas de até 10 minutos.</p></details>
       <details class="card p-4"><summary class="font-medium">Quando os créditos renovam?</summary><p class="mt-2 text-sm text-muted-foreground">No dia 1º de cada mês você volta a ter 100 créditos. Os que sobraram do mês anterior não acumulam.</p></details>
     </div>
   </section>
@@ -359,6 +415,10 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
       <li class="card p-4"><b>Tom de qualquer música:</b> envie um áudio e descubra o tom, inclusive quando ele muda no meio da música.</li>
       <li class="card p-4"><b>Ajuste para a sua voz:</b> suba ou desça a música de −6 a +6 semitons até caber na sua voz.</li>
       <li class="card p-4"><b>Sugestão de capotraste:</b> veja em qual casa colocar o capotraste para tocar com acordes mais fáceis.</li>
+      <li class="card p-4"><b>Seu tom ideal:</b> o site cruza a sua região confortável com o tom da música e sugere quanto subir ou descer.</li>
+      <li class="card p-4"><b>Cifra transposta:</b> cole a cifra e troque os acordes para o seu tom, com sugestão de capotraste.</li>
+      <li class="card p-4"><b>Relatório em PDF:</b> leve para o professor ou para o coral a sua extensão, região confortável e tipo vocal provável.</li>
+      <li class="card p-4"><b>Repertório salvo:</b> guarde cada música com o tom certo para você e volte quando precisar.</li>
     </ul>
     <p class="text-sm text-muted-foreground">Os áudios são processados no seu próprio navegador e não ficam guardados. <a href="sobre.html" class="link">Saiba mais sobre o Tom da Voz</a>.</p>
   </section>
@@ -853,6 +913,84 @@ function tdvPitchWorkletBody(){
   registerProcessor('tdv-pitch',TdvPitch);
 }
 
+/* ===== CIFRA (sem DOM; testado em Node) ===== */
+var NOTE_PC={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+var NAMES_SH=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+var NAMES_FL=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+var FLAT_ROOTS=[1,3,5,8,10];
+var CHORD_Q=/^(?:maj|min|dim|aug|sus|add|alt|m|M|º|°|ø|\+|-|\d|[#b♯♭]|\(|\)|,|\.|\/)*$/;
+var KEEP_TOK=/^(?:[|\\\/\-–—.:;%]+|\d+[xX][.:]?|[xX]\d+[.:]?|N\.?C\.?|\[[^\]]*\]|[A-Za-zÀ-ú0-9]+:|\([^)]*\)|(?:Intro|Solo|Refr[aã]o|Ponte|Final|Coro|Verso|Parte|Riff|Outro|Interl[uú]dio|Instrumental|Base|Pr[eé]|Tab):?)$/i;
+
+function parseNote(s){
+  var m=/^([A-G])([#b♯♭]?)$/.exec(s); if(!m) return -1;
+  var pc=NOTE_PC[m[1]];
+  if(m[2]==='#'||m[2]==='♯') pc++; else if(m[2]==='b'||m[2]==='♭') pc--;
+  return mod12(pc);
+}
+function parseChord(tok){
+  var m=/^([A-G][#b♯♭]?)(.*)$/.exec(tok); if(!m) return null;
+  var rest=m[2], bass=null, i=rest.lastIndexOf('/'), b;
+  if(i>=0){ b=rest.slice(i+1); if(/^[A-G][#b♯♭]?$/.test(b)){ bass=b; rest=rest.slice(0,i); } }
+  if(!CHORD_Q.test(rest)) return null;
+  return {root:m[1],rest:rest,bass:bass};
+}
+function shiftNote(name,semis,flats){ var pc=parseNote(name); if(pc<0) return name; return (flats?NAMES_FL:NAMES_SH)[mod12(pc+semis)]; }
+function shiftChord(core,semis,flats){
+  var c=parseChord(core); if(!c) return core;
+  return shiftNote(c.root,semis,flats)+c.rest+(c.bass?'/'+shiftNote(c.bass,semis,flats):'');
+}
+function tokenizeLine(line){ var re=/\[[^\]]*\]|\S+/g, out=[], m; while((m=re.exec(line))!==null) out.push({s:m[0],i:m.index}); return out; }
+function classifyTok(s){
+  var m=/^(\(*)(.*?)([),.;:]*)$/.exec(s), core=m?m[2]:'';
+  if(core&&parseChord(core)) return {type:'chord',lead:m[1],core:core,trail:m[3]};
+  if(KEEP_TOK.test(s)) return {type:'keep'};
+  return null;
+}
+function lineKind(line){
+  var toks=tokenizeLine(line), info=[], i, c, n=0;
+  if(!toks.length) return null;
+  for(i=0;i<toks.length;i++){ c=classifyTok(toks[i].s); if(!c) return null; if(c.type==='chord') n++; info.push(c); }
+  return n?{toks:toks,info:info}:null;
+}
+function transposeLine(line,semis,flats){
+  var k=lineKind(line); if(!k) return null;
+  var out='', i, t, c, nt;
+  for(i=0;i<k.toks.length;i++){
+    t=k.toks[i]; c=k.info[i];
+    nt=c.type==='chord'?c.lead+shiftChord(c.core,semis,flats)+c.trail:t.s;
+    if(out.length<t.i) out+=new Array(t.i-out.length+1).join(' ');
+    else if(out.length&&out.charAt(out.length-1)!==' ') out+=' ';
+    out+=nt;
+  }
+  return out;
+}
+function transposeText(text,semis,flats){
+  return text.replace(/\r\n?/g,'\n').split('\n').map(function(l){
+    var r=transposeLine(l,semis,flats);
+    return r==null?{t:l,chord:false}:{t:r,chord:true};
+  });
+}
+function chordCls(rest){ if(/^(?:dim|º|°|ø)/.test(rest)) return 2; if(/^(?:m(?!aj)|min)/.test(rest)) return 1; return 0; }
+function detectCifraKey(text){
+  var lines=text.replace(/\r\n?/g,'\n').split('\n'), ch=[], i, j, k, p;
+  for(i=0;i<lines.length;i++){
+    k=lineKind(lines[i]); if(!k) continue;
+    for(j=0;j<k.info.length;j++) if(k.info[j].type==='chord'){ p=parseChord(k.info[j].core); ch.push({pc:parseNote(p.root),cls:chordCls(p.rest)}); }
+  }
+  if(!ch.length) return null;
+  var DM=[[0,0],[2,1],[4,1],[5,0],[7,0],[9,1],[11,2]], DN=[[0,1],[2,2],[3,0],[5,1],[7,1],[7,0],[8,0],[10,0]], best=null, bs=-1, t, mi, set, sc, a, b;
+  for(mi=0;mi<2;mi++) for(t=0;t<12;t++){
+    set=mi?DN:DM; sc=0;
+    for(a=0;a<ch.length;a++) for(b=0;b<set.length;b++) if(mod12(t+set[b][0])===ch[a].pc&&set[b][1]===ch[a].cls){ sc++; break; }
+    if(ch[0].pc===t&&ch[0].cls===(mi?1:0)) sc+=2;
+    if(ch[ch.length-1].pc===t&&ch[ch.length-1].cls===(mi?1:0)) sc+=2;
+    if(sc>bs){ bs=sc; best={t:t,minor:mi===1}; }
+  }
+  return best;
+}
+function parseKeyName(s){ var m=/^([A-G][#b]?)(m?)$/.exec(s||''); if(!m) return null; return {t:parseNote(m[1]),minor:m[2]==='m'}; }
+/* ===== FIM CIFRA ===== */
+
 var CFG=window.TDV_CONFIG||{};
 var $=function(id){ return document.getElementById(id); };
 function el(t,c,x){ var e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e; }
@@ -903,8 +1041,8 @@ document.addEventListener('click',function(e){
    ============================================================ */
 function periodSP(){ return new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}).slice(0,7); }
 function nextResetSP(){ var p=periodSP().split('-'), y=+p[0], m=+p[1]; return new Date(Date.UTC(m===12?y+1:y,m%12,1)).toISOString().slice(0,10); }
-var COSTS={voice:10,music:20}, MONTHLY=100;
-function stateOf(bal){ return {balance:bal,monthly:MONTHLY,voice_cost:COSTS.voice,music_cost:COSTS.music,resets_on:nextResetSP()}; }
+var COSTS={voice:10,music:20,download:30}, MONTHLY=100;
+function stateOf(bal){ return {balance:bal,monthly:MONTHLY,voice_cost:COSTS.voice,music_cost:COSTS.music,download_cost:COSTS.download,resets_on:nextResetSP()}; }
 
 var Demo={
   mode:'demo',
@@ -926,6 +1064,10 @@ var Demo={
   fail:function(id){ var s=this.load(); if(s.jobs[id]){ s.balance+=s.jobs[id]; delete s.jobs[id]; store.set(this.key(),s); } return Promise.resolve(stateOf(s.balance)); },
   history:function(){ return Promise.resolve(this.load().hist); },
   clearHistory:function(){ var s=this.load(); s.hist=[]; store.set(this.key(),s); return Promise.resolve(); },
+  repList:function(){ return Promise.resolve((this.load().rep||[]).slice()); },
+  repAdd:function(row){ var s=this.load(); s.rep=s.rep||[]; var id='r'+Date.now()+Math.random().toString(36).slice(2,6);
+    s.rep.unshift(Object.assign({id:id,created_at:new Date().toISOString()},row)); s.rep=s.rep.slice(0,200); store.set(this.key(),s); return Promise.resolve(); },
+  repDel:function(id){ var s=this.load(); s.rep=(s.rep||[]).filter(function(x){ return x.id!==id; }); store.set(this.key(),s); return Promise.resolve(); },
   deleteAccount:function(){ store.del(this.key()); store.del('tdv_user'); return Promise.resolve(); }
 };
 
@@ -954,7 +1096,10 @@ var SB={
   fail:function(id){ return this.rpc('fail_analysis',{p_job:id}); },
   history:function(){ return this.sb.from('history').select('kind,title,detail,created_at').order('created_at',{ascending:false}).limit(50).then(function(r){ if(r.error) throw r.error; return r.data; }); },
   clearHistory:function(){ return this.sb.from('history').delete().gte('created_at','1970-01-01').then(function(r){ if(r.error) throw r.error; }); },
-  deleteAccount:function(){ var self=this; return this.rpc('delete_my_account').then(function(){ return self.sb.auth.signOut(); }); }
+  deleteAccount:function(){ var self=this; return this.rpc('delete_my_account').then(function(){ return self.sb.auth.signOut(); }); },
+  repList:function(){ return this.sb.from('repertorio').select('id,titulo,tom_original,tom_ideal,semitons,detalhe,created_at').order('created_at',{ascending:false}).limit(200).then(function(r){ if(r.error) throw r.error; return r.data; }); },
+  repAdd:function(row){ return this.sb.from('repertorio').insert(row).then(function(r){ if(r.error) throw r.error; }); },
+  repDel:function(id){ return this.sb.from('repertorio').delete().eq('id',id).then(function(r){ if(r.error) throw r.error; }); }
 };
 var B=(CFG.SUPABASE_URL&&CFG.SUPABASE_KEY)?SB:Demo;
 
@@ -1012,7 +1157,7 @@ $('f-mail').addEventListener('submit',function(e){
 function renderUser(){
   var u=S.user;
   $('b-login').textContent=u?'Sair ('+u.name.split(' ')[0]+')':'Entrar';
-  $('n-hist').hidden=!u; $('historico').hidden=!u; $('credit-pill').hidden=!u;
+  $('n-hist').hidden=!u; $('historico').hidden=!u; $('credit-pill').hidden=!u; $('n-rep').hidden=!u; $('repertorio').hidden=!u;
   renderCredits();
 }
 function renderCredits(){
@@ -1022,21 +1167,22 @@ function renderCredits(){
   $('credit-text').textContent=c.balance+' de '+c.monthly+' créditos · renovam em '+ptDate(c.resets_on);
   $('usage-bar').style.width=Math.max(0,Math.min(100,c.balance/c.monthly*100))+'%';
   $('credit-pill').textContent=c.balance+' créditos';
-  COSTS.voice=c.voice_cost||COSTS.voice; COSTS.music=c.music_cost||COSTS.music;
+  COSTS.voice=c.voice_cost||COSTS.voice; COSTS.music=c.music_cost||COSTS.music; COSTS.download=c.download_cost||COSTS.download;
+  $('p-dl').textContent='Baixar áudio transposto ('+COSTS.download+' créditos)';
 }
 function refreshCredits(){
   return B.credits().then(function(c){ S.credits=c; renderCredits(); return c; });
 }
 function afterAuth(){
   S.user=B.user(); renderUser();
-  if(S.user){ refreshCredits().catch(function(){}); loadHistory(); }
+  if(S.user){ refreshCredits().catch(function(){}); loadHistory(); loadRep(); } else { S.rep=null; }
   renderCompare();
 }
 
 /* ---------- cobrança ---------- */
 function showInsufficient(kind,c){
   c=c||S.credits||{};
-  $('limit-msg').textContent='Você tem '+(c.balance!=null?c.balance:0)+' créditos e esta análise custa '+COSTS[kind]+'. Os créditos renovam em '+(c.resets_on?ptDate(c.resets_on):'1º do próximo mês')+'.';
+  $('limit-msg').textContent='Você tem '+(c.balance!=null?c.balance:0)+' créditos e '+(kind==='download'?'o download custa ':'esta análise custa ')+COSTS[kind]+'. Os créditos renovam em '+(c.resets_on?ptDate(c.resets_on):'1º do próximo mês')+'.';
   $('dlg-limit').showModal();
 }
 function guard(kind){
@@ -1085,7 +1231,7 @@ var R={res:{lo:48,hi:69,clo:52,chi:64,type:'Barítono',level:'alta'},example:tru
 
 function renderRange(){
   var r=R.res; $('badge2').hidden=!R.example;
-  $('v-type').textContent=r.type;
+  $('v-type').textContent=r.type; $('b-pdf').hidden=R.example;
   $('r-sum').textContent='Você alcançou de '+noteName(r.lo)+' a '+noteName(r.hi)+', e canta com mais conforto de '+noteName(r.clo)+' a '+noteName(r.chi)+'.';
   var rc=$('r-conf'); rc.textContent=R.example?'':(r.level==='baixa'?qualityHint(r.quality):'Confiança '+r.level); rc.className='text-sm '+(r.level==='baixa'?'text-mark':'text-muted-foreground');
   $('p-lo').textContent='Ouvir a mais grave ('+noteName(r.lo)+')';
@@ -1323,6 +1469,7 @@ function renderChanges(){
 
 /* comparação com a voz */
 function renderCompare(){
+  renderIdeal(); $('c-player').hidden=!M;
   var box=$('p-cmp'); if(!box) return; box.textContent='';
   if(!M||M.res==null){ box.hidden=true; return; }
   var cur=curKey(), curRoot=majRoot(cur.t,cur.minor), lines=[];
@@ -1330,10 +1477,6 @@ function renderCompare(){
     var vk=K.opts[K.sel], d=shortestDiff(curRoot,majRoot(vk.t,vk.minor));
     lines.push(d===0?'O tom da música ('+keyShort(cur.t,cur.minor)+') é o mesmo que você cantou ('+keyShort(vk.t,vk.minor)+').':
       'Você cantou em '+keyShort(vk.t,vk.minor)+' e a música está em '+keyShort(cur.t,cur.minor)+': a música está '+Math.abs(d)+(Math.abs(d)===1?' semitom ':' semitons ')+(d>0?'abaixo':'acima')+' do seu tom. Para igualar, '+(d>0?'suba ':'desça ')+Math.abs(d)+'.');
-  }
-  if(!R.example){
-    var ideal=idealRoot(R.res), d2=shortestDiff(curRoot,ideal);
-    lines.push('Pela sua região confortável ('+noteName(R.res.clo)+' a '+noteName(R.res.chi)+'), um tom aproximado para cantar é '+keyShort(ideal,false)+'. '+(Math.abs(d2)<=1?'A música já está perto disso.':'A música está '+Math.abs(d2)+' semitons '+(d2>0?'abaixo':'acima')+' desse tom (estimativa aproximada).'));
   }
   if(!lines.length){ box.hidden=true; return; }
   box.appendChild(el('div','font-medium','Comparação com a sua voz'));
@@ -1426,6 +1569,348 @@ $('p-reset').addEventListener('click',function(){ setSemis(0); });
 $('p-chord').addEventListener('click',function(){ var c=curKey(); playKey(c.t,c.minor); });
 
 /* ============================================================
+   RECURSOS EXTRAS: tom ideal, PDF, download, cifra e repertório
+   ============================================================ */
+var libs={}, MAX_DL_SEC=600, DL_LAT=4096;
+function loadScript(src){ return new Promise(function(res,rej){ var sc=document.createElement('script'); sc.src=src; sc.onload=res; sc.onerror=function(){ rej(new Error('load')); }; document.head.appendChild(sc); }); }
+function lib(name,src,test){
+  if(test()) return Promise.resolve();
+  if(!libs[name]){ var p=loadScript(src).then(function(){ if(!test()) throw new Error(name); }); libs[name]=p; p.catch(function(){ libs[name]=null; }); }
+  return libs[name];
+}
+function localMsg(id,t,err){ var e=$(id); if(!e) return; e.textContent=t||''; e.className='text-sm '+(err?'text-mark':'text-muted-foreground'); }
+function signed(n){ return n===0?'0':(n>0?'+':'−')+Math.abs(n); }
+function safeName(n){ return String(n).replace(/[\\\/:*?"<>|]+/g,'-').replace(/\s+/g,' ').trim().slice(0,100)||'musica'; }
+function saveBlob(blob,name){
+  var u=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(u); },60000);
+}
+
+/* ---------- Seu tom ideal ---------- */
+function idealInfo(){
+  if(!M) return null;
+  var ref=null, src='';
+  if(!R.example&&R.res){ ref=R.res; src='a sua região confortável ('+noteName(R.res.clo)+' a '+noteName(R.res.chi)+')'; }
+  else if(!K.example&&K.res){ ref=K.res; src='a faixa que você cantou ('+noteName(K.res.lo)+' a '+noteName(K.res.hi)+')'; }
+  if(!ref) return {need:true};
+  var k=mKey(), d=shortestDiff(majRoot(k.t,k.minor),idealRoot(ref));
+  return {d:d,key:{t:mod12(k.t+d),minor:k.minor},orig:k,src:src};
+}
+function goSemis(n){
+  if(n!==0&&!P.node){
+    setupWorklet().then(function(ok){
+      if(!ok) setStatus('Seu navegador não permite ajustar o tom aqui. Use um Chrome, Edge, Firefox ou Safari atualizado.',true);
+      else setSemis(n);
+    });
+  } else setSemis(n);
+}
+function renderIdeal(){
+  var box=$('p-ideal'); if(!box) return;
+  if(!M){ box.hidden=true; return; }
+  var inf=idealInfo(); box.hidden=false; box.textContent='';
+  box.appendChild(el('h4','font-semibold','Seu tom ideal'));
+  if(inf.need){
+    box.appendChild(el('p','text-sm text-muted-foreground','Descubra a sua voz (extensão vocal ou tom da melodia) e o site cruza a sua região confortável com o tom desta música, sugerindo quanto subir ou descer.'));
+    var gb=el('button','btn btn-o h-9 self-start px-3','Ir para "Sua voz"'); gb.type='button';
+    gb.addEventListener('click',function(){ $('h-voz').scrollIntoView({behavior:'smooth',block:'start'}); });
+    box.appendChild(gb); return;
+  }
+  var p=el('p','text-sm');
+  if(inf.d===0){
+    p.appendChild(el('strong',null,keyShort(inf.key.t,inf.key.minor)));
+    p.appendChild(document.createTextNode(' já é um bom tom para a sua voz. Não precisa ajustar.'));
+  } else {
+    var n=Math.abs(inf.d);
+    p.appendChild(document.createTextNode('Para cantar com conforto, o tom sugerido é '));
+    p.appendChild(el('strong',null,keyShort(inf.key.t,inf.key.minor)+' ('+keyPT(inf.key.t,inf.key.minor)+')'));
+    p.appendChild(document.createTextNode(': '+n+(n===1?' semitom ':' semitons ')+(inf.d>0?'acima':'abaixo')+' do tom original ('+keyShort(inf.orig.t,inf.orig.minor)+').'));
+  }
+  box.appendChild(p);
+  box.appendChild(el('p','text-xs text-muted-foreground','Baseado em '+inf.src+' e no tom da música. É uma estimativa aproximada: confira ouvindo.'));
+  if(Math.abs(inf.d)>4) box.appendChild(el('p','text-xs text-mark','Mudanças acima de ±4 semitons podem prejudicar a qualidade do áudio.'));
+  if(inf.d!==0){
+    var ab=el('button','btn btn-p h-9 self-start px-3',P.semis===inf.d?'Já aplicado no player':'Aplicar '+signed(inf.d)+' no player');
+    ab.type='button'; ab.disabled=P.semis===inf.d;
+    ab.addEventListener('click',function(){ goSemis(inf.d); });
+    box.appendChild(ab);
+  }
+}
+
+/* ---------- relatório em PDF ---------- */
+function buildPdf(){
+  var J=window.jspdf.jsPDF, d=new J({unit:'mm',format:'a4'}), r=R.res, ML=18, PW=210, CW=PW-2*ML, y, m, pc, fill;
+  d.setFillColor(14,18,48); d.rect(0,0,PW,30,'F');
+  d.setTextColor(255,255,255); d.setFont('helvetica','bold'); d.setFontSize(20); d.text('Tom da Voz',ML,14);
+  d.setFont('helvetica','normal'); d.setFontSize(11); d.setTextColor(180,200,230); d.text('Relatório da voz',ML,22);
+  y=42;
+  var who=(S.user&&S.user.name)?S.user.name:'', dt=new Date().toLocaleDateString('pt-BR');
+  d.setTextColor(90,100,120); d.setFontSize(10); d.text((who?who+'  -  ':'')+dt,ML,y); y+=14;
+  d.setFontSize(9); d.text('TIPO VOCAL PROVÁVEL',ML,y); y+=10;
+  d.setTextColor(31,101,84); d.setFont('helvetica','bold'); d.setFontSize(28); d.text(r.type,ML,y); y+=8;
+  d.setFont('helvetica','normal'); d.setFontSize(9); d.setTextColor(110,120,140);
+  var nt=d.splitTextToSize('Classificação aproximada, feita a partir do centro da sua extensão. Serve como referência e não substitui a avaliação de um professor de canto.',CW);
+  d.text(nt,ML,y); y+=nt.length*4+8;
+  var n=Math.round(r.hi)-Math.round(r.lo), ir=idealRoot(r);
+  var rows=[
+    ['Extensão alcançada',noteName(r.lo)+' a '+noteName(r.hi)+'  ('+n+' semitons, cerca de '+(n/12).toFixed(1).replace('.',',')+' oitavas)'],
+    ['Região confortável',noteName(r.clo)+' a '+noteName(r.chi)],
+    ['Confiança da medição',r.level],
+    ['Tom aproximado para cantar',keyShort(ir,false)+' (maior) ou '+keyShort(mod12(ir+9),true)+' (menor)']
+  ];
+  if(!K.example&&K.res){ var kc=K.opts[K.sel]; rows.push(['Tom da melodia cantada',keyShort(kc.t,kc.minor)+(kc.minor?' (menor)':' (maior)')]); }
+  rows.forEach(function(rw){
+    d.setFont('helvetica','bold'); d.setFontSize(10); d.setTextColor(40,50,70); d.text(rw[0],ML,y);
+    d.setFont('helvetica','normal'); d.text(rw[1],ML+60,y); y+=8;
+  });
+  y+=6; d.setFont('helvetica','bold'); d.setFontSize(12); d.setTextColor(40,50,70); d.text('Seu teclado',ML,y); y+=6;
+  var lo=Math.round(r.lo), hi=Math.round(r.hi), cl=Math.round(r.clo), chh=Math.round(r.chi), total=0, idx=0, kh=28, bh=17, yt=y, ww, bw, x;
+  for(m=LO;m<=HI;m++) if(SC_MAJ.indexOf(mod12(m))>=0) total++;
+  ww=CW/total; bw=ww*.62; d.setLineWidth(.2); d.setDrawColor(150,170,160);
+  for(m=LO;m<=HI;m++){
+    pc=mod12(m); if(SC_MAJ.indexOf(pc)<0) continue; x=ML+idx*ww;
+    fill=(m>=cl&&m<=chh)?[95,212,176]:(m>=lo&&m<=hi?[63,154,130]:[213,224,218]);
+    d.setFillColor(fill[0],fill[1],fill[2]); d.rect(x,yt,ww,kh,'FD');
+    if(m===lo||m===hi){ d.setFillColor(240,160,60); d.circle(x+ww/2,yt+kh-5,1.4,'F'); }
+    if(pc===0){ d.setFont('helvetica','normal'); d.setFontSize(7); d.setTextColor(90,100,120); d.text(noteName(m),x+ww/2,yt+kh+4,{align:'center'}); }
+    idx++;
+  }
+  idx=0;
+  for(m=LO;m<=HI;m++){
+    pc=mod12(m); if(SC_MAJ.indexOf(pc)>=0){ idx++; continue; }
+    x=ML+idx*ww-bw/2;
+    fill=(m>=cl&&m<=chh)?[47,143,119]:(m>=lo&&m<=hi?[31,101,84]:[10,15,13]);
+    d.setFillColor(fill[0],fill[1],fill[2]); d.rect(x,yt,bw,bh,'F');
+    if(m===lo||m===hi){ d.setFillColor(240,160,60); d.circle(x+bw/2,yt+bh-3,1.2,'F'); }
+  }
+  y=yt+kh+12;
+  var lg=[[[63,154,130],'Extensão alcançada'],[[95,212,176],'Faixa confortável'],[[240,160,60],'Nota mais grave e mais aguda']], lx=ML;
+  lg.forEach(function(it){
+    d.setFillColor(it[0][0],it[0][1],it[0][2]); d.rect(lx,y-3,3.5,3.5,'F');
+    d.setFont('helvetica','normal'); d.setFontSize(8); d.setTextColor(90,100,120); d.text(it[1],lx+5.5,y);
+    lx+=d.getTextWidth(it[1])+14;
+  });
+  d.setFontSize(8); d.setTextColor(120,130,150);
+  var ft=d.splitTextToSize('Gerado em tomdavoz.com.br. Os áudios são analisados no seu navegador e não são enviados nem guardados. Os resultados são estimativas aproximadas.',CW);
+  d.text(ft,ML,282);
+  d.save('relatorio-da-voz.pdf');
+}
+$('b-pdf').addEventListener('click',function(){
+  if(R.example){ localMsg('pdf-msg','Faça primeiro a análise da sua extensão vocal.',true); return; }
+  localMsg('pdf-msg','Gerando o PDF...');
+  lib('jspdf','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',function(){ return !!(window.jspdf&&window.jspdf.jsPDF); })
+    .then(function(){ buildPdf(); localMsg('pdf-msg','Relatório gerado.'); })
+    .catch(function(){ localMsg('pdf-msg','Não consegui gerar o PDF agora. Confira a internet e tente de novo.',true); });
+});
+
+/* ---------- repertório ---------- */
+function loadRep(){
+  if(!S.user) return;
+  B.repList().then(function(l){ S.rep=l; renderRep(false); },function(){ S.rep=null; renderRep(true); });
+}
+function renderRep(err){
+  var ul=$('rep-list'); ul.textContent='';
+  if(err){ ul.appendChild(el('li','py-3 text-sm text-muted-foreground','Não consegui carregar o repertório agora. Tente recarregar a página.')); return; }
+  var list=S.rep||[];
+  if(!list.length){ ul.appendChild(el('li','py-3 text-sm text-muted-foreground','Nenhuma música salva ainda. Use "Salvar no repertório" no player ou na cifra.')); return; }
+  list.forEach(function(r){
+    var li=el('li','flex flex-wrap items-center justify-between gap-3 py-3'), l=el('div','min-w-0 flex-1'), n=+r.semitons||0;
+    l.appendChild(el('div','truncate font-medium',r.titulo));
+    l.appendChild(el('div','text-sm text-muted-foreground','Original: '+r.tom_original+' · Para cantar: '+r.tom_ideal+(n?' ('+signed(n)+' semitons)':' (sem ajuste)')+(r.detalhe?' · '+r.detalhe:'')));
+    var bx=el('div','flex gap-1'), b1=el('button','btn btn-g','Abrir na cifra'), b2=el('button','btn btn-g text-muted-foreground','Remover');
+    b1.type='button'; b2.type='button';
+    b1.addEventListener('click',function(){ openInCifra(r); });
+    b2.addEventListener('click',function(){
+      if(!confirm('Remover "'+r.titulo+'" do repertório?')) return;
+      B.repDel(r.id).then(loadRep,function(){ setStatus('Não consegui remover agora.',true); });
+    });
+    bx.appendChild(b1); bx.appendChild(b2); li.appendChild(l); li.appendChild(bx); ul.appendChild(li);
+  });
+}
+function addRep(row,msgId){
+  if(!S.user){ openLogin('Entre para salvar músicas no seu repertório.'); return; }
+  var list=S.rep||[], dup=null, i;
+  for(i=0;i<list.length;i++) if(String(list[i].titulo).toLowerCase()===row.titulo.toLowerCase()){ dup=list[i]; break; }
+  if(!dup&&list.length>=200){ localMsg(msgId,'Seu repertório chegou a 200 músicas. Remova alguma para salvar outra.',true); return; }
+  localMsg(msgId,'Salvando...');
+  var go=function(){ return B.repAdd(row); };
+  (dup?B.repDel(dup.id).then(go):go()).then(function(){
+    localMsg(msgId,dup?'Atualizado no seu repertório.':'Salvo no seu repertório.'); loadRep();
+  },function(){ localMsg(msgId,'Não consegui salvar agora. Tente de novo em instantes.',true); });
+}
+$('p-save').addEventListener('click',function(){
+  if(!M) return;
+  var k=mKey(), c=curKey(), name=M.name.replace(/\.[^.]+$/,'');
+  addRep({titulo:name.slice(0,120),tom_original:keyShort(k.t,k.minor),tom_ideal:keyShort(c.t,c.minor),semitons:P.semis,detalhe:'Pela análise da música'},'p-msg');
+});
+
+/* ---------- download do áudio transposto ---------- */
+function renderShifted(buf,semis){
+  var OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+  if(!OAC||typeof AudioWorkletNode==='undefined') return Promise.reject(new Error('nosupport'));
+  var n=buf.length, oc=new OAC(2,n+DL_LAT+4096,buf.sampleRate);
+  if(!oc.audioWorklet) return Promise.reject(new Error('nosupport'));
+  return oc.audioWorklet.addModule(workletURL()).then(function(){
+    var node=new AudioWorkletNode(oc,'tdv-pitch',{numberOfInputs:1,numberOfOutputs:1,outputChannelCounts:[2],channelCount:2,channelCountMode:'explicit',channelInterpretation:'speakers',processorOptions:{osamp:4}});
+    node.parameters.get('pitch').value=semis;
+    var src=oc.createBufferSource(); src.buffer=buf; src.connect(node); node.connect(oc.destination); src.start(0);
+    return oc.startRendering();
+  }).then(function(rb){
+    var nc=buf.numberOfChannels>1?2:1, chs=[], c, i, pk=0, v, g;
+    for(c=0;c<nc;c++) chs.push(rb.getChannelData(c).slice(DL_LAT,DL_LAT+n));
+    for(c=0;c<nc;c++) for(i=0;i<n;i++){ v=Math.abs(chs[c][i]); if(v>pk) pk=v; }
+    if(pk>.98){ g=.98/pk; for(c=0;c<nc;c++) for(i=0;i<n;i++) chs[c][i]*=g; }
+    return {chs:chs,sr:buf.sampleRate};
+  });
+}
+function toI16(f){ var o=new Int16Array(f.length), i, v; for(i=0;i<f.length;i++){ v=f[i]; v=v<-1?-1:(v>1?1:v); o[i]=v<0?v*32768:v*32767; } return o; }
+function wavBlob(chs,sr){
+  var n=chs[0].length, nc=chs.length, bytes=44+n*nc*2, ab=new ArrayBuffer(bytes), v=new DataView(ab), i, c, o=44, x;
+  function w(t,off){ for(var k=0;k<t.length;k++) v.setUint8(off+k,t.charCodeAt(k)); }
+  w('RIFF',0); v.setUint32(4,bytes-8,true); w('WAVE',8); w('fmt ',12); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,nc,true);
+  v.setUint32(24,sr,true); v.setUint32(28,sr*nc*2,true); v.setUint16(32,nc*2,true); v.setUint16(34,16,true); w('data',36); v.setUint32(40,n*nc*2,true);
+  for(i=0;i<n;i++) for(c=0;c<nc;c++){ x=Math.max(-1,Math.min(1,chs[c][i])); v.setInt16(o,x<0?x*32768:x*32767,true); o+=2; }
+  return new Blob([ab],{type:'audio/wav'});
+}
+function encodeMp3(chs,sr){
+  return lib('lame','https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js',function(){ return !!window.lamejs; }).then(function(){
+    var nc=chs.length, enc=new window.lamejs.Mp3Encoder(nc,sr,192), out=[], blk=1152*8, i=0, n=chs[0].length, l16=toI16(chs[0]), r16=nc>1?toI16(chs[1]):null;
+    return new Promise(function(res,rej){
+      (function step(){
+        try{
+          var end=Math.min(n,i+blk*20), e, b;
+          for(;i<end;i+=blk){
+            e=Math.min(n,i+blk);
+            b=nc>1?enc.encodeBuffer(l16.subarray(i,e),r16.subarray(i,e)):enc.encodeBuffer(l16.subarray(i,e));
+            if(b.length) out.push(b);
+          }
+          if(i<n){ setTimeout(step,0); return; }
+          var f=enc.flush(); if(f.length) out.push(f);
+          res(new Blob(out,{type:'audio/mpeg'}));
+        }catch(err){ rej(err); }
+      })();
+    });
+  });
+}
+function downloadShifted(){
+  if(!M||!P.buf||S.busy) return;
+  if(P.semis===0){ localMsg('p-msg','Primeiro ajuste o tom da música no controle acima. Com o tom original, não há o que baixar.',true); return; }
+  if(P.buf.duration>MAX_DL_SEC){ localMsg('p-msg','Para baixar, a música precisa ter até 10 minutos.',true); return; }
+  guard('download').then(function(ok){
+    if(!ok) return;
+    var semis=P.semis, buf=P.buf, c=curKey(), base=M.name.replace(/\.[^.]+$/,'');
+    setBusy(true); pausePlayback();
+    localMsg('p-msg','Gerando o áudio com o novo tom. Pode levar de 1 a 3 minutos. Não feche a página.');
+    return renderShifted(buf,semis).then(function(r){
+      localMsg('p-msg','Convertendo o arquivo...');
+      return encodeMp3(r.chs,r.sr).then(function(b){ return {blob:b,ext:'mp3'}; },function(){ return {blob:wavBlob(r.chs,r.sr),ext:'wav'}; });
+    }).then(function(f){
+      var title='Download: tom '+keyShort(c.t,c.minor)+' ('+signed(semis)+')';
+      return charge('download','download',title,(base.length>60?base.slice(0,57)+'...':base)+' · '+signed(semis)+' semitons').then(function(done){
+        if(!done){ localMsg('p-msg','Não concluí o download. Se apareceu um aviso de créditos, nada foi descontado.',true); return; }
+        saveBlob(f.blob,safeName(base+' - tom '+keyShort(c.t,c.minor))+'.'+f.ext);
+        localMsg('p-msg','Pronto! O arquivo foi baixado ('+f.ext.toUpperCase()+').');
+      });
+    },function(e){
+      localMsg('p-msg',e&&e.message==='nosupport'?'Seu navegador não permite gerar o áudio aqui. Use um Chrome, Edge ou Firefox atualizado. Nada foi descontado.':'Não consegui gerar o áudio agora. Nada foi descontado.',true);
+    });
+  }).catch(function(){ localMsg('p-msg','Algo deu errado. Nada foi descontado.',true); }).then(function(){ setBusy(false); });
+}
+$('p-dl').addEventListener('click',downloadShifted);
+
+/* ---------- cifra transposta ---------- */
+var C={key:null,sig:null,text:''};
+function buildCifraSelects(){
+  var s=$('c-orig'), o=el('option',null,'Detectar pelos acordes'); o.value='auto'; s.appendChild(o);
+  [false,true].forEach(function(mi){ for(var t=0;t<12;t++){ var op=el('option',null,keyShort(t,mi)+' · '+keyPT(t,mi)); op.value=t+'-'+(mi?1:0); s.appendChild(op); } });
+  var cp=$('c-capo'); for(var i=0;i<=7;i++){ var op2=el('option',null,i===0?'Sem capotraste':'Casa '+i); op2.value=i; cp.appendChild(op2); }
+}
+function rebuildDest(k){
+  var sig=k?k.t+'-'+(k.minor?1:0):'x', d=$('c-dest');
+  if(sig===C.sig) return;
+  C.sig=sig; var keep=d.value||'0'; d.textContent='';
+  for(var st=0;st<12;st++){
+    var sd=shortestDiff(0,st), tail=st===0?'sem alteração':signed(sd)+' semitons';
+    var op=el('option',null,k?keyShort(mod12(k.t+st),k.minor)+' ('+tail+')':(st===0?'Sem alteração':signed(sd)+' semitons')); op.value=st; d.appendChild(op);
+  }
+  d.value=keep;
+}
+function renderCifra(){
+  var txt=$('c-in').value, ov=$('c-orig').value, k=null, p;
+  if(ov==='auto'){ k=txt.trim()?detectCifraKey(txt):null; } else { p=ov.split('-'); k={t:+p[0],minor:p[1]==='1'}; }
+  C.key=k; rebuildDest(k);
+  var semis=+$('c-dest').value||0, capo=+$('c-capo').value||0, ss=shortestDiff(0,semis);
+  var info=$('c-info'), out=$('c-out'), sug=$('c-capo-sug');
+  out.textContent=''; sug.textContent=''; C.text='';
+  $('c-copy').disabled=true; $('c-txt').disabled=true;
+  if(!txt.trim()){ out.hidden=true; sug.hidden=true; info.textContent='Cole a cifra acima para começar.'; return; }
+  var destKey=k?{t:mod12(k.t+semis),minor:k.minor}:null;
+  var flats=destKey?FLAT_ROOTS.indexOf(majRoot(mod12(destKey.t-capo),destKey.minor))>=0:/(^|\s)[A-G]b(?![a-z])/m.test(txt);
+  var lines=transposeText(txt,mod12(semis-capo),flats), nCh=lines.filter(function(l){ return l.chord; }).length;
+  if(!nCh){ out.hidden=true; sug.hidden=true; info.textContent='Não encontrei acordes. Cole a cifra com os acordes escritos em letras (C, Dm, G7...).'; return; }
+  var head='';
+  if(semis!==0||capo!==0){
+    var parts=[];
+    if(k) parts.push('Tom: '+keyShort(destKey.t,destKey.minor)+(semis!==0?' ('+signed(ss)+' semitons)':'')); else parts.push('Transposta '+signed(ss)+' semitons');
+    if(capo) parts.push('Capotraste na casa '+capo+(k?' (toque as formas de '+keyShort(mod12(destKey.t-capo),destKey.minor)+')':''));
+    head=parts.join(' | ');
+  }
+  var body=lines.map(function(l){ return l.t; }).join('\n');
+  C.text=head?head+'\n\n'+body:body;
+  if(head){ out.appendChild(el('div','text-muted-foreground',head)); out.appendChild(el('div',null,' ')); }
+  lines.forEach(function(l){ out.appendChild(el('div',l.chord?'ch':null,l.t===''?' ':l.t)); });
+  out.hidden=false; $('c-copy').disabled=false; $('c-txt').disabled=false;
+  info.textContent=(k?(ov==='auto'?'Tom original detectado: ':'Tom original: ')+keyShort(k.t,k.minor)+' ('+keyPT(k.t,k.minor)+'). '+(ov==='auto'?'Se estiver errado, escolha o tom original acima. ':''):'')+'Linhas de acordes transpostas: '+nCh+'.';
+  var caps=k?capoOptions(destKey.t,destKey.minor):[];
+  sug.hidden=!caps.length;
+  if(caps.length){
+    sug.appendChild(el('span','lbl','Capotraste fácil:'));
+    caps.forEach(function(o){
+      var b=el('button','chip',o.fret===0?'Sem capotraste ('+keyShort(o.shape,destKey.minor)+')':'Casa '+o.fret+' · formas de '+keyShort(o.shape,destKey.minor));
+      b.type='button'; b.setAttribute('aria-pressed',capo===o.fret);
+      b.addEventListener('click',function(){ $('c-capo').value=o.fret; renderCifra(); });
+      sug.appendChild(b);
+    });
+  }
+}
+function openInCifra(r){
+  var k=parseKeyName(r.tom_original);
+  if(k) $('c-orig').value=k.t+'-'+(k.minor?1:0);
+  $('c-dest').value=String(mod12(+r.semitons||0)); $('c-title').value=r.titulo; C.sig=null;
+  renderCifra(); $('r-cifra').scrollIntoView({behavior:'smooth',block:'start'}); $('c-in').focus();
+}
+buildCifraSelects();
+$('c-in').addEventListener('input',renderCifra);
+['c-orig','c-dest','c-capo'].forEach(function(id){ $(id).addEventListener('change',renderCifra); });
+$('c-copy').addEventListener('click',function(){
+  var t=C.text; if(!t) return;
+  var ok=function(){ localMsg('c-msg','Copiado.'); }, bad=function(){ localMsg('c-msg','Não consegui copiar. Selecione o texto e copie manualmente.',true); };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,bad);
+  else {
+    try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); var done=document.execCommand('copy'); ta.remove(); done?ok():bad(); }catch(e){ bad(); }
+  }
+});
+$('c-txt').addEventListener('click',function(){
+  if(!C.text) return;
+  var title=$('c-title').value.trim()||'cifra';
+  saveBlob(new Blob([C.text],{type:'text/plain;charset=utf-8'}),safeName(title)+' - transposta.txt');
+});
+$('c-player').addEventListener('click',function(){
+  if(!M) return;
+  var k=mKey(); $('c-orig').value=k.t+'-'+(k.minor?1:0); $('c-dest').value=String(mod12(P.semis));
+  if(!$('c-title').value) $('c-title').value=M.name.replace(/\.[^.]+$/,'').slice(0,120);
+  C.sig=null; renderCifra(); $('r-cifra').scrollIntoView({behavior:'smooth',block:'start'});
+});
+$('c-save').addEventListener('click',function(){
+  var title=$('c-title').value.trim();
+  if(!title){ localMsg('c-msg','Digite o nome da música para salvar no repertório.',true); return; }
+  if(!C.key){ localMsg('c-msg','Escolha o tom original para salvar no repertório.',true); return; }
+  var semis=+$('c-dest').value||0, dk={t:mod12(C.key.t+semis),minor:C.key.minor};
+  addRep({titulo:title.slice(0,120),tom_original:keyShort(C.key.t,C.key.minor),tom_ideal:keyShort(dk.t,dk.minor),semitons:shortestDiff(0,semis),detalhe:'Pela cifra'},'c-msg');
+});
+renderCifra();
+
+/* ============================================================
    ANÚNCIOS E COOKIES
    ============================================================ */
 function loadAds(mode){
@@ -1467,18 +1952,20 @@ var LEGAL={
  '<ul>'+
    '<li><b>Estimativa do tom e alcance da voz:</b> Análise da frequência e das notas produzidas pelo usuário para identificar sua tessitura vocal e extensão estimada;</li>'+
    '<li><b>Análise do tom de músicas:</b> Identificação estimada do tom de arquivos de áudio para fins de prática musical;</li>'+
-   '<li><b>Ajuste e transposição de tonalidade:</b> Ferramentas de manipulação de áudio diretamente no navegador para adequar músicas à tonalidade mais confortável para a extensão vocal do usuário.</li>'+
+   '<li><b>Ajuste e transposição de tonalidade:</b> Ferramentas de manipulação de áudio diretamente no navegador para adequar músicas à tonalidade mais confortável para a extensão vocal do usuário;</li>'+
+   '<li><b>Tom ideal, cifra transposta e relatório:</b> Sugestão de tom a partir da extensão vocal estimada, transposição de cifras coladas pelo usuário (processada no navegador) e relatório em PDF gerado no navegador;</li>'+
+   '<li><b>Download e repertório:</b> Geração, no navegador, de uma cópia da música com o tom alterado, e repertório de músicas salvas pelo usuário em sua conta.</li>'+
  '</ul>'+
  '<p>O serviço é disponibilizado na modalidade de software baseado em navegador (SaaS) e é operado e mantido por <b>{{CONTROLADOR}}</b>, estabelecido em <b>{{CIDADE}}</b>.</p>'+
  '<p>Ao utilizar a plataforma, o usuário declara estar ciente de que o serviço se destina exclusivamente a fins recreativos, educacionais e de auxílio na prática musical informal.</p>'+
 
  '<h3>2. Estimativas</h3><p>Os resultados gerados pela plataforma são estimativas computacionais baseadas em algoritmos de análise de áudio e podem conter variações ou erros. Não utilize as análises como única base para decisões profissionais, médicas ou de saúde vocal.</p>'+
 
- '<h3>3. Conta e créditos</h3><p>Para utilizar as ferramentas de análise, o usuário precisa registrar uma conta (via login federado do Google ou e-mail). Cada conta recebe 100 créditos gratuitos por mês (10 créditos por análise de voz e 20 créditos por análise de música). Os créditos renovam no dia 1º de cada mês, não acumulam, não possuem valor monetário e não podem ser transferidos. Se uma análise falhar, os créditos correspondentes não são descontados.</p>'+
+ '<h3>3. Conta e créditos</h3><p>Para utilizar as ferramentas de análise, o usuário precisa registrar uma conta (via login federado do Google ou e-mail). Cada conta recebe 100 créditos gratuitos por mês (10 créditos por análise de voz, 20 créditos por análise de música e 30 créditos por download de áudio com o tom alterado). Os créditos renovam no dia 1º de cada mês, não acumulam, não possuem valor monetário e não podem ser transferidos. Se uma análise falhar, os créditos correspondentes não são descontados.</p>'+
 
  '<h3>4. Processamento de arquivos e direitos autorais</h3>'+
  '<p>Ao carregar ou processar qualquer arquivo de áudio na plataforma, o usuário declara e garante que possui todos os direitos autorais, licenças ou autorizações necessárias para utilizá-lo. O processamento dos áudios e a execução do player ocorrem <b>exclusivamente de forma local, no próprio navegador de internet do usuário</b>.</p>'+
- '<p>Em nenhuma hipótese os arquivos de áudio são enviados, transmitidos, armazenados ou mantidos nos servidores do Tom da Voz. A plataforma não disponibiliza e não permite o download do áudio alterado. O usuário é o único e exclusivo responsável pelo conteúdo que submete e processa na plataforma.</p>'+
+ '<p>Em nenhuma hipótese os arquivos de áudio são enviados, transmitidos, armazenados ou mantidos nos servidores do Tom da Voz. A plataforma permite gerar e baixar uma cópia da música com o tom alterado, exclusivamente para uso pessoal e privado (estudo, ensaio e prática) e apenas de arquivos que o usuário tenha o direito de utilizar. Essa cópia é gerada no navegador do usuário e não passa pelos servidores do Tom da Voz. É proibido compartilhar, publicar, distribuir ou vender a cópia. O usuário é o único e exclusivo responsável pelo conteúdo que submete e processa na plataforma.</p>'+
 
  '<h3>5. Uso adequado e condutas vedadas</h3>'+
  '<p>O usuário compromete-se a utilizar os serviços de maneira ética, legal e em conformidade com estes Termos de Uso. É estritamente proibido:</p>'+
@@ -1522,6 +2009,7 @@ var LEGAL={
    '<li><b>Dados de Cadastro e Conta:</b> Nome e e-mail (via autenticação Google ou informado diretamente), além de um identificador único de conta.</li>'+
    '<li><b>Controle de Créditos:</b> Saldo atual de créditos mensais e registros do tipo e data das análises.</li>'+
    '<li><b>Histórico de Utilização:</b> Título e resumo simplificado dos testes realizados (ex.: "Tom: G, confiança alta"), limitado a até 100 itens.</li>'+
+   '<li><b>Repertório:</b> Nome da música, tom original e tom escolhido para cantar, salvos por você, limitados a 200 itens e apagáveis a qualquer momento. As cifras coladas na ferramenta de transposição não são enviadas nem guardadas.</li>'+
    '<li><b>Dados Técnicos de Navegação:</b> Endereço IP e registros de acesso mantidos automaticamente pelos provedores de infraestrutura e hospedagem.</li>'+
    '<li><b>Publicidade e Cookies:</b> Identificadores de dispositivos e cookies do Google AdSense, conforme preferências registradas no aviso de cookies.</li>'+
  '</ul>'+
