@@ -19,7 +19,7 @@ function tdvAnalyticsApply(value){
   window.gtag('consent','update',{analytics_storage:'granted'});
   window.__tdvGtm=true;
   window.dataLayer.push({'gtm.start':Date.now(),event:'gtm.js'});
-  var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtm.js?id=GTM-P9HX2ZZL';document.head.appendChild(s);
+  var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtm.js?id=GTM-K389WTXW';document.head.appendChild(s);
 }
 
 function loadAds(mode){
