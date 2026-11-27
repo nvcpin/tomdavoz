@@ -938,7 +938,7 @@ body[data-view=home] .pv-hero,body[data-view=home] .pv-hero.tdv-video-ready{disp
 
 <div id="cookie" class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card p-4" hidden>
   <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-3">
-    <p class="flex-1 basis-64 text-sm">Usamos cookies essenciais e, com sua autorização, cookies de análise de visitas (Google Analytics) e de publicidade personalizada (Google AdSense). Você pode aceitar todos, recusar os opcionais ou personalizar suas preferências. <a class="link" href="cookies.html" data-legal="cookies">Saiba mais</a></p>
+    <p class="flex-1 basis-64 text-sm">Usamos cookies essenciais e, com sua autorização, cookies de análise de visitas (Google Analytics) e de publicidade (Google AdSense e recursos publicitários do Google). Você pode aceitar todos, recusar os opcionais ou personalizar suas preferências. <a class="link" href="cookies.html" data-legal="cookies">Saiba mais</a></p>
     <button id="c-ess" type="button" class="btn btn-o h-10">Recusar</button>
     <button id="c-cfg" type="button" class="btn btn-o h-10">Personalizar</button>
     <button id="c-all" type="button" class="btn btn-p h-10">Aceitar todos</button>
@@ -950,7 +950,7 @@ body[data-view=home] .pv-hero,body[data-view=home] .pv-hero.tdv-video-ready{disp
     <h2 id="ck-h" class="font-display text-3xl leading-none">Preferências de cookies</h2>
     <label class="flex items-start gap-3 text-sm"><input type="checkbox" checked disabled class="mt-1"><span><b>Essenciais</b><br><span class="text-muted-foreground">Sessão de login e suas escolhas. Sempre ativos.</span></span></label>
     <label class="flex items-start gap-3 text-sm"><input id="ck-analytics" type="checkbox" class="mt-1"><span><b>Análise de visitas</b><br><span class="text-muted-foreground">Permite medir visitas, páginas e origens de acesso com o Google Analytics. Opcional.</span></span></label>
-    <label class="flex items-start gap-3 text-sm"><input id="ck-ads" type="checkbox" class="mt-1"><span><b>Anúncios personalizados</b><br><span class="text-muted-foreground">Permite que o Google AdSense use cookies para mostrar anúncios de acordo com seus interesses. Desmarcado, você vê apenas anúncios não personalizados.</span></span></label>
+    <label class="flex items-start gap-3 text-sm"><input id="ck-ads" type="checkbox" class="mt-1"><span><b>Anúncios personalizados</b><br><span class="text-muted-foreground">Autoriza cookies publicitários, envio de dados ao Google para fins de publicidade e personalização de anúncios. Se desmarcado, as tags de publicidade ficam desativadas.</span></span></label>
     <div class="flex flex-wrap justify-end gap-2">
       <button id="ck-cancel" type="button" class="btn btn-o h-10">Cancelar</button>
       <button id="ck-save" type="button" class="btn btn-p h-10">Salvar preferências</button>
@@ -2970,21 +2970,28 @@ showView(viewFromHash());
    ANÚNCIOS E COOKIES
    ============================================================ */
 
-// Google Tag Manager — Analytics opcional; autorizações de publicidade independentes.
-function tdvAnalyticsChoice(){try{return JSON.parse(localStorage.getItem('tdv_analytics_consent'));}catch(e){return null;}}
-function tdvAnalyticsSet(value){try{localStorage.setItem('tdv_analytics_consent',JSON.stringify(value));}catch(e){}tdvAnalyticsApply(value);}
-function tdvAnalyticsApply(value){
+// Consent Mode v2: escolhas separadas, sem carregar o GTM antes de autorizar Analytics.
+function tdvConsentCurrent(){try{return localStorage.getItem('tdv_consent_version')==='2';}catch(e){return false;}}
+function tdvAnalyticsChoice(){try{return tdvConsentCurrent()?JSON.parse(localStorage.getItem('tdv_analytics_consent')):null;}catch(e){return null;}}
+function tdvAdChoice(){try{return tdvConsentCurrent()&&JSON.parse(localStorage.getItem('tdv_consent'))==='all';}catch(e){return false;}}
+function tdvAnalyticsSet(value,adMode){
+  try{localStorage.setItem('tdv_analytics_consent',JSON.stringify(value));localStorage.setItem('tdv_consent_version','2');}catch(e){}
+  tdvAnalyticsApply(value,adMode==='all');
+}
+function tdvAnalyticsApply(value,ads){
   window.dataLayer=window.dataLayer||[];
   window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};
   if(!window.__tdvConsentDefaults){window.__tdvConsentDefaults=true;window.gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});}
+  var a=value===true?'granted':'denied', d=ads===true?'granted':'denied';
+  if(value!==null||ads===true||window.__tdvGtm){
+    window.gtag('consent','update',{analytics_storage:a,ad_storage:d,ad_user_data:d,ad_personalization:d});
+  }
   if(value!==true){
     tdvTrackedView=null;
-    if(window.__tdvGtm){window.gtag('consent','update',{analytics_storage:'denied'});}
     if(value===false){document.cookie.split(';').forEach(function(c){var n=c.split('=')[0].trim();if(/^_ga(?:_|$)/.test(n)){document.cookie=n+'=; Max-Age=0; path=/';document.cookie=n+'=; Max-Age=0; path=/; domain=tomdavoz.com.br';}});}
     return;
   }
   if(window.__tdvGtm)return;
-  window.gtag('consent','update',{analytics_storage:'granted'});
   window.__tdvGtm=true;
   window.dataLayer.push({'gtm.start':Date.now(),event:'gtm.js'});
   var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtm.js?id=GTM-K389WTXW';document.head.appendChild(s);
@@ -2992,23 +2999,23 @@ function tdvAnalyticsApply(value){
 }
 
 function loadAds(mode){
-  if(window.__tdvAds) return; window.__tdvAds=1;
-  window.adsbygoogle=window.adsbygoogle||[]; if(mode!=='all') window.adsbygoogle.requestNonPersonalizedAds=1;
+  if(mode!=='all'||!CFG.ADSENSE_CLIENT||window.__tdvAds) return; window.__tdvAds=1;
+  window.adsbygoogle=window.adsbygoogle||[];
   var s=document.createElement('script'); s.async=true; s.crossOrigin='anonymous';
   s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+encodeURIComponent(CFG.ADSENSE_CLIENT); document.head.appendChild(s);
 }
 function initAds(){
-  var a=tdvAnalyticsChoice(); tdvAnalyticsApply(a);
+  var a=tdvAnalyticsChoice(); tdvAnalyticsApply(a,tdvAdChoice());
   var c=store.get('tdv_consent');
   if(c&&a!==null){if(CFG.ADSENSE_CLIENT)loadAds(c);} else $('cookie').hidden=false;
 }
-$('c-all').addEventListener('click',function(){ store.set('tdv_consent','all'); tdvAnalyticsSet(true); $('cookie').hidden=true; loadAds('all'); });
-function openCk(){ $('ck-analytics').checked=(tdvAnalyticsChoice()===true); $('ck-ads').checked=(store.get('tdv_consent')==='all'); $('dlg-cookie').showModal(); }
+$('c-all').addEventListener('click',function(){ store.set('tdv_consent','all'); tdvAnalyticsSet(true,'all'); $('cookie').hidden=true; loadAds('all'); });
+function openCk(){ $('ck-analytics').checked=(tdvAnalyticsChoice()===true); $('ck-ads').checked=tdvAdChoice(); $('dlg-cookie').showModal(); }
 $('c-cfg').addEventListener('click',openCk);
 $('ck-cancel').addEventListener('click',function(){ $('dlg-cookie').close(); });
-$('ck-save').addEventListener('click',function(){ var had=!!store.get('tdv_consent'); var v=$('ck-ads').checked?'all':'essential'; var reloadAnalytics=window.__tdvGtm&&!$('ck-analytics').checked; store.set('tdv_consent',v); tdvAnalyticsSet($('ck-analytics').checked); $('dlg-cookie').close(); $('cookie').hidden=true; if(reloadAnalytics||(window.__tdvAds&&had)) location.reload(); else loadAds(v); });
+$('ck-save').addEventListener('click',function(){ var had=!!store.get('tdv_consent'); var v=$('ck-ads').checked?'all':'essential'; var reloadAnalytics=window.__tdvGtm&&!$('ck-analytics').checked; store.set('tdv_consent',v); tdvAnalyticsSet($('ck-analytics').checked,v); $('dlg-cookie').close(); $('cookie').hidden=true; if(reloadAnalytics||(window.__tdvAds&&had)) location.reload(); else loadAds(v); });
 document.addEventListener('click',function(e){ var m=e.target.closest&&e.target.closest('.c-manage'); if(m){ e.preventDefault(); openCk(); } });
-$('c-ess').addEventListener('click',function(){ var reloadAnalytics=window.__tdvGtm; store.set('tdv_consent','essential'); tdvAnalyticsSet(false); $('cookie').hidden=true; if(reloadAnalytics)location.reload(); else loadAds('essential'); });
+$('c-ess').addEventListener('click',function(){ var reloadAnalytics=window.__tdvGtm; store.set('tdv_consent','essential'); tdvAnalyticsSet(false,'essential'); $('cookie').hidden=true; if(reloadAnalytics||window.__tdvAds)location.reload(); });
 
 /* ============================================================
    TEXTOS LEGAIS (Termos de Uso e Política de Privacidade estendidos)
@@ -3053,7 +3060,7 @@ var LEGAL={
  '<p>Na máxima extensão permitida pela legislação aplicável, o Tom da Voz e seus desenvolvedores não serão responsáveis por quaisquer danos diretos, indiretos, incidentais ou consequentes decorrentes do uso ou da incapacidade de uso da plataforma.</p>'+
 
  '<h3>7. Anúncios e monetização</h3>'+
- '<p>A manutenção e gratuidade do serviço são viabilizadas por meio da exibição de anúncios publicitários fornecidos por parceiros, como o Google AdSense. Ao utilizar o site, o usuário concorda com a exibição dessas publicidades. Para detalhes sobre o tratamento de dados publicitários, consulte nossa Política de Privacidade.</p>'+
+ '<p>A manutenção e gratuidade do serviço são viabilizadas por meio da exibição de anúncios publicitários fornecidos por parceiros, como o Google AdSense. As tags publicitárias dependem da autorização opcional do usuário, que pode ser revogada nas preferências de cookies. Para detalhes sobre o tratamento de dados publicitários, consulte nossa Política de Privacidade.</p>'+
 
  '<h3>8. Alterações nos termos e foro de eleição</h3>'+
  '<p>Podemos atualizar estes Termos de Uso a qualquer momento. A versão atualizada estará sempre acessível nesta página. Estão eleitos as leis da República Federativa do Brasil e o Foro da Circunscrição Judiciária de <b>{{CIDADE}}</b> para sanar eventuais dúvidas ou litígios, ressalvadas as disposições legais de proteção ao consumidor.</p>'},
@@ -3093,7 +3100,7 @@ var LEGAL={
  '<ul>'+
    '<li><b>Execução de Contrato (Art. 7º, V da LGPD):</b> Necessário para criar/manter a conta, gerenciar os créditos e guardar o histórico solicitado.</li>'+
    '<li><b>Legítimo Interesse (Art. 7º, IX da LGPD):</b> Aplicado à segurança do site e prevenção de abusos técnicos.</li>'+
-   '<li><b>Consentimento (Art. 7º, I da LGPD):</b> Utilizado para a exibição de anúncios personalizados e cookies publicitários, revogável a qualquer momento.</li>'+
+   '<li><b>Consentimento (Art. 7º, I da LGPD):</b> Utilizado para a análise opcional de visitas e para cookies publicitários, envio de dados ao Google para publicidade e personalização de anúncios, revogável a qualquer momento.</li>'+
  '</ul>'+
 
  '<h3>5. Compartilhamento de dados e transferência internacional</h3>'+
@@ -3116,7 +3123,7 @@ var LEGAL={
  cookies:{t:'Cookies e anúncios',h:
  '<h3>Análise de visitas</h3><p>Com seu consentimento opcional, usamos Google Analytics 4 por meio do Google Tag Manager para medir visitas, origem do tráfego, páginas acessadas e informações técnicas aproximadas do dispositivo e da localização. Você pode recusar ou revogar essa autorização em “Gerenciar cookies”, no rodapé. Consulte também a <a href="https://policies.google.com/privacy?hl=pt-BR">Política de Privacidade do Google</a>.</p>'+
  '<h3>Cookies essenciais</h3><p>Usamos armazenamento do navegador para manter a sua sessão de login e lembrar suas escolhas (como o aviso de cookies). Sem isso o site não funciona direito.</p>'+
- '<h3>Anúncios</h3><p>Este site pode exibir anúncios do Google AdSense, que usam cookies e identificadores para mostrar e medir anúncios. No aviso de cookies você pode <b>aceitar todos</b> (anúncios personalizados), <b>recusar</b> (apenas anúncios não personalizados) ou <b>personalizar</b>. Você pode mudar a escolha a qualquer momento em “Gerenciar cookies”, no rodapé do site.</p>'+
+ '<h3>Anúncios</h3><p>Este site pode exibir anúncios do Google AdSense, que usam cookies e identificadores para mostrar e medir anúncios. No aviso de cookies você pode <b>aceitar todos</b> (incluindo cookies publicitários, envio de dados ao Google para publicidade e personalização), <b>recusar</b> (sem ativar as tags opcionais) ou <b>personalizar</b>. Você pode mudar a escolha a qualquer momento em “Gerenciar cookies”, no rodapé do site.</p>'+
  '<p>Saiba como o Google usa dados de sites parceiros em <a class="link" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>. Você também pode gerenciar anúncios personalizados em <a class="link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</p>'},
 
  contato:{t:'Contato',h:
