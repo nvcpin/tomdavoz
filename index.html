@@ -1560,7 +1560,7 @@ var SB={
       document.head.appendChild(s);
     }).then(function(){
       self.sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-      self.sb.auth.onAuthStateChange(function(ev,sess){ self.u=sess?sess.user:null; onAuth(); });
+      self.sb.auth.onAuthStateChange(function(ev,sess){ self.u=sess?sess.user:null; tdvAuthEvent(ev,self.u); onAuth(); });
       return self.sb.auth.getSession();
     }).then(function(r){ self.u=(r.data&&r.data.session&&r.data.session.user)||null; });
   },
@@ -1663,7 +1663,7 @@ function afterAuth(){
 function showInsufficient(kind,c){
   c=c||S.credits||{};
   $('limit-msg').textContent='Você tem '+(c.balance!=null?c.balance:0)+' créditos e '+(kind==='download'?'o download custa ':'esta análise custa ')+COSTS[kind]+'. Os créditos renovam em '+(c.resets_on?ptDate(c.resets_on):'1º do próximo mês')+'.';
-  $('dlg-limit').showModal();
+  if(!$('dlg-limit').open){ $('dlg-limit').showModal(); tdvEvent('tdv_credit_limit'); }
 }
 function guard(kind){
   if(S.busy) return Promise.resolve(false);
@@ -1823,7 +1823,7 @@ function transpose(){
 (function(){
   var s=$('orig'), o=el('option',null,'Não sei / pular'); o.value=''; s.appendChild(o);
   [false,true].forEach(function(mi){ for(var t=0;t<12;t++){ var op=el('option',null,keyShort(t,mi)+' · '+keyPT(t,mi)); op.value=t+'-'+(mi?1:0); s.appendChild(op); } });
-  s.addEventListener('change',transpose);
+  s.addEventListener('change',function(){ transpose(); if(s.value&&!K.example&&!K.tdvTransposeTracked&&tdvEvent('tdv_transpose_voice'))K.tdvTransposeTracked=true; });
 })();
 
 function concludeVoice(mode,tr){
@@ -1835,11 +1835,11 @@ function concludeVoice(mode,tr){
   return charge('voice',hk,title,detail).then(function(ok){
     if(!ok) return;
     if(mode==='range'){
-      R={res:res,example:false}; renderRange();
+      R={res:res,example:false}; renderRange(); tdvEvent('tdv_voice_range');
       setStatus('Pronto. Sua extensão foi medida (confiança '+res.level+'). Toque no piano para ouvir as notas.');
       $('r-range').scrollIntoView({behavior:'smooth',block:'start'});
     } else {
-      K={res:res,opts:options(res.keys,res.level),sel:0,example:false}; renderKey();
+      K={res:res,opts:options(res.keys,res.level),sel:0,example:false}; renderKey(); tdvEvent('tdv_voice_key');
       setStatus('Pronto. Tom estimado a partir de '+Math.round(res.secs)+' segundos de voz.');
       $('r-key').scrollIntoView({behavior:'smooth',block:'start'});
     }
@@ -1962,7 +1962,7 @@ function analyzeMusicFile(file){
         return charge('music','music','Música: '+keyShort(top.t,top.minor)+' ('+keyPT(top.t,top.minor)+')',(name.length>60?name.slice(0,57)+'...':name)+' · confiança '+res.level).then(function(ok){
           if(!ok) return;
           M={res:res,sel:0,name:file.name}; P.buf=buf; P.offset=0; P.semis=0;
-          renderMusic(); setStatus('Pronto. Tom da música estimado (confiança '+res.level+'). Use o player para ajustar o tom.');
+          renderMusic(); tdvEvent('tdv_music_analysis'); setStatus('Pronto. Tom da música estimado (confiança '+res.level+'). Use o player para ajustar o tom.');
           $('r-music').scrollIntoView({behavior:'smooth',block:'start'});
         });
       });
@@ -2090,6 +2090,7 @@ function setSemis(n){
   if(P.node) P.node.parameters.get('pitch').value=n;
   if(P.playing&&((was===0)!==(n===0))) startAt(position());
   renderPlayer();
+  if(n!==0&&P.node&&M&&!M.tdvTransposeTracked&&tdvEvent('tdv_transpose_audio'))M.tdvTransposeTracked=true;
 }
 $('p-play').addEventListener('click',function(){
   if(!P.buf) return; audio();
@@ -2242,7 +2243,7 @@ $('b-pdf').addEventListener('click',function(){
   if(R.example){ localMsg('pdf-msg','Faça primeiro a análise da sua extensão vocal.',true); return; }
   localMsg('pdf-msg','Gerando o PDF...');
   lib('jspdf','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',function(){ return !!(window.jspdf&&window.jspdf.jsPDF); })
-    .then(function(){ buildPdf(); localMsg('pdf-msg','Relatório gerado.'); })
+    .then(function(){ buildPdf(); localMsg('pdf-msg','Relatório gerado.'); tdvEvent('tdv_report_download'); })
     .catch(function(){ localMsg('pdf-msg','Não consegui gerar o PDF agora. Confira a internet e tente de novo.',true); });
 });
 
@@ -2278,7 +2279,7 @@ function addRep(row,msgId){
   localMsg(msgId,'Salvando...');
   var go=function(){ return B.repAdd(row); };
   (dup?B.repDel(dup.id).then(go):go()).then(function(){
-    localMsg(msgId,dup?'Atualizado no seu repertório.':'Salvo no seu repertório.'); loadRep();
+    localMsg(msgId,dup?'Atualizado no seu repertório.':'Salvo no seu repertório.'); loadRep(); tdvEvent('tdv_repertoire_save');
   },function(){ localMsg(msgId,'Não consegui salvar agora. Tente de novo em instantes.',true); });
 }
 $('p-save').addEventListener('click',function(){
@@ -2351,7 +2352,7 @@ function downloadShifted(){
       var title='Download: tom '+keyShort(c.t,c.minor)+' ('+signed(semis)+')';
       return charge('download','download',title,(base.length>60?base.slice(0,57)+'...':base)+' · '+signed(semis)+' semitons').then(function(done){
         if(!done){ localMsg('p-msg','Não concluí o download. Se apareceu um aviso de créditos, nada foi descontado.',true); return; }
-        saveBlob(f.blob,safeName(base+' - tom '+keyShort(c.t,c.minor))+'.'+f.ext);
+        saveBlob(f.blob,safeName(base+' - tom '+keyShort(c.t,c.minor))+'.'+f.ext); tdvEvent('tdv_audio_download');
         localMsg('p-msg','Pronto! O arquivo foi baixado ('+f.ext.toUpperCase()+').');
       });
     },function(e){
@@ -2386,7 +2387,7 @@ function renderCifra(){
   var info=$('c-info'), out=$('c-out'), sug=$('c-capo-sug');
   out.textContent=''; sug.textContent=''; C.text='';
   $('c-copy').disabled=true; $('c-txt').disabled=true;
-  if(!txt.trim()){ out.hidden=true; sug.hidden=true; info.textContent='Cole a cifra acima para começar.'; return; }
+  if(!txt.trim()){ C.tdvTransposeTracked=false; out.hidden=true; sug.hidden=true; info.textContent='Cole a cifra acima para começar.'; return; }
   var destKey=k?{t:mod12(k.t+semis),minor:k.minor}:null;
   var flats=destKey?FLAT_ROOTS.indexOf(majRoot(mod12(destKey.t-capo),destKey.minor))>=0:/(^|\s)[A-G]b(?![a-z])/m.test(txt);
   var lines=transposeText(txt,mod12(semis-capo),flats), nCh=lines.filter(function(l){ return l.chord; }).length;
@@ -2403,6 +2404,7 @@ function renderCifra(){
   if(head){ out.appendChild(el('div','text-muted-foreground',head)); out.appendChild(el('div',null,' ')); }
   lines.forEach(function(l){ out.appendChild(el('div',l.chord?'ch':null,l.t===''?' ':l.t)); });
   out.hidden=false; $('c-copy').disabled=false; $('c-txt').disabled=false;
+  if((semis!==0||capo!==0)&&!C.tdvTransposeTracked&&tdvEvent('tdv_transpose_chords'))C.tdvTransposeTracked=true;
   info.textContent=(k?(ov==='auto'?'Tom original detectado: ':'Tom original: ')+keyShort(k.t,k.minor)+' ('+keyPT(k.t,k.minor)+'). '+(ov==='auto'?'Se estiver errado, escolha o tom original acima. ':''):'')+'Linhas de acordes transpostas: '+nCh+'.';
   var caps=k?capoOptions(destKey.t,destKey.minor):[];
   sug.hidden=!caps.length;
@@ -2427,7 +2429,7 @@ $('c-in').addEventListener('input',renderCifra);
 ['c-orig','c-dest','c-capo'].forEach(function(id){ $(id).addEventListener('change',renderCifra); });
 $('c-copy').addEventListener('click',function(){
   var t=C.text; if(!t) return;
-  var ok=function(){ localMsg('c-msg','Copiado.'); }, bad=function(){ localMsg('c-msg','Não consegui copiar. Selecione o texto e copie manualmente.',true); };
+  var ok=function(){ localMsg('c-msg','Copiado.'); tdvEvent('tdv_chords_copy'); }, bad=function(){ localMsg('c-msg','Não consegui copiar. Selecione o texto e copie manualmente.',true); };
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,bad);
   else {
     try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); var done=document.execCommand('copy'); ta.remove(); done?ok():bad(); }catch(e){ bad(); }
@@ -2436,7 +2438,7 @@ $('c-copy').addEventListener('click',function(){
 $('c-txt').addEventListener('click',function(){
   if(!C.text) return;
   var title=$('c-title').value.trim()||'cifra';
-  saveBlob(new Blob([C.text],{type:'text/plain;charset=utf-8'}),safeName(title)+' - transposta.txt');
+  saveBlob(new Blob([C.text],{type:'text/plain;charset=utf-8'}),safeName(title)+' - transposta.txt'); tdvEvent('tdv_chords_download');
 });
 function cifraFromPlayer(){
   if(!M) return;
@@ -2824,7 +2826,7 @@ function rtScore(){
   s.push('</svg>');return s.join('');
 }
 function rtScoreRefresh(){var panel=$('rt-score-panel');if(RT&&panel&&!panel.hidden)$('rt-score-sheet').innerHTML=rtScore();}
-function rtScoreSave(blob,ext){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='partitura-bateria-'+RT.bpm+'bpm.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}
+function rtScoreSave(blob,ext){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='partitura-bateria-'+RT.bpm+'bpm.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);tdvEvent('tdv_score_download');}
 function rtScoreDownload(png){if(!RT)return;var blob=new Blob([rtScore()],{type:'image/svg+xml;charset=utf-8'});if(!png){rtScoreSave(blob,'svg');rtMsg('Partitura baixada.');return;}var u=URL.createObjectURL(blob),im=new Image();im.onload=function(){var cv=document.createElement('canvas');cv.width=1800;cv.height=520;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);cv.toBlob(function(b){if(b){rtScoreSave(b,'png');rtMsg('Partitura baixada.');}else rtMsg('Não consegui gerar a imagem.');},'image/png');};im.onerror=function(){URL.revokeObjectURL(u);rtMsg('Não consegui gerar a imagem.');};im.src=u;}
 function rtPng(){
   var res=RT.res, N=res.steps, cw=44, ch=44, gap=6, lx=100, top=120, W=lx+N*(cw+gap)+(res.M-1)*10+30, H=top+3*(ch+gap)+60, cv=document.createElement('canvas'), x, i, s, n, px, py, lab=rtLabels(res.spb,res.M), sc=2;
@@ -2867,7 +2869,7 @@ function analyzeRitmoFile(file){
           if(!ok) return;
           RT={an:an,name:file.name,opts:{mul:1,M:auto.plan.M,spb:auto.plan.spb,d:auto.plan.d}};
           if(!rtBuild()){ setStatus('Não consegui montar a grade.',true); return; }
-          $('r-ritmo').hidden=false; rtRender();
+          $('r-ritmo').hidden=false; rtRender(); tdvEvent('tdv_rhythm_analysis');
           setStatus('Pronto. Ritmo encontrado (confiança '+r.confidence+'). Toque em Ouvir e corrija o que precisar.');
           $('r-ritmo').scrollIntoView({behavior:'smooth',block:'start'});
         });
@@ -2900,13 +2902,39 @@ $('rt-score-png').addEventListener('click',function(){rtScoreDownload(true);});
 $('rt-score-svg').addEventListener('click',function(){rtScoreDownload(false);});
 $('rt-png').addEventListener('click',function(){
   if(!RT) return; var cv=rtPng();
-  cv.toBlob(function(bl){ if(!bl){ rtMsg('Não consegui gerar a imagem.'); return; } var u=URL.createObjectURL(bl), a=document.createElement('a'); a.href=u; a.download='ritmo-'+RT.bpm+'bpm.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); },4000); rtMsg('Imagem baixada.'); },'image/png');
+  cv.toBlob(function(bl){ if(!bl){ rtMsg('Não consegui gerar a imagem.'); return; } var u=URL.createObjectURL(bl), a=document.createElement('a'); a.href=u; a.download='ritmo-'+RT.bpm+'bpm.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); },4000); rtMsg('Imagem baixada.'); tdvEvent('tdv_rhythm_download'); },'image/png');
 });
 /* ===== FIM RITMO: interface ===== */
 
 /* ============================================================
    ÁREAS: uma ferramenta por vez (menu no topo, endereço #voz, #musica...)
    ============================================================ */
+// Eventos de uso do Tom da Voz: somente nomes fixos, sem áudio, textos ou identificadores pessoais.
+function tdvEvent(name){
+  try{
+    if(tdvAnalyticsChoice()!==true||!window.__tdvGtm||!Array.isArray(window.dataLayer)||!/^tdv_[a-z0-9_]+$/.test(name))return false;
+    window.dataLayer.push({event:name});return true;
+  }catch(e){return false;}
+}
+var tdvTrackedView=null;
+function tdvTrackView(v){
+  if(v==='home'){tdvTrackedView=null;return;}
+  if(v===tdvTrackedView||VIEWS.indexOf(v)<0)return;
+  if(tdvEvent('tdv_open_'+v))tdvTrackedView=v;
+}
+function tdvAuthEvent(ev,user){
+  try{
+    if(ev!=='SIGNED_IN'||!user||tdvAnalyticsChoice()!==true)return;
+    var stamp=Date.parse(user.last_sign_in_at||''), created=Date.parse(user.created_at||''), age=Date.now()-stamp;
+    if(!Number.isFinite(stamp)||age< -60000||age>180000)return;
+    // O Supabase pode emitir SIGNED_IN novamente ao restaurar o foco. Deduplicar localmente.
+    if(localStorage.getItem('tdv_last_analytics_signin')===String(stamp))return;
+    if(tdvEvent(Number.isFinite(created)&&Math.abs(stamp-created)<60000?'tdv_sign_up':'tdv_login')){
+      localStorage.setItem('tdv_last_analytics_signin',String(stamp));
+    }
+  }catch(e){}
+}
+
 var VIEWS=['voz','musica','cifra','ritmo','repertorio','historico'], curView=null;
 function viewFromHash(){ var h=(location.hash||'').replace('#',''); return VIEWS.indexOf(h)>=0?h:'home'; }
 function voiceSummary(){
@@ -2932,7 +2960,7 @@ function showView(v){
   if(changed&&!S.busy&&!live) setStatus('');
   if(warn) setStatus(warn,true);
   if(v==='musica'){ renderVoiceStrip(); if(M) renderCompare(); }
-  if(changed&&!first) window.scrollTo(0,0);
+  if(changed){tdvTrackView(v);if(!first)window.scrollTo(0,0);}
 }
 function go(v){ if(viewFromHash()!==v) history.pushState(null,'',v==='home'?location.pathname+location.search:'#'+v); showView(v); }
 window.addEventListener('hashchange',function(){ showView(viewFromHash()); });
@@ -2950,6 +2978,7 @@ function tdvAnalyticsApply(value){
   window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};
   if(!window.__tdvConsentDefaults){window.__tdvConsentDefaults=true;window.gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});}
   if(value!==true){
+    tdvTrackedView=null;
     if(window.__tdvGtm){window.gtag('consent','update',{analytics_storage:'denied'});}
     if(value===false){document.cookie.split(';').forEach(function(c){var n=c.split('=')[0].trim();if(/^_ga(?:_|$)/.test(n)){document.cookie=n+'=; Max-Age=0; path=/';document.cookie=n+'=; Max-Age=0; path=/; domain=tomdavoz.com.br';}});}
     return;
@@ -2959,6 +2988,7 @@ function tdvAnalyticsApply(value){
   window.__tdvGtm=true;
   window.dataLayer.push({'gtm.start':Date.now(),event:'gtm.js'});
   var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtm.js?id=GTM-K389WTXW';document.head.appendChild(s);
+  tdvTrackView(curView);
 }
 
 function loadAds(mode){
