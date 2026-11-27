@@ -372,6 +372,34 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
 @media(min-width:900px){#tdv-music-visual{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);align-items:center;column-gap:32px}#tdv-music-visual .av-chart{grid-column:2;grid-row:1/6}#tdv-music-visual .av-top,#tdv-music-visual .av-title,#tdv-music-visual .av-legend,#tdv-music-visual .av-desc,#tdv-music-visual .av-wave{grid-column:1}}
 @media(max-width:639px){.tdv-analysis-viz{padding:15px}.tdv-analysis-viz .av-title{font-size:1.25rem!important}}
 </style>
+<style>
+/* Cinematic hero and coordinated analysis surfaces. */
+body[data-view=home] .pv-hero{position:relative;isolation:isolate;min-height:clamp(390px,48vw,650px);align-items:center}
+.pv-hero .tdv-banner-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-1;opacity:0;transition:opacity .4s;pointer-events:none}
+.pv-hero.tdv-video-ready .tdv-banner-video{opacity:1}
+.pv-hero.tdv-video-ready::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(8,14,20,.92),rgba(8,14,20,.72) 36%,rgba(8,14,20,.24) 78%,rgba(8,14,20,.16))}
+.pv-hero.tdv-video-ready>div:first-of-type{position:relative;z-index:1;max-width:650px}
+.pv-hero.tdv-video-ready>.pv-visual{visibility:hidden}
+.pv-hero .tdv-banner-toggle{position:absolute;z-index:3;bottom:18px;right:18px;border:1px solid #c5d0dc80;background:#101820b8;color:#f3f8fa;font:600 .78rem Figtree,system-ui,sans-serif;padding:8px 13px;border-radius:99px;cursor:pointer}
+.pv-hero .tdv-banner-toggle[hidden]{display:none!important}
+@media(min-width:640px){
+.pv-hero .tdv-banner-video,.pv-hero.tdv-video-ready::after{left:50%;right:auto;width:100vw;transform:translateX(-50%)}
+}
+@media(max-width:639px){
+body[data-view=home] .pv-hero{min-height:0}
+body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;align-items:center;padding:30px 22px;overflow:hidden}
+.pv-hero.tdv-video-ready>.pv-visual{display:none}
+.pv-hero.tdv-video-ready::after{background:linear-gradient(90deg,rgba(8,14,20,.87),rgba(8,14,20,.48)),linear-gradient(0deg,rgba(8,14,20,.4),transparent)}
+.pv-hero.tdv-video-ready h1{font-size:clamp(2.65rem,11vw,3.6rem)}
+}
+#tdv-range-visual{background:radial-gradient(ellipse at 50% 42%,#213d3d,#17262e 58%,#141e28)}
+#tdv-range-visual .av-chart{max-width:360px}
+#tdv-range-visual .av-range-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.77rem;color:#c5d9d7}
+#tdv-range-visual .av-range-legend strong{display:block;font-size:1rem;color:#edf8f7}
+#tdv-range-visual .av-range-legend>div{padding:8px 10px;background:#12212b80;border-radius:8px}
+#tdv-voice-visual,#tdv-range-visual{padding:clamp(14px,2vw,22px)}
+@media(prefers-reduced-motion:reduce){.pv-hero .tdv-banner-video{transition:none}}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
@@ -389,7 +417,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
 
 <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:py-10">
 
-  <section data-home class="pv-hero pv-band"><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
+  <section data-home class="pv-hero pv-band"><video class="tdv-banner-video" id="tdv-banner-video" muted loop playsinline preload="none" aria-hidden="true"><source src="banner-tomdavoz.mp4" type="video/mp4"></video><button class="tdv-banner-toggle" type="button" id="tdv-banner-toggle" aria-label="Pausar vídeo de apresentação" hidden>Pausar vídeo</button><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
   <h1 data-tool class="sr-only">Tom da Voz</h1>
 
   <div data-home class="pv-intro"><span class="pv-kicker">FERRAMENTAS</span><h2>Seu estúdio musical</h2><p>Análises com créditos e ferramentas gratuitas, no seu ritmo.</p></div>
@@ -499,6 +527,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
         <p id="r-sum" class="max-w-prose text-muted-foreground"></p>
         <p id="r-conf" class="text-sm text-muted-foreground"></p>
       </div>
+      <div id="tdv-range-visual" class="tdv-analysis-viz" hidden></div>
       <div>
         <div class="piano" id="piano" role="group" aria-label="Teclado com a extensão da voz. Toque nas teclas para ouvir"></div>
         <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
@@ -1563,6 +1592,32 @@ var EX=[10,1,18,1,12,3,6,22,1,14,1,16], exk=rankKeys(EX);
 var K={res:{hist:EX,keys:exk,lo:55,hi:69,frames:0,level:conf(exk)},opts:options(exk),sel:0,example:true};
 var R={res:{lo:48,hi:69,clo:52,chi:64,type:'Barítono',level:'alta'},example:true};
 
+
+/* Display-only vocal range gauge. The values come from the existing range result. */
+function renderRangeVisual(r,example){
+  var host=$('tdv-range-visual');
+  if(!host||!r||![r.lo,r.hi,r.clo,r.chi].every(Number.isFinite))return;
+  var low=Math.min(LO,Math.floor(r.lo)),high=Math.max(HI,Math.ceil(r.hi)),ns='http://www.w3.org/2000/svg';
+  host.textContent='';host.hidden=false;
+  var top=el('div','av-top');top.appendChild(el('span','av-eyebrow','MAPA DA EXTENSÃO'));top.appendChild(el('span','av-status',example?'Exemplo':'Confiança '+r.level));host.appendChild(top);
+  host.appendChild(el('h3','av-title',example?'Visualização da extensão':'Extensão analisada'));
+  var chart=document.createElementNS(ns,'svg');chart.setAttribute('viewBox','0 0 340 300');chart.setAttribute('class','av-chart av-appear');chart.setAttribute('role','img');chart.setAttribute('aria-label','Extensão de '+noteName(r.lo)+' a '+noteName(r.hi)+'; faixa confortável de '+noteName(r.clo)+' a '+noteName(r.chi));
+  function add(tag,attrs,txt){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k]);});if(txt!=null)e.textContent=txt;chart.appendChild(e);return e;}
+  function point(m,rad){var a=(140+260*(m-low)/(high-low))*Math.PI/180;return [170+rad*Math.cos(a),145+rad*Math.sin(a)];}
+  function arc(a,b,rad,col,w){if(b<=a)return;var p=point(a,rad),q=point(b,rad);add('path',{d:'M'+p.join(' ')+' A'+rad+' '+rad+' 0 '+((b-a)/(high-low)*260>180?1:0)+' 1 '+q.join(' '),fill:'none',stroke:col,'stroke-width':w,'stroke-linecap':'round'});}
+  arc(low,high,112,'#364c55',16);arc(r.lo,r.hi,112,'#438e80',16);arc(r.clo,r.chi,112,'#8ce3c6',16);
+  for(var m=Math.ceil(low/3)*3;m<=high;m+=3){var p=point(m,90),q=point(m,98);add('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#719391','stroke-width':m%12===0?1.7:'.8'});}
+  for(var m=Math.ceil(low/12)*12;m<=high;m+=12){var p=point(m,132);add('text',{x:p[0],y:p[1]+4,fill:'#c3d7d7','font-size':'10','text-anchor':'middle'},noteName(m));}
+  [r.lo,r.hi].forEach(function(m){var p=point(m,112);add('circle',{cx:p[0],cy:p[1],r:5,fill:'#f3ca80',stroke:'#17262e','stroke-width':'1.5'});});
+  add('circle',{cx:170,cy:145,r:67,fill:'#8ce3c6','fill-opacity':'.06',stroke:'#456964'});
+  add('text',{x:170,y:137,fill:'#8ce3c6','font-size':'18','font-weight':'650','text-anchor':'middle'},r.type);
+  add('text',{x:170,y:160,fill:'#e4f1ef','font-size':'17','text-anchor':'middle'},noteName(r.lo)+' – '+noteName(r.hi));
+  add('text',{x:170,y:177,fill:'#b9cecf','font-size':'10','text-anchor':'middle'},'EXTENSÃO ESTIMADA');
+  host.appendChild(chart);
+  var legend=el('div','av-range-legend');[['Nota mais grave',noteName(r.lo)],['Nota mais aguda',noteName(r.hi)],['Faixa confortável',noteName(r.clo)+' – '+noteName(r.chi)],['Extensão alcançada',Math.max(0,Math.round(r.hi-r.lo))+' semitons']].forEach(function(a){var d=el('div');d.appendChild(el('span',null,a[0]));d.appendChild(el('strong',null,a[1]));legend.appendChild(d);});host.appendChild(legend);
+  host.appendChild(el('p','av-desc','O arco representa a extensão estimada no áudio. O verde mais claro indica a região confortável estimada; os pontos dourados marcam os extremos.'));
+}
+
 function renderRange(){
   var r=R.res; $('badge2').hidden=!R.example;
   $('v-type').textContent=r.type; $('b-pdf').hidden=R.example;
@@ -1572,6 +1627,7 @@ function renderRange(){
   $('p-hi').textContent='Ouvir a mais aguda ('+noteName(r.hi)+')';
   var rl=Math.round(r.lo), rh=Math.round(r.hi), cl=Math.round(r.clo), ch=Math.round(r.chi);
   buildPiano($('piano'),LO,HI,function(m){ return m>=cl&&m<=ch?'cmf':(m>=rl&&m<=rh?'rng':''); },function(m){ return m===rl||m===rh; });
+  renderRangeVisual(r,R.example);
   renderCompare();
 }
 $('p-lo').addEventListener('click',function(){ play([Math.round(R.res.lo)],0,2.2); });
@@ -2871,6 +2927,19 @@ $('b-legal-x').addEventListener('click',function(){ $('dlg-legal').close(); });
   B.init(function(){ afterAuth(); }).then(function(){ afterAuth(); },function(){ setStatus('Não consegui carregar o sistema de login. Recarregue a página.',true); });
 })();
 
+})();
+</script>
+<script>
+(function(){
+ var v=document.getElementById('tdv-banner-video'),b=document.getElementById('tdv-banner-toggle');if(!v||!b)return;
+ var hero=v.closest('.pv-hero'),reduce=window.matchMedia('(prefers-reduced-motion: reduce)'),pausedByUser=false;
+ function label(){b.textContent=v.paused?'Reproduzir vídeo':'Pausar vídeo';b.setAttribute('aria-label',v.paused?'Reproduzir vídeo de apresentação':'Pausar vídeo de apresentação');}
+ function active(){return document.body.getAttribute('data-view')==='home'&&!document.hidden;}
+ function update(){if(!active()||reduce.matches||pausedByUser){v.pause();return;}v.muted=true;var p=v.play();if(p&&p.catch)p.catch(function(){b.hidden=false;label();});}
+ v.addEventListener('playing',function(){hero.classList.add('tdv-video-ready');b.hidden=false;label();});v.addEventListener('pause',label);
+ v.addEventListener('error',function(){hero.classList.remove('tdv-video-ready');b.hidden=true;});
+ b.addEventListener('click',function(){if(v.paused){pausedByUser=false;v.muted=true;var p=v.play();if(p&&p.catch)p.catch(function(){});}else{pausedByUser=true;v.pause();}label();});
+ new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-view']});document.addEventListener('visibilitychange',update);if(reduce.addEventListener)reduce.addEventListener('change',update);if(reduce.matches){b.hidden=false;label();}update();
 })();
 </script>
 </body>
