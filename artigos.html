@@ -56,6 +56,25 @@ body.bgimg::before{display:none}
 @media(max-width:850px){.paper>.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.layout{padding:16px 12px 32px}.site-h .in{height:60px}.site-h .brand{font-size:1.2rem}.site-h .nav a{font-size:.78rem;padding:8px}.paper>.grid{grid-template-columns:minmax(0,1fr);gap:10px}.paper>.grid .card{min-height:0;padding:16px}.articles-intro{border-radius:16px;padding:25px 20px}.articles-intro::after{opacity:.1}}
 </style>
+<style>
+/* Wider editorial index; preserve article text and individual reading widths. */
+@media(min-width:640px){
+ .site-h .in{max-width:1600px;padding-inline:clamp(24px,3vw,48px)}
+ .layout{max-width:1600px;padding-inline:clamp(24px,3vw,48px);padding-top:0}
+ body.bgimg{overflow-x:clip}
+ .articles-intro{border-radius:0;padding:clamp(32px,4vw,64px) 0;margin-bottom:28px;overflow:visible}
+ .articles-intro::before{content:"";position:absolute;inset:0 -100vmax;background:#202632;z-index:-2;pointer-events:none}
+ .articles-intro::after{inset:0 0 0 58%}
+}
+@media(min-width:1200px){
+ .paper>.grid{gap:18px}
+ .paper>.grid .card{padding:24px;min-height:156px}
+}
+@media(min-width:1100px){
+ .layout:has(.side[data-filled]) .articles-intro{border-radius:16px;padding:32px;overflow:hidden}
+ .layout:has(.side[data-filled]) .articles-intro::before{display:none}
+}
+</style>
 </head>
 <body class="bgimg">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
