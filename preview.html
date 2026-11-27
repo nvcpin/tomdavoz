@@ -263,6 +263,53 @@ body:not([data-view=home]) .vcard{padding:16px}
 #v-voz>section:first-child>p:last-child{font-size:.8rem}#r-ritmo .rt-wrap{padding:10px 5px}}
 @media(max-width:350px){#actions{grid-template-columns:1fr}#actions>div:last-child{grid-column:auto}}
 </style>
+<style>
+/* Alternating surfaces: light workspace, dark presentation and selected result panels. */
+body{--background:220 25% 97%;--foreground:218 32% 19%;--card:0 0% 100%;--border:217 22% 86%;--muted:216 26% 93%;--muted-foreground:216 18% 37%;--primary:165 54% 29%;--primary-foreground:0 0% 100%;--mark:34 68% 32%;background:#f5f7fa;color:hsl(var(--foreground));color-scheme:light}
+header, .pv-hero, .pv-showcase, body:not([data-view=home]) #tools, body:not([data-view=home]) #r-key, body:not([data-view=home]) #r-ritmo{
+ --background:225 19% 9%;--foreground:216 24% 95%;--card:224 17% 14%;--border:222 14% 25%;--muted:224 14% 20%;--muted-foreground:219 15% 73%;--primary:165 63% 70%;--primary-foreground:167 39% 12%;--mark:40 78% 72%;color:hsl(var(--foreground));color-scheme:dark
+}
+header{border-color:#343b48}
+.pv-hero{background:#1b202c}
+body[data-view=home] .pv-intro:not(.pv-showcase .pv-intro) .pv-kicker{color:#32776a}
+body[data-view=home] #tools .tool{background:#fff;border-color:#dce3eb;--c:165 49% 29%!important}
+body[data-view=home] #tools .tool[data-v=musica]{--c:211 57% 39%!important}
+body[data-view=home] #tools .tool[data-v=ritmo]{--c:264 43% 42%!important}
+body[data-view=home] #tools .tool[data-v=cifra]{--c:33 65% 35%!important}
+body[data-view=home] #tools .tool[data-v=repertorio]{--c:338 45% 42%!important}
+body[data-view=home] #tools .tool:hover{background:#f9fbfd;border-color:hsl(var(--c) / .55)}
+body[data-view=home] section[aria-label="Seus créditos"],body:not([data-view=home]) [aria-label="Seus créditos"]{background:#eaf0f5!important;border-color:#dce3eb}
+.pv-showcase{background:#202632;border:1px solid #343b48;border-radius:22px;padding:clamp(18px,3vw,32px)}
+.pv-showcase .pv-feature{background:#1a202b}
+.pv-showcase .pv-privacy{color:#c5d0dc}
+body[data-view=home] section[aria-labelledby="h-como"]{background:#e7edf3;border:1px solid #dce3eb}
+.scard .num{background:#d4e5e1;color:#28695c}.scard h3{color:#23364c}
+.acard{background:#fff;border-color:#dce3eb}.acard h3{color:#23364c}
+body[data-view=home] main>section[data-home] details.card{border-bottom-color:#dce3eb}
+details summary::after{color:#32776a}
+body:not([data-view=home]) #tools{background:#1b202c}
+body:not([data-view=home]) #tools .tool:hover{background:#292e3a}
+body:not([data-view=home]) .vcard{border-color:#dce3eb}
+body:not([data-view=home]) #actions>div{background:#f3f6fa;border-color:#dce3eb}
+body:not([data-view=home]) .studio-heading{color:#356d61}
+body:not([data-view=home]) .studio-icon{background:#e4f1ec;color:#356d61}
+body:not([data-view=home]) #v-musica .studio-icon,body:not([data-view=home]) #actions>div:last-child .studio-icon{background:#e6eef7;color:#375a84}
+body:not([data-view=home]) #v-musica .studio-heading{color:#375a84}
+body:not([data-view=home]) #v-ritmo .studio-icon{background:#eee9f6;color:#6a4b96}
+body:not([data-view=home]) #v-ritmo .studio-heading{color:#6a4b96}
+body:not([data-view=home]) #v-cifra .studio-icon{background:#f6eddf;color:#8a602c}
+body:not([data-view=home]) #v-cifra .studio-heading{color:#8a602c}
+body:not([data-view=home]) #v-repertorio .studio-icon{background:#f6e9ef;color:#9a4b70}
+body:not([data-view=home]) #v-repertorio .studio-heading{color:#9a4b70}
+body:not([data-view=home]) #v-voz #r-key,body:not([data-view=home]) #r-ritmo{background:#202632!important;border-color:#343b48}
+body:not([data-view=home]) #v-voz #r-range{background:#fff!important;border-color:#dce3eb}
+body:not([data-view=home]) #v-voz .piano,body:not([data-view=home]) #v-musica .piano{border-color:#d3dce6}
+body:not([data-view=home]) #v-musica #player{border-color:#dce3eb}
+body:not([data-view=home]) #v-cifra .ta{background:#f7f9fb;border-color:#dce3eb}
+body:not([data-view=home]) #v-cifra .cifra-out{--foreground:216 24% 95%;--primary:165 63% 70%;background:#202632;color:hsl(var(--foreground));border-color:#343b48;color-scheme:dark}
+body:not([data-view=home]) #v-musica label:has(#file-music),body:not([data-view=home]) #v-ritmo label:has(#file-ritmo){background:#eaf1f8;color:#344e70;border-color:#8199b4}
+body:not([data-view=home]) #v-musica label:has(#file-music):hover,body:not([data-view=home]) #v-ritmo label:has(#file-ritmo):hover{background:#dce8f4}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
