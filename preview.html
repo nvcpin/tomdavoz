@@ -380,8 +380,6 @@ body[data-view=home] .pv-hero{position:relative;isolation:isolate;min-height:cla
 .pv-hero.tdv-video-ready::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(8,14,20,.92),rgba(8,14,20,.72) 36%,rgba(8,14,20,.24) 78%,rgba(8,14,20,.16))}
 .pv-hero.tdv-video-ready>div:first-of-type{position:relative;z-index:1;max-width:650px}
 .pv-hero.tdv-video-ready>.pv-visual{visibility:hidden}
-.pv-hero .tdv-banner-toggle{position:absolute;z-index:3;bottom:18px;right:18px;border:1px solid #c5d0dc80;background:#101820b8;color:#f3f8fa;font:600 .78rem Figtree,system-ui,sans-serif;padding:8px 13px;border-radius:99px;cursor:pointer}
-.pv-hero .tdv-banner-toggle[hidden]{display:none!important}
 @media(min-width:640px){
 .pv-hero .tdv-banner-video,.pv-hero.tdv-video-ready::after{left:50%;right:auto;width:100vw;transform:translateX(-50%)}
 }
@@ -423,6 +421,12 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
 .pv-hero .tdv-banner-video{z-index:0}
 .pv-hero.tdv-video-ready::after{z-index:1}
 .pv-hero.tdv-video-ready>div:first-of-type{z-index:2}
+/* Printable percussion notation, synchronized with the rhythm grid. */
+.tdv-score-panel[hidden]{display:none!important}
+.tdv-score-panel{display:flex;flex-direction:column;gap:12px;min-width:0;padding:16px;border:1px solid #465162;border-radius:12px;background:#191f2a}
+.tdv-score-panel p{color:#bdc6d6}
+.tdv-score-sheet{width:100%;overflow-x:auto;background:#fff;border-radius:8px}
+.tdv-score-sheet svg{display:block;width:100%;min-width:500px;height:auto}
 </style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
@@ -441,7 +445,7 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
 
 <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:py-10">
 
-  <section data-home class="pv-hero pv-band"><video class="tdv-banner-video" id="tdv-banner-video" src="banner-tomdavoz.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video><button class="tdv-banner-toggle" type="button" id="tdv-banner-toggle" aria-label="Pausar vídeo de apresentação" hidden>Pausar vídeo</button><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
+  <section data-home class="pv-hero pv-band"><video class="tdv-banner-video" id="tdv-banner-video" src="banner-tomdavoz.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
   <h1 data-tool class="sr-only">Tom da Voz</h1>
 
   <div data-home class="pv-intro"><span class="pv-kicker">FERRAMENTAS</span><h2>Seu estúdio musical</h2><p>Análises com créditos e ferramentas gratuitas, no seu ritmo.</p></div>
@@ -755,9 +759,18 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
         <div class="rt-ctl"><span class="t">Início</span><button type="button" class="seg" id="rt-rot">Mudar onde o compasso começa</button></div>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <button type="button" id="rt-copy" class="btn btn-o h-10 px-4">Copiar como texto</button>
+        <button type="button" id="rt-score" class="btn btn-o h-10 px-4" aria-expanded="false" aria-controls="rt-score-panel">Ver partitura</button>
         <button type="button" id="rt-png" class="btn btn-o h-10 px-4">Baixar imagem</button>
         <span id="rt-msg" role="status" class="text-sm text-muted-foreground"></span>
+      </div>
+      <div id="rt-score-panel" class="tdv-score-panel" hidden>
+        <h3 class="text-lg font-semibold">Partitura de bateria</h3>
+        <p class="text-sm">Um compasso do ritmo da grade, atualizado ao editar as batidas. Repita conforme a música. A transcrição automática é aproximada.</p>
+        <div id="rt-score-sheet" class="tdv-score-sheet"></div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="rt-score-png" class="btn btn-o h-10 px-4">Baixar partitura (PNG)</button>
+          <button type="button" id="rt-score-svg" class="btn btn-o h-10 px-4">Baixar partitura (SVG)</button>
+        </div>
       </div>
       <p id="rt-note" class="text-sm text-muted-foreground"></p>
     </section>
@@ -2682,19 +2695,61 @@ function rtRender(){
     bt.setAttribute('aria-pressed',on?'true':'false');
   });
   $('rt-note').textContent=res.confidence==='alta'?'Grade montada a partir de '+res.bars+' compassos repetidos. Toque nos quadrados para corrigir o que ficou diferente do original.':'O ritmo desse áudio não é muito regular, então a grade é só um ponto de partida. Teste "Metade", "Dobro", o compasso e o início, e corrija à mão.';
+  document.querySelectorAll('#r-ritmo .seg[data-rt="spb"]').forEach(function(bt){bt.textContent=(res.M*(+bt.getAttribute('data-v')))+' colunas';});
+  rtScoreRefresh();
 }
 function rtApply(){
   var was=RTP.playing; rtStop();
   if(!rtBuild()){ setStatus('Esse ajuste não deu certo para esse áudio. Voltei para o anterior.',true); return false; }
   rtRender(); if(was) rtPlay(); return true;
 }
-function rtText(){
-  var res=RT.res, lab=rtLabels(res.spb,res.M), out=[], pad=function(s){ return (s+'        ').slice(0,8); }, line=function(f){ var parts=[], g, s; for(g=0;g<res.M;g++){ var a=[]; for(s=0;s<res.spb;s++) a.push(f(g*res.spb+s)); parts.push(a.join(' ')); } return parts.join(' | '); };
-  out.push('Tom da Voz · Ritmo · '+RT.bpm+' BPM · compasso '+res.M+'/4');
-  out.push(pad('')+line(function(i){ return lab[i].charAt(0); }));
-  RT_NAMES.forEach(function(n){ out.push(pad(RT_LAB[n])+line(function(i){ return RT.rows[n][i]?'x':'.'; })); });
-  return out.join('\n');
+// One quantized percussion voice: simultaneous hits share a stem.
+function rtScore(){
+  if(!RT)return '';
+  var r=RT.res,spb=r.spb,M=r.M,N=r.steps,W=900,H=260,first=143,last=851,step=(last-first)/N,ink='#18232d',s=[];
+  function line(x1,y1,x2,y2,w){s.push('<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+ink+'" stroke-width="'+(w||1.3)+'" stroke-linecap="round"/>');}
+  function text(x,y,t,size,bold,anchor){s.push('<text x="'+x+'" y="'+y+'" font-family="Arial,sans-serif" font-size="'+size+'" font-weight="'+(bold?'700':'400')+'" text-anchor="'+(anchor||'start')+'" fill="'+ink+'">'+t+'</text>');}
+  function ellipse(x,y){s.push('<ellipse cx="'+x+'" cy="'+y+'" rx="6.5" ry="4.4" transform="rotate(-18 '+x+' '+y+')" fill="'+ink+'"/>');}
+  function cross(x,y){line(x-5,y-5,x+5,y+5,1.8);line(x-5,y+5,x+5,y-5,1.8);}
+  function flags(x,y,count){for(var f=0;f<count;f++){var yy=y+f*9;s.push('<path d="M '+x+' '+yy+' C '+(x+2)+' '+(yy+7)+' '+(x+15)+' '+(yy+10)+' '+(x+10)+' '+(yy+22)+' C '+(x+10)+' '+(yy+13)+' '+(x+3)+' '+(yy+12)+' '+x+' '+(yy+9)+' Z" fill="'+ink+'"/>');}}
+  function rest(x){var y=120;line(x+5,y-12,x-4,y+12,1.8);for(var k=0;k<(spb===4?2:1);k++){var yy=y-8+k*9;s.push('<circle cx="'+(x-4-k*3)+'" cy="'+yy+'" r="3.2" fill="'+ink+'"/><path d="M '+(x-4-k*3)+' '+yy+' Q '+x+' '+(yy+4)+' '+(x+3-k*3)+' '+(yy-2)+'" fill="none" stroke="'+ink+'" stroke-width="1.5"/>');}}
+  function hit(j){return RT_NAMES.some(function(n){return RT.rows[n][j];});}
+  function pos(j){return first+(j+.5)*step;}
+  s.push('<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Partitura de bateria, '+M+'/4, '+RT.bpm+' BPM"><rect width="100%" height="100%" fill="#fff"/>');
+  text(28,31,'Partitura de bateria',22,true);text(28,53,'Tom da Voz  ·  '+RT.bpm+' BPM  ·  '+M+'/4  ·  '+(spb===3?'Tercinas de colcheias':spb===4?'Semicolcheias':'Colcheias'),13,false);
+  for(var y=105;y<=153;y+=12)line(28,y,869,y,1.1);
+  // Unpitched percussion clef and meter.
+  s.push('<rect x="47" y="116" width="5" height="26" fill="'+ink+'"/><rect x="56" y="116" width="5" height="26" fill="'+ink+'"/>');
+  text(86,124,String(M),25,true,'middle');text(86,149,'4',25,true,'middle');line(117,105,117,153,1.5);
+  line(859,105,859,153,1.5);line(867,105,867,153,4);
+  s.push('<circle cx="851" cy="123" r="2.7" fill="'+ink+'"/><circle cx="851" cy="135" r="2.7" fill="'+ink+'"/>');
+  for(var j=0;j<N;j++){
+    var x=pos(j);
+    if(!hit(j)){rest(x);continue;}
+    var bottom=0;
+    if(RT.rows.hat[j]){cross(x,99);bottom=99;}
+    if(RT.rows.snare[j]){ellipse(x,123);bottom=123;}
+    if(RT.rows.kick[j]){ellipse(x,147);bottom=147;}
+    line(x+5.5,74,x+5.5,bottom,1.5);
+  }
+  for(var b=0;b<M;b++){
+    var a=b*spb,z=a+spb,j=a;
+    if(spb===3){var lx=pos(a)-9,rx=pos(z-1)+9,cx=(lx+rx)/2;line(lx,66,lx,60,1);line(lx,60,cx-7,60,1);line(cx+7,60,rx,60,1);line(rx,60,rx,66,1);text(cx,64,'3',12,true,'middle');}
+    while(j<z){if(!hit(j)){j++;continue;}var k=j+1;while(k<z&&hit(k))k++;
+      if(k-j===1)flags(pos(j)+5.5,74,spb===4?2:1);
+      else{line(pos(j)+5.5,74,pos(k-1)+5.5,74,4);if(spb===4)line(pos(j)+5.5,83,pos(k-1)+5.5,83,4);}
+      j=k;
+    }
+    if(b>0) s.push('<line x1="'+(first+a*step)+'" y1="164" x2="'+(first+a*step)+'" y2="170" stroke="#a8b1ba" stroke-width="1"/>');
+    text(first+(a+spb/2)*step,182,String(b+1),12,true,'middle');
+  }
+  cross(36,211);text(49,215,'Chimbal',13,false);ellipse(159,211);text(172,215,'Caixa',13,false);ellipse(260,211);text(273,215,'Bumbo',13,false);
+  text(28,242,'Compasso repetível · transcrição aproximada da grade editável · tomdavoz.com.br',12,false);
+  s.push('</svg>');return s.join('');
 }
+function rtScoreRefresh(){var panel=$('rt-score-panel');if(RT&&panel&&!panel.hidden)$('rt-score-sheet').innerHTML=rtScore();}
+function rtScoreSave(blob,ext){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='partitura-bateria-'+RT.bpm+'bpm.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}
+function rtScoreDownload(png){if(!RT)return;var blob=new Blob([rtScore()],{type:'image/svg+xml;charset=utf-8'});if(!png){rtScoreSave(blob,'svg');rtMsg('Partitura baixada.');return;}var u=URL.createObjectURL(blob),im=new Image();im.onload=function(){var cv=document.createElement('canvas');cv.width=1800;cv.height=520;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);cv.toBlob(function(b){if(b){rtScoreSave(b,'png');rtMsg('Partitura baixada.');}else rtMsg('Não consegui gerar a imagem.');},'image/png');};im.onerror=function(){URL.revokeObjectURL(u);rtMsg('Não consegui gerar a imagem.');};im.src=u;}
 function rtPng(){
   var res=RT.res, N=res.steps, cw=44, ch=44, gap=6, lx=100, top=120, W=lx+N*(cw+gap)+(res.M-1)*10+30, H=top+3*(ch+gap)+60, cv=document.createElement('canvas'), x, i, s, n, px, py, lab=rtLabels(res.spb,res.M), sc=2;
   cv.width=W*sc; cv.height=H*sc; x=cv.getContext('2d'); x.scale(sc,sc);
@@ -2748,10 +2803,11 @@ $('file-ritmo').addEventListener('change',function(e){ var f=e.target.files&&e.t
 $('rt-grid').addEventListener('click',function(e){
   var b=e.target.closest&&e.target.closest('.rt-c'); if(!b||!RT) return;
   var n=b.getAttribute('data-n'), s=+b.getAttribute('data-s'); RT.rows[n][s]=!RT.rows[n][s]; b.setAttribute('aria-pressed',RT.rows[n][s]?'true':'false');
+  rtScoreRefresh();
   if(!RTP.playing) rtHit(n,audio().currentTime+.01);
 });
 $('rt-play').addEventListener('click',function(){ if(RTP.playing) rtStop(); else rtPlay(); });
-$('rt-bpm-r').addEventListener('input',function(){ if(!RT) return; RT.bpm=+this.value; $('rt-bpm-v').textContent=RT.bpm+' BPM'; });
+$('rt-bpm-r').addEventListener('input',function(){ if(!RT) return; RT.bpm=+this.value; $('rt-bpm-v').textContent=RT.bpm+' BPM'; rtScoreRefresh(); });
 document.querySelectorAll('#r-ritmo .seg[data-rt]').forEach(function(bt){
   bt.addEventListener('click',function(){
     if(!RT||S.busy) return; var k=this.getAttribute('data-rt'), v=+this.getAttribute('data-v'), o=RT.opts, old=JSON.stringify(o);
@@ -2763,11 +2819,9 @@ document.querySelectorAll('#r-ritmo .seg[data-rt]').forEach(function(bt){
   });
 });
 $('rt-rot').addEventListener('click',function(){ if(!RT||S.busy) return; RT.opts.d=(RT.opts.d+1)%RT.opts.M; rtApply(); rtMsg('Início do compasso mudou de lugar.'); });
-$('rt-copy').addEventListener('click',function(){
-  if(!RT) return; var t=rtText();
-  var fb=function(){ var a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(_){} a.remove(); rtMsg(ok?'Copiado.':'Não consegui copiar neste navegador.'); };
-  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ rtMsg('Copiado.'); },fb); else fb();
-});
+$('rt-score').addEventListener('click',function(){if(!RT)return;var panel=$('rt-score-panel');panel.hidden=!panel.hidden;this.setAttribute('aria-expanded',String(!panel.hidden));this.textContent=panel.hidden?'Ver partitura':'Ocultar partitura';rtScoreRefresh();});
+$('rt-score-png').addEventListener('click',function(){rtScoreDownload(true);});
+$('rt-score-svg').addEventListener('click',function(){rtScoreDownload(false);});
 $('rt-png').addEventListener('click',function(){
   if(!RT) return; var cv=rtPng();
   cv.toBlob(function(bl){ if(!bl){ rtMsg('Não consegui gerar a imagem.'); return; } var u=URL.createObjectURL(bl), a=document.createElement('a'); a.href=u; a.download='ritmo-'+RT.bpm+'bpm.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); },4000); rtMsg('Imagem baixada.'); },'image/png');
@@ -2959,20 +3013,17 @@ $('b-legal-x').addEventListener('click',function(){ $('dlg-legal').close(); });
 </script>
 <script>
 (function(){
- var v=document.getElementById('tdv-banner-video'),b=document.getElementById('tdv-banner-toggle');if(!v||!b)return;
- var hero=v.closest('.pv-hero'),reduce=window.matchMedia('(prefers-reduced-motion: reduce)'),pausedByUser=false;
+ var v=document.getElementById('tdv-banner-video');if(!v)return;
+ var hero=v.closest('.pv-hero'),reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
  var fallbackUrls=['https://tomdavoz.com.br/banner-tomdavoz.mp4','https://raw.githubusercontent.com/nvcpin/tomdavoz/main/banner-tomdavoz.mp4'],attempted=new Set([v.src]),failed=false;
- function label(){b.textContent=v.paused?'Reproduzir vídeo':'Pausar vídeo';b.setAttribute('aria-label',v.paused?'Reproduzir vídeo de apresentação':'Pausar vídeo de apresentação');}
- function active(){return document.body.getAttribute('data-view')==='home'&&!document.hidden;}
+ function active(){return document.body.getAttribute('data-view')==='home'&&!document.hidden&&!reduce.matches;}
  function prepare(){v.defaultMuted=true;v.muted=true;v.loop=true;v.playsInline=true;}
- function play(){prepare();var p=v.play();if(p&&p.catch)p.catch(function(e){if(!active()||e.name==='AbortError')return;if(e.name==='NotSupportedError'){nextSource();return;}b.hidden=false;label();});}
- function update(){if(!active()||reduce.matches||pausedByUser){v.pause();return;}if(!failed)play();}
- function nextSource(){if(failed)return;var next=fallbackUrls.find(function(url){return !attempted.has(url);});if(!next){failed=true;hero.classList.remove('tdv-video-ready');b.hidden=true;return;}attempted.add(next);v.src=next;v.load();update();}
- v.addEventListener('playing',function(){if(!active()||pausedByUser||reduce.matches&&!v.dataset.manual){v.pause();return;}hero.classList.add('tdv-video-ready');b.hidden=false;label();});
- v.addEventListener('pause',label);v.addEventListener('error',nextSource);
- b.addEventListener('click',function(){if(v.paused){pausedByUser=false;v.dataset.manual='1';play();}else{pausedByUser=true;v.pause();}label();});
- new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-view']});document.addEventListener('visibilitychange',update);if(reduce.addEventListener)reduce.addEventListener('change',update);
- prepare();if(reduce.matches){v.autoplay=false;b.hidden=false;label();}if(v.error)nextSource();else update();
+ function update(){if(!active()){v.pause();return;}if(failed)return;prepare();var p=v.play();if(p&&p.catch)p.catch(function(e){if(active()&&e.name==='NotSupportedError')nextSource();});}
+ function nextSource(){if(failed)return;var next=fallbackUrls.find(function(url){return !attempted.has(url);});if(!next){failed=true;hero.classList.remove('tdv-video-ready');return;}attempted.add(next);v.src=next;v.load();update();}
+ v.addEventListener('playing',function(){if(!active()){v.pause();return;}hero.classList.add('tdv-video-ready');});
+ v.addEventListener('error',nextSource);
+ new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-view']});document.addEventListener('visibilitychange',update);if(reduce.addEventListener)reduce.addEventListener('change',function(){if(reduce.matches)hero.classList.remove('tdv-video-ready');update();});
+ prepare();if(reduce.matches)v.autoplay=false;if(v.error)nextSource();else update();
 })();
 </script>
 </body>
