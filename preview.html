@@ -399,6 +399,30 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
 #tdv-range-visual .av-range-legend>div{padding:8px 10px;background:#12212b80;border-radius:8px}
 #tdv-voice-visual,#tdv-range-visual{padding:clamp(14px,2vw,22px)}
 @media(prefers-reduced-motion:reduce){.pv-hero .tdv-banner-video{transition:none}}
+/* Compact, horizontal vocal result; retain a readable stacked mobile layout. */
+#v-voz #r-key{gap:18px}
+#r-key .tdv-voice-row{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start;min-width:0}
+#r-key .tdv-voice-details{display:flex;flex-direction:column;gap:16px;min-width:0}
+#r-key #k-sum:empty,#r-key #k-conf:empty{display:none}
+#r-key #cands[hidden]{display:none!important}
+#r-key #tdv-voice-visual{padding:14px}
+#r-key #tdv-voice-visual .av-title{font-size:1.15rem!important}
+#r-key #tdv-voice-visual .av-chart{max-width:265px;margin:0 auto}
+#r-key #tdv-voice-visual .av-wave{height:24px;margin-bottom:6px}
+#r-key #tdv-voice-visual .av-legend{gap:5px 9px}
+#r-key #tdv-voice-visual .av-desc{font-size:.73rem}
+@media(min-width:1280px){
+ #r-key .tdv-voice-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+ #v-voz #r-key #k-big{font-size:clamp(3.7rem,6vw,6rem)}
+ #r-key .tdv-voice-details>div:first-child{column-gap:12px;align-items:center}
+ #r-key #k-pt{font-size:1.3rem}
+ #r-key #b-keyplay{height:auto;min-height:36px;white-space:normal;line-height:1.25;text-align:left}
+ #r-key .hist{height:94px;gap:3px}
+ #r-key .hist span{font-size:.66rem}
+}
+.pv-hero .tdv-banner-video{z-index:0}
+.pv-hero.tdv-video-ready::after{z-index:1}
+.pv-hero.tdv-video-ready>div:first-of-type{z-index:2}
 </style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
@@ -417,7 +441,7 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
 
 <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:py-10">
 
-  <section data-home class="pv-hero pv-band"><video class="tdv-banner-video" id="tdv-banner-video" muted loop playsinline preload="none" aria-hidden="true"><source src="banner-tomdavoz.mp4" type="video/mp4"></video><button class="tdv-banner-toggle" type="button" id="tdv-banner-toggle" aria-label="Pausar vídeo de apresentação" hidden>Pausar vídeo</button><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
+  <section data-home class="pv-hero pv-band"><video class="tdv-banner-video" id="tdv-banner-video" src="banner-tomdavoz.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video><button class="tdv-banner-toggle" type="button" id="tdv-banner-toggle" aria-label="Pausar vídeo de apresentação" hidden>Pausar vídeo</button><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
   <h1 data-tool class="sr-only">Tom da Voz</h1>
 
   <div data-home class="pv-intro"><span class="pv-kicker">FERRAMENTAS</span><h2>Seu estúdio musical</h2><p>Análises com créditos e ferramentas gratuitas, no seu ritmo.</p></div>
@@ -492,6 +516,8 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold">O tom da sua voz</h2><span class="badge" id="badge">Exemplo</span>
       </div>
+      <div class="tdv-voice-row">
+        <div class="tdv-voice-details">
       <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
         <div id="k-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
         <div class="flex min-w-0 flex-col gap-1 pb-1">
@@ -509,7 +535,9 @@ body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;alig
         <h3 class="lbl mb-3">Notas que você mais cantou</h3>
         <div class="hist" id="hist"></div>
       </div>
-      <div id="tdv-voice-visual" class="tdv-analysis-viz" hidden></div>
+        </div>
+        <div id="tdv-voice-visual" class="tdv-analysis-viz" hidden></div>
+      </div>
       <div class="flex flex-col gap-3 border-t border-border pt-5">
         <h3 class="text-base font-semibold">Transpor a música</h3>
         <label for="orig" class="lbl">Tom original da música (opcional)</label>
@@ -2933,13 +2961,18 @@ $('b-legal-x').addEventListener('click',function(){ $('dlg-legal').close(); });
 (function(){
  var v=document.getElementById('tdv-banner-video'),b=document.getElementById('tdv-banner-toggle');if(!v||!b)return;
  var hero=v.closest('.pv-hero'),reduce=window.matchMedia('(prefers-reduced-motion: reduce)'),pausedByUser=false;
+ var fallbackUrls=['https://tomdavoz.com.br/banner-tomdavoz.mp4','https://raw.githubusercontent.com/nvcpin/tomdavoz/main/banner-tomdavoz.mp4'],attempted=new Set([v.src]),failed=false;
  function label(){b.textContent=v.paused?'Reproduzir vídeo':'Pausar vídeo';b.setAttribute('aria-label',v.paused?'Reproduzir vídeo de apresentação':'Pausar vídeo de apresentação');}
  function active(){return document.body.getAttribute('data-view')==='home'&&!document.hidden;}
- function update(){if(!active()||reduce.matches||pausedByUser){v.pause();return;}v.muted=true;var p=v.play();if(p&&p.catch)p.catch(function(){b.hidden=false;label();});}
- v.addEventListener('playing',function(){hero.classList.add('tdv-video-ready');b.hidden=false;label();});v.addEventListener('pause',label);
- v.addEventListener('error',function(){hero.classList.remove('tdv-video-ready');b.hidden=true;});
- b.addEventListener('click',function(){if(v.paused){pausedByUser=false;v.muted=true;var p=v.play();if(p&&p.catch)p.catch(function(){});}else{pausedByUser=true;v.pause();}label();});
- new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-view']});document.addEventListener('visibilitychange',update);if(reduce.addEventListener)reduce.addEventListener('change',update);if(reduce.matches){b.hidden=false;label();}update();
+ function prepare(){v.defaultMuted=true;v.muted=true;v.loop=true;v.playsInline=true;}
+ function play(){prepare();var p=v.play();if(p&&p.catch)p.catch(function(e){if(!active()||e.name==='AbortError')return;if(e.name==='NotSupportedError'){nextSource();return;}b.hidden=false;label();});}
+ function update(){if(!active()||reduce.matches||pausedByUser){v.pause();return;}if(!failed)play();}
+ function nextSource(){if(failed)return;var next=fallbackUrls.find(function(url){return !attempted.has(url);});if(!next){failed=true;hero.classList.remove('tdv-video-ready');b.hidden=true;return;}attempted.add(next);v.src=next;v.load();update();}
+ v.addEventListener('playing',function(){if(!active()||pausedByUser||reduce.matches&&!v.dataset.manual){v.pause();return;}hero.classList.add('tdv-video-ready');b.hidden=false;label();});
+ v.addEventListener('pause',label);v.addEventListener('error',nextSource);
+ b.addEventListener('click',function(){if(v.paused){pausedByUser=false;v.dataset.manual='1';play();}else{pausedByUser=true;v.pause();}label();});
+ new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-view']});document.addEventListener('visibilitychange',update);if(reduce.addEventListener)reduce.addEventListener('change',update);
+ prepare();if(reduce.matches){v.autoplay=false;b.hidden=false;label();}if(v.error)nextSource();else update();
 })();
 </script>
 </body>
