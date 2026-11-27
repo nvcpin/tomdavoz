@@ -350,6 +350,28 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
  body[data-view=home] .pv-feature{padding:24px}
 }
 </style>
+<style>
+/* Data-driven tonal visualization; no effect on analysis or credits. */
+.tdv-analysis-viz[hidden]{display:none!important}
+.tdv-analysis-viz{position:relative;isolation:isolate;overflow:hidden;min-width:0;background:radial-gradient(ellipse at 50% 42%,#1b383b 0,#17252e 46%,#141e28 85%);border:1px solid #36515a;border-radius:18px;padding:20px;color:#e9f4f4}
+.tdv-analysis-viz .av-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.tdv-analysis-viz .av-eyebrow{font-size:.68rem;letter-spacing:.14em;font-weight:700;color:#8ce3c6}
+.tdv-analysis-viz .av-status{font-size:.75rem;color:#b9d2d2;border:1px solid #49636a;border-radius:99px;padding:4px 9px}
+.tdv-analysis-viz .av-title{color:#edf8f7!important;font-size:1.5rem!important;line-height:1.15;font-weight:650;letter-spacing:-.035em;margin-top:10px}
+.tdv-analysis-viz .av-chart{display:block;width:100%;height:auto;max-width:360px;margin:4px auto 0;overflow:visible}
+.tdv-analysis-viz .av-desc{font-size:.78rem;color:#b9cecf;line-height:1.5;margin:4px 0 0}
+.tdv-analysis-viz .av-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.73rem;color:#d6e6e5}
+.tdv-analysis-viz .av-legend span{display:inline-flex;gap:6px;align-items:center}
+.tdv-analysis-viz .av-legend i{width:9px;height:9px;border-radius:3px;background:#8ce3c6}
+.tdv-analysis-viz .av-legend span:nth-child(2) i{background:#f3ca80}
+.tdv-analysis-viz .av-legend span:nth-child(3) i{background:#52656d}
+.tdv-analysis-viz .av-wave{width:100%;height:36px;display:block;opacity:.75;margin:0 0 10px}
+.tdv-analysis-viz .av-appear{animation:tdvReveal .65s ease-out both;transform-origin:center}
+@keyframes tdvReveal{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.tdv-analysis-viz .av-appear{animation:none}}
+@media(min-width:900px){#tdv-music-visual{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);align-items:center;column-gap:32px}#tdv-music-visual .av-chart{grid-column:2;grid-row:1/6}#tdv-music-visual .av-top,#tdv-music-visual .av-title,#tdv-music-visual .av-legend,#tdv-music-visual .av-desc,#tdv-music-visual .av-wave{grid-column:1}}
+@media(max-width:639px){.tdv-analysis-viz{padding:15px}.tdv-analysis-viz .av-title{font-size:1.25rem!important}}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
@@ -459,6 +481,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
         <h3 class="lbl mb-3">Notas que você mais cantou</h3>
         <div class="hist" id="hist"></div>
       </div>
+      <div id="tdv-voice-visual" class="tdv-analysis-viz" hidden></div>
       <div class="flex flex-col gap-3 border-t border-border pt-5">
         <h3 class="text-base font-semibold">Transpor a música</h3>
         <label for="orig" class="lbl">Tom original da música (opcional)</label>
@@ -532,6 +555,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
           <div id="m-where" class="text-sm text-muted-foreground"></div>
         </div>
       </div>
+      <div id="tdv-music-visual" class="tdv-analysis-viz" hidden></div>
       <div id="m-cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
         <p id="m-cands-msg" class="text-sm"></p>
         <div id="m-chips" class="flex flex-wrap gap-2"></div>
@@ -1554,6 +1578,40 @@ $('p-lo').addEventListener('click',function(){ play([Math.round(R.res.lo)],0,2.2
 $('p-hi').addEventListener('click',function(){ play([Math.round(R.res.hi)],0,2.2); });
 $('p-all').addEventListener('click',function(){ var l=[],m; for(m=Math.round(R.res.lo);m<=Math.round(R.res.hi);m+=2) l.push(m); play(l,.34,1.2); });
 
+
+// Visual-only chart: histogram values are computed by the existing analysis.
+function renderTonalVisual(id,res,key,example,isMusic){
+  var host=$(id);
+  if(!host||!res||!key||!res.hist||res.hist.length!==12)return;
+  var max=Math.max.apply(null,res.hist)||1, sc=key.minor?SC_MIN:SC_MAJ, ns='http://www.w3.org/2000/svg';
+  host.textContent=''; host.hidden=false;
+  var top=el('div','av-top');top.appendChild(el('span','av-eyebrow',isMusic?'MAPA HARMÔNICO':'MAPA DA VOZ'));top.appendChild(el('span','av-status',example?'Exemplo':'Confiança '+res.level));host.appendChild(top);
+  host.appendChild(el('h3','av-title',example?'Visualização da análise':'Análise concluída'));
+  var chart=document.createElementNS(ns,'svg'); chart.setAttribute('viewBox','0 0 340 340');chart.setAttribute('class','av-chart av-appear');chart.setAttribute('role','img');chart.setAttribute('aria-label','Distribuição relativa de notas: '+SHARP.map(function(n,j){return n+' '+Math.round(res.hist[j]/max*100)+'% da nota mais presente';}).join(', '));
+  function add(tag,attrs,txt){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k]);});if(txt!=null)e.textContent=txt;chart.appendChild(e);return e;}
+  function pt(r,j){var a=(j*30-90)*Math.PI/180;return [170+r*Math.cos(a),170+r*Math.sin(a)];}
+  [48,75,102,129].forEach(function(r){add('circle',{cx:170,cy:170,r:r,fill:'none',stroke:'#375058','stroke-width':'.8'});});
+  var xy=[];
+  for(var j=0;j<12;j++){
+    var v=Math.max(0,Number(res.hist[j])||0)/max,p=pt(129,j),q=pt(48+81*v,j);xy.push(q.join(','));
+    add('line',{x1:170,y1:170,x2:p[0],y2:p[1],stroke:'#344a53','stroke-width':'.7'});
+  }
+  add('polygon',{points:xy.join(' '),fill:'#8ce3c6','fill-opacity':'.16',stroke:'#76d7c0','stroke-width':'1.7','stroke-linejoin':'round'});
+  for(var j=0;j<12;j++){
+    var root=j===key.t, inside=sc.indexOf((j-key.t+12)%12)>=0, q=xy[j].split(','), p=pt(149,j);
+    add('circle',{cx:q[0],cy:q[1],r:root?5.5:3.6,fill:root?'#f3ca80':inside?'#8ce3c6':'#71848a',stroke:'#18262e','stroke-width':'1'});
+    add('text',{x:p[0],y:p[1]+4,fill:root?'#f3ca80':inside?'#c6f5e8':'#a3b4ba','font-size':root?'13':'11','font-weight':root?'700':'500','text-anchor':'middle'},SHARP[j]);
+  }
+  add('circle',{cx:170,cy:170,r:42,fill:'#14232b',stroke:'#557078','stroke-width':'1'});
+  add('text',{x:170,y:171,fill:'#8ce3c6','font-size':'27','font-weight':'700','text-anchor':'middle'},keyShort(key.t,key.minor));
+  add('text',{x:170,y:188,fill:'#c9d8d9','font-size':'10','text-anchor':'middle'},key.minor?'MENOR':'MAIOR');
+  host.appendChild(chart);
+  var wave=document.createElementNS(ns,'svg');wave.setAttribute('viewBox','0 0 360 36');wave.setAttribute('class','av-wave');wave.setAttribute('aria-hidden','true');
+  ['#8ce3c6','#f3ca80'].forEach(function(c,j){var path=document.createElementNS(ns,'path');path.setAttribute('d',j?'M0 18 Q30 6 60 18 T120 18 T180 18 T240 18 T300 18 T360 18':'M0 18 Q30 34 60 18 T120 18 T180 18 T240 18 T300 18 T360 18');path.setAttribute('fill','none');path.setAttribute('stroke',c);path.setAttribute('stroke-width','1.2');wave.appendChild(path);});host.appendChild(wave);
+  var legend=el('div','av-legend');['Notas da escala','Tônica','Fora da escala'].forEach(function(t){var sp=el('span');sp.appendChild(el('i'));sp.appendChild(document.createTextNode(t));legend.appendChild(sp);});host.appendChild(legend);
+  host.appendChild(el('p','av-desc','Quanto mais distante do centro, maior a presença relativa da nota '+(isMusic?'no áudio analisado.':'na voz analisada.')+' O gráfico não representa acordes nem uma linha do tempo.'));
+}
+
 function renderKey(){
   var res=K.res, c=K.opts[K.sel], lvl=res.level;
   $('badge').hidden=!K.example;
@@ -1574,6 +1632,7 @@ function renderKey(){
     var d=el('div',pc===c.t?'ton':(sc.indexOf((pc-c.t+12)%12)>=0?'in':'')), b=el('b'); b.style.height=Math.max(2,Math.round(res.hist[pc]/mx*88))+'%';
     d.appendChild(b); d.appendChild(el('span',null,SHARP[pc])); hs.appendChild(d);
   }
+  renderTonalVisual('tdv-voice-visual',res,c,K.example,false);
   transpose(); renderCompare();
 }
 $('b-keyplay').addEventListener('click',function(){ var c=K.opts[K.sel]; playKey(c.t,c.minor); });
@@ -1756,6 +1815,7 @@ function renderMusic(){
       b.addEventListener('click',function(){ M.sel=i; renderMusic(); playKey(o.t,o.minor); }); chips.appendChild(b);
     });
   }
+  renderTonalVisual('tdv-music-visual',r,k,false,true);
   renderChanges(); renderPlayer(true);
 }
 function renderChanges(){
