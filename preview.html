@@ -328,6 +328,28 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
  body[data-view=home] #tools .tool:nth-child(5){grid-column:2/span 2!important}
 }
 </style>
+<style>
+/* Wider desktop canvas and full-bleed section backgrounds. */
+@media(min-width:640px){
+ header>div{max-width:1600px!important;padding-inline:clamp(24px,3vw,48px)}
+ body[data-view=home] main{max-width:1600px!important;padding-inline:clamp(24px,3vw,48px);padding-top:0}
+ body:not([data-view=home]) main{max-width:1600px!important;padding-inline:clamp(24px,3vw,48px)}
+ body[data-view=home] .pv-hero,body[data-view=home] .pv-showcase{position:relative;isolation:isolate;border:0;border-radius:0}
+ body[data-view=home] .pv-hero::before,body[data-view=home] .pv-showcase::before{content:"";position:absolute;inset:0 -100vmax;z-index:-1;background:inherit;pointer-events:none;clip-path:inset(0)}
+ body[data-view=home]{overflow-x:clip}
+ body[data-view=home] .pv-hero{padding:clamp(36px,5vw,72px) 0}
+ body[data-view=home] .pv-showcase{padding:clamp(24px,4vw,48px) 0}
+ body[data-view=home] section[aria-labelledby="h-como"]{position:relative;isolation:isolate;border:0;border-radius:0;padding:clamp(24px,3vw,40px) 0}
+ body[data-view=home] section[aria-labelledby="h-como"]::before{content:"";position:absolute;inset:0 -100vmax;background:#e7edf3;z-index:-1;pointer-events:none}
+}
+@media(min-width:1200px){
+ body[data-view=home] .pv-hero{grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:clamp(40px,6vw,96px)}
+ body[data-view=home] #tools{gap:16px}
+ body[data-view=home] #tools .tool{padding:22px;min-height:184px}
+ body[data-view=home] .pv-showcase{gap:18px}
+ body[data-view=home] .pv-feature{padding:24px}
+}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
