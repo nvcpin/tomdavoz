@@ -310,6 +310,24 @@ body:not([data-view=home]) #v-cifra .cifra-out{--foreground:216 24% 95%;--primar
 body:not([data-view=home]) #v-musica label:has(#file-music),body:not([data-view=home]) #v-ritmo label:has(#file-ritmo){background:#eaf1f8;color:#344e70;border-color:#8199b4}
 body:not([data-view=home]) #v-musica label:has(#file-music):hover,body:not([data-view=home]) #v-ritmo label:has(#file-ritmo):hover{background:#dce8f4}
 </style>
+<style>
+/* Balanced landing-page tool cards; internal navigation unaffected. */
+body[data-view=home] #tools{grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:1fr;align-items:stretch;gap:12px}
+body[data-view=home] #tools .tool{grid-column:auto!important;min-height:184px;padding:18px;gap:11px}
+body[data-view=home] #tools .tool .tx{flex:1}
+body[data-view=home] #tools .tool .cost{margin-top:auto}
+@media(max-width:1023px) and (min-width:640px){
+ body[data-view=home] #tools{grid-template-columns:repeat(6,minmax(0,1fr))}
+ body[data-view=home] #tools .tool{grid-column:span 2!important}
+ body[data-view=home] #tools .tool:nth-child(4){grid-column:2/span 2!important}
+ body[data-view=home] #tools .tool:nth-child(5){grid-column:4/span 2!important}
+}
+@media(max-width:639px){
+ body[data-view=home] #tools{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+ body[data-view=home] #tools .tool{grid-column:span 2!important;min-height:166px;padding:14px}
+ body[data-view=home] #tools .tool:nth-child(5){grid-column:2/span 2!important}
+}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
