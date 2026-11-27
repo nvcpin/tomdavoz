@@ -26,10 +26,8 @@ window.TDV_CONFIG = {
   SUPABASE_URL: 'https://xpylwuubxxzfjjcfxcdx.supabase.co',
   SUPABASE_KEY: 'sb_publishable_zh9LDD5_AkZz1noI1z5TtA_5d_uOO2r',
 
-  /* Google AdSense. Vazio = os dois espaços ficam reservados e nenhum script de anúncio é carregado. */
+  /* Google AdSense. A página não tem mais espaços de anúncio reservados. */
   ADSENSE_CLIENT: 'ca-pub-3700786821756111',   /* ex.: 'ca-pub-0000000000000000' */
-  AD_SLOT_A: '',        /* ID do bloco do primeiro espaço (depois dos resultados) */
-  AD_SLOT_B: '',        /* ID do bloco do segundo espaço (final da página) */
 
   /* Identificação do responsável (aparece em Termos, Privacidade e Contato). Preencha antes de lançar. */
   RESPONSAVEL: 'Tom da Voz',
@@ -57,10 +55,39 @@ body{
   background-color:#0e1230;
 }
 body::before{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(12,18,54,.2),rgba(10,14,44,.55)),url(fundo.jpg?v=3) center/cover no-repeat}
-.acard{display:block;padding:18px;border:1px solid hsl(var(--c) / .5);border-top:3px solid hsl(var(--c));border-radius:12px;background:linear-gradient(145deg,hsl(var(--c) / .22),hsl(var(--c) / .05) 70%),hsl(var(--card) / .85);transition:transform .15s,border-color .15s}
-.acard:hover{transform:translateY(-2px);border-color:hsl(var(--c))}
-.acard h3{font-weight:600;color:hsl(var(--c))}
-.acard p{margin-top:4px;font-size:.875rem;color:hsl(var(--muted-foreground))}
+.acard,.scard{display:block;padding:18px;border:1px solid hsl(var(--c) / .5);border-top:3px solid hsl(var(--c));border-radius:12px;background:linear-gradient(145deg,hsl(var(--c) / .22),hsl(var(--c) / .05) 70%),hsl(var(--card) / .85);transition:transform .15s,border-color .15s}
+.acard:hover,.tile:hover{transform:translateY(-2px);border-color:hsl(var(--c))}
+.acard h3,.scard h3{font-weight:600;color:hsl(var(--c))}
+.acard p,.scard p{margin-top:4px;font-size:.875rem;color:hsl(var(--muted-foreground))}
+.scard .num{display:grid;place-items:center;width:36px;height:36px;margin-bottom:10px;border-radius:50%;background:hsl(var(--c) / .22);color:hsl(var(--c));font:400 1.5rem/1 "Instrument Serif",Georgia,serif}
+.tile{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid hsl(var(--c) / .4);border-radius:12px;background:linear-gradient(145deg,hsl(var(--c) / .16),hsl(var(--c) / .04) 70%),hsl(var(--card) / .85);transition:transform .15s,border-color .15s}
+.tile .em{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:hsl(var(--c) / .2);font-size:1.2rem}
+.tile b{display:block;font-weight:600;color:hsl(var(--c))}
+.tile .d{display:block;margin-top:2px;font-size:.85rem;line-height:1.35;color:hsl(var(--muted-foreground))}
+.vcard{border-top:3px solid hsl(var(--c))!important}
+.vcard h2{color:hsl(var(--c))}
+.acard:focus-visible,.tile:focus-visible,.tool:focus-visible{outline:2px solid hsl(var(--mark));outline-offset:2px}
+/* menu de ferramentas: cartões grandes no início, abas compactas dentro de cada área */
+body:not([data-view=home]) [data-home]{display:none!important}
+body[data-view=home] [data-tool]{display:none!important}
+#tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:768px){#tools{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+.tool{display:flex;flex-direction:column;gap:12px;min-width:0;padding:16px;border:1px solid hsl(var(--c) / .45);border-radius:14px;background:linear-gradient(150deg,hsl(var(--c) / .26),hsl(var(--c) / .06) 75%),hsl(var(--card) / .88);transition:transform .15s,border-color .15s,background .15s}
+.tool:hover{transform:translateY(-2px);border-color:hsl(var(--c))}
+.tool .ti{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:hsl(var(--c) / .2);font-size:1.5rem;line-height:1}
+.tool b{display:block;font-size:1.05rem;font-weight:600;color:hsl(var(--c))}
+.tool small{display:block;margin-top:2px;font-size:.82rem;line-height:1.35;color:hsl(var(--muted-foreground))}
+.tool .cost{align-self:flex-start;margin-top:auto;padding:2px 8px;border-radius:999px;background:hsl(var(--c) / .18);font-size:.72rem;font-style:normal;font-weight:600;color:hsl(var(--c))}
+body:not([data-view=home]) #tools{position:sticky;top:0;z-index:30;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px;border:1px solid hsl(var(--border));border-radius:16px;background:hsl(var(--background) / .88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+body:not([data-view=home]) .tool{flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px;text-align:center}
+body:not([data-view=home]) .tool:hover{transform:none}
+body:not([data-view=home]) .tool .ti{width:auto;height:auto;background:none;font-size:1.3rem}
+body:not([data-view=home]) .tool small,body:not([data-view=home]) .tool .cost{display:none}
+body:not([data-view=home]) .tool b{font-size:.78rem;color:hsl(var(--foreground))}
+body:not([data-view=home]) .tool[aria-current=page]{background:hsl(var(--c) / .28);border-color:hsl(var(--c));box-shadow:0 0 0 1px hsl(var(--c))}
+body:not([data-view=home]) .tool[aria-current=page] b{color:hsl(var(--c))}
+@media(min-width:640px){body:not([data-view=home]) .tool{flex-direction:row;justify-content:center;gap:8px;padding:10px 12px}body:not([data-view=home]) .tool b{font-size:.92rem}}
+#statusbox:has(#status:empty):has(#prog[hidden]){display:none}
 [hidden]{display:none!important}
 dialog::backdrop{background:rgb(0 0 0 / .72)}
 dialog{max-height:90vh;overflow:auto}
@@ -106,12 +133,11 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   .badge{@apply inline-flex items-center rounded-md bg-mark/15 text-mark px-2 py-0.5 text-xs font-medium}
   .lbl{@apply text-sm font-medium text-muted-foreground}
   .inp{@apply h-11 w-full rounded-md border border-border bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring}
-  .ad{@apply flex min-h-[90px] items-center justify-center rounded-lg border border-dashed border-border text-xs text-muted-foreground}
   .link{@apply underline underline-offset-4 hover:text-foreground cursor-pointer}
 }
 </style>
 </head>
-<body class="bg-background text-foreground font-sans antialiased">
+<body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
 <header class="border-b border-border bg-card/60 backdrop-blur-md">
   <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
@@ -119,46 +145,65 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
     <nav class="flex items-center gap-1" aria-label="Principal">
       <span id="credit-pill" class="badge mr-1" hidden></span>
       <a href="artigos.html" class="btn btn-g hidden sm:inline-flex">Artigos</a>
-      <a id="n-rep" href="#repertorio" class="btn btn-g" hidden>Repertório</a>
       <a id="n-hist" href="#historico" class="btn btn-g" hidden>Histórico</a>
       <button id="b-login" type="button" class="btn btn-g">Entrar</button>
     </nav>
   </div>
 </header>
 
-<main class="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10">
+<main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:py-10">
 
-  <section class="flex flex-col gap-3">
+  <section data-home class="flex flex-col gap-3">
     <h1 class="font-display text-5xl leading-none sm:text-6xl" style="text-wrap:balance">Descubra em que tom você canta</h1>
-    <p class="max-w-prose text-lg text-muted-foreground">Sem tocar nada: cante um trecho, descubra o tom da sua voz e o tom das músicas, e ajuste a música para cantar com mais conforto.</p>
+    <p class="max-w-prose text-lg text-muted-foreground">Sem tocar nada: descubra o tom da sua voz e das músicas e ajuste tudo para cantar com conforto. <b class="text-foreground">100 créditos grátis todo mês.</b></p>
   </section>
+  <h1 data-tool class="sr-only">Tom da Voz</h1>
+
+  <nav id="tools" aria-label="Ferramentas">
+    <a class="tool" data-v="voz" href="#voz" style="--c:162 52% 60%"><span class="ti" aria-hidden="true">🎤</span><span class="tx"><b>Minha voz</b><small>Descubra o seu tom e a sua extensão vocal</small></span><em class="cost">10 créditos por análise</em></a>
+    <a class="tool" data-v="musica" href="#musica" style="--c:205 80% 62%"><span class="ti" aria-hidden="true">🎵</span><span class="tx"><b>Música</b><small>Veja o tom e ajuste para a sua voz</small></span><em class="cost">20 créditos por música</em></a>
+    <a class="tool" data-v="cifra" href="#cifra" style="--c:32 88% 62%"><span class="ti" aria-hidden="true">🎸</span><span class="tx"><b>Cifra</b><small>Troque os acordes e use o capotraste</small></span><em class="cost">Grátis</em></a>
+    <a class="tool" data-v="repertorio" href="#repertorio" style="--c:340 75% 65%"><span class="ti" aria-hidden="true">⭐</span><span class="tx"><b>Repertório</b><small>Guarde cada música no tom certo</small></span><em class="cost">Grátis, com conta</em></a>
+  </nav>
 
   <div id="demo-banner" class="rounded-lg border border-mark/40 bg-mark/10 px-4 py-3 text-sm" hidden>
     <b class="text-mark">Modo de demonstração.</b> Os créditos e o histórico ficam só neste navegador e não são seguros. Para valer de verdade, configure o Supabase no topo do arquivo.
   </div>
 
-  <section class="card flex flex-col gap-3 p-5" aria-label="Seus créditos">
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <h2 class="text-base font-semibold">Seus créditos</h2>
+  <section class="card flex flex-col gap-2 px-4 py-3" aria-label="Seus créditos">
+    <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+      <h2 class="text-sm font-semibold">Seus créditos</h2>
       <span id="credit-text" class="text-sm text-muted-foreground"></span>
     </div>
     <div class="h-1.5 overflow-hidden rounded bg-border"><i id="usage-bar" class="block h-full w-0 bg-mark"></i></div>
-    <p class="text-sm text-muted-foreground">Todo mês, 100 créditos grátis para testar sua voz e suas músicas!</p>
   </section>
 
-  <div class="grid gap-6 md:grid-cols-2">
+  <div id="statusbox" data-tool class="flex flex-col gap-2">
+    <div class="h-1 overflow-hidden rounded bg-border" id="prog" hidden><i id="prog-i" class="block h-full w-0 bg-primary"></i></div>
+    <p id="status" role="status" aria-live="polite" class="text-sm"></p>
+  </div>
 
-    <section class="card flex flex-col gap-4 p-5 sm:p-6" aria-labelledby="h-voz">
+  <div id="v-voz" class="flex flex-col gap-6" hidden>
+    <section class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:162 52% 60%" aria-labelledby="h-voz">
       <div>
-        <h2 id="h-voz" class="font-display text-3xl leading-none">Sua voz</h2>
+        <h2 id="h-voz" class="font-display text-4xl leading-none">Minha voz</h2>
         <p class="mt-2 text-sm text-muted-foreground">Cante pelo microfone ou envie uma gravação só da sua voz, sem música de fundo. Descubra o seu tom e a faixa em que você canta com conforto.</p>
       </div>
 
-      <div id="actions" class="flex flex-col gap-3">
-        <button id="b-key" type="button" class="btn btn-p w-full">Cantar uma música</button>
-        <button id="b-range" type="button" class="btn btn-o w-full">Descobrir minha extensão vocal</button>
-        <div class="flex flex-col gap-2 rounded-lg border border-border p-3">
-          <span class="lbl" id="l-up-mode">Enviar uma gravação da voz</span>
+      <div id="actions" class="grid gap-3 md:grid-cols-3">
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4">
+          <h3 class="font-semibold">Cantar agora</h3>
+          <p class="flex-1 text-sm text-muted-foreground">Cante um trecho de uma música e veja o tom da sua voz.</p>
+          <button id="b-key" type="button" class="btn btn-p w-full">Cantar uma música</button>
+        </div>
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4">
+          <h3 class="font-semibold">Medir a extensão</h3>
+          <p class="flex-1 text-sm text-muted-foreground">Deslize do grave ao agudo e descubra a faixa em que você canta.</p>
+          <button id="b-range" type="button" class="btn btn-o w-full">Descobrir minha extensão vocal</button>
+        </div>
+        <div class="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4">
+          <h3 class="font-semibold" id="l-up-mode">Enviar uma gravação</h3>
+          <p class="text-sm text-muted-foreground">Uma gravação só da sua voz, sem música de fundo.</p>
           <div class="flex flex-wrap gap-2" role="group" aria-labelledby="l-up-mode">
             <button type="button" class="chip" id="m-key" aria-pressed="true">Tom da melodia</button>
             <button type="button" class="chip" id="m-range" aria-pressed="false">Extensão vocal</button>
@@ -180,268 +225,286 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
       <p class="text-sm text-muted-foreground">Custo: <b class="text-foreground">10 créditos</b> por análise. Cante pelo menos 15 segundos, num lugar silencioso.</p>
     </section>
 
-    <section class="card flex flex-col gap-4 p-5 sm:p-6" aria-labelledby="h-musica">
+    <section id="r-key" class="card vcard flex flex-col gap-6 p-5 sm:p-6" style="--c:162 52% 60%" aria-label="Tom estimado da sua voz">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold">O tom da sua voz</h2><span class="badge" id="badge">Exemplo</span>
+      </div>
+      <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
+        <div id="k-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
+        <div class="flex min-w-0 flex-col gap-1 pb-1">
+          <div id="k-pt" class="text-2xl font-semibold"></div>
+          <div id="k-conf" class="text-sm text-muted-foreground"></div>
+          <button id="b-keyplay" type="button" class="btn btn-o mt-2 h-9 self-start px-3">Ouvir este tom no piano</button>
+        </div>
+      </div>
+      <div id="cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
+        <p id="cands-msg" class="text-sm"></p>
+        <div id="chips" class="flex flex-wrap gap-2"></div>
+      </div>
+      <p id="k-sum" class="max-w-prose"></p>
       <div>
-        <h2 id="h-musica" class="font-display text-3xl leading-none">A música</h2>
+        <h3 class="lbl mb-3">Notas que você mais cantou</h3>
+        <div class="hist" id="hist"></div>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-border pt-5">
+        <h3 class="text-base font-semibold">Transpor a música</h3>
+        <label for="orig" class="lbl">Tom original da música (opcional)</label>
+        <select id="orig" class="inp max-w-xs"></select>
+        <p id="trans-out" class="max-w-prose"></p>
+      </div>
+    </section>
+
+    <section id="r-range" class="card vcard flex flex-col gap-5 p-5 sm:p-6" style="--c:162 52% 60%" aria-label="Extensão vocal">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold">Sua extensão vocal</h2><span class="badge" id="badge2">Exemplo</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <div id="v-type" class="font-display text-5xl leading-none"></div>
+        <p id="r-sum" class="max-w-prose text-muted-foreground"></p>
+        <p id="r-conf" class="text-sm text-muted-foreground"></p>
+      </div>
+      <div>
+        <div class="piano" id="piano" role="group" aria-label="Teclado com a extensão da voz. Toque nas teclas para ouvir"></div>
+        <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
+          <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#3f9a82"></i>Extensão alcançada</span>
+          <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#5fd4b0"></i>Faixa confortável</span>
+          <span><i class="mr-1.5 inline-block h-3 w-3 rounded-full align-[-1px] bg-mark"></i>Nota mais grave e mais aguda</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button id="p-lo" type="button" class="btn btn-o h-10 px-4"></button>
+        <button id="p-hi" type="button" class="btn btn-o h-10 px-4"></button>
+        <button id="p-all" type="button" class="btn btn-o h-10 px-4">Ouvir toda a extensão</button>
+      </div>
+      <p class="text-sm text-muted-foreground">Toque em qualquer tecla para ouvir a nota e cantar junto. O som é de piano sintetizado, e a classificação de voz é aproximada.</p>
+      <div class="flex flex-wrap items-center gap-2">
+        <button type="button" id="b-range2" class="btn btn-p self-start">Descobrir minha extensão vocal</button>
+        <button type="button" id="b-pdf" class="btn btn-o self-start" hidden>Baixar relatório em PDF</button>
+        <span id="pdf-msg" role="status" class="text-sm text-muted-foreground"></span>
+      </div>
+    </section>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/70 p-4">
+      <p class="text-sm text-muted-foreground">Já descobriu a sua voz? Agora veja em que tom cantar cada música.</p>
+      <a href="#musica" class="btn btn-p h-10 px-4">Ir para Música →</a>
+    </div>
+  </div>
+
+  <div id="v-musica" class="flex flex-col gap-6" hidden>
+    <section class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:205 80% 62%" aria-labelledby="h-musica">
+      <div>
+        <h2 id="h-musica" class="font-display text-4xl leading-none">Música</h2>
         <p class="mt-2 text-sm text-muted-foreground">Envie uma música para descobrir o tom, ver se ele muda ao longo da faixa e comparar com a sua voz. Depois, suba ou desça o tom para cantar com mais conforto.</p>
       </div>
-      <label class="btn btn-p relative w-full">Enviar uma música<input id="file-music" type="file" accept="audio/*,video/mp4,video/quicktime,video/webm,.mp3,.m4a,.wav,.ogg,.flac,.mp4,.mov,.webm" class="absolute inset-0 h-full w-full cursor-pointer opacity-0"></label>
+      <label class="btn btn-p relative w-full sm:w-auto sm:self-start sm:px-8">Enviar uma música<input id="file-music" type="file" accept="audio/*,video/mp4,video/quicktime,video/webm,.mp3,.m4a,.wav,.ogg,.flac,.mp4,.mov,.webm" class="absolute inset-0 h-full w-full cursor-pointer opacity-0"></label>
       <ul class="flex flex-col gap-1.5 text-sm text-muted-foreground">
         <li>Formatos: MP3, M4A, WAV, OGG, FLAC, MP4, MOV e WebM (até 150 MB).</li>
         <li>Vale a parte central da música: introdução e final são deixados de lado.</li>
       </ul>
       <p class="text-sm text-muted-foreground">Custo: <b class="text-foreground">20 créditos</b> por música. Baixar a música com o tom ajustado custa <b class="text-foreground">30 créditos</b>.</p>
     </section>
-  </div>
 
-  <div class="flex flex-col gap-2">
-    <div class="h-1 overflow-hidden rounded bg-border" id="prog" hidden><i id="prog-i" class="block h-full w-0 bg-primary"></i></div>
-    <p id="status" role="status" aria-live="polite" class="text-sm"></p>
-  </div>
+    <div id="m-voice" class="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card/70 px-4 py-3 text-sm"></div>
 
-  <section id="r-music" class="card flex flex-col gap-6 p-5 sm:p-6" aria-label="Tom da música" hidden>
-    <div class="flex items-center justify-between gap-3">
-      <h2 class="text-lg font-semibold">Tom da música</h2>
-      <span id="m-file" class="max-w-[60%] truncate text-sm text-muted-foreground"></span>
-    </div>
-    <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
-      <div id="m-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
-      <div class="flex min-w-0 flex-col gap-1 pb-1">
-        <div id="m-pt" class="text-2xl font-semibold"></div>
-        <div id="m-conf" class="text-sm text-muted-foreground"></div>
-        <div id="m-where" class="text-sm text-muted-foreground"></div>
+    <section id="r-music" class="card vcard flex flex-col gap-6 p-5 sm:p-6" style="--c:205 80% 62%" aria-label="Tom da música" hidden>
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold">Tom da música</h2>
+        <span id="m-file" class="max-w-[60%] truncate text-sm text-muted-foreground"></span>
       </div>
-    </div>
-    <div id="m-cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
-      <p id="m-cands-msg" class="text-sm"></p>
-      <div id="m-chips" class="flex flex-wrap gap-2"></div>
-    </div>
-    <div>
-      <h3 class="lbl mb-3">Mudanças de tom ao longo da música</h3>
-      <div id="m-changes"></div>
-    </div>
-
-    <div class="flex flex-col gap-5 border-t border-border pt-5" id="player">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-base font-semibold">Ajustar o tom da música</h3>
-        <span id="p-note" class="text-sm text-muted-foreground"></span>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-3">
-          <button id="p-play" type="button" class="btn btn-p w-28" aria-label="Tocar">Tocar</button>
-          <span class="w-24 text-sm tabular-nums text-muted-foreground"><span id="p-time">0:00</span> / <span id="p-dur">0:00</span></span>
-          <span id="p-seg" class="ml-auto text-sm text-muted-foreground"></span>
+      <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
+        <div id="m-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
+        <div class="flex min-w-0 flex-col gap-1 pb-1">
+          <div id="m-pt" class="text-2xl font-semibold"></div>
+          <div id="m-conf" class="text-sm text-muted-foreground"></div>
+          <div id="m-where" class="text-sm text-muted-foreground"></div>
         </div>
-        <input id="p-seek" type="range" min="0" max="1" step="0.25" value="0" aria-label="Posição na música">
+      </div>
+      <div id="m-cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
+        <p id="m-cands-msg" class="text-sm"></p>
+        <div id="m-chips" class="flex flex-wrap gap-2"></div>
+      </div>
+      <div>
+        <h3 class="lbl mb-3">Mudanças de tom ao longo da música</h3>
+        <div id="m-changes"></div>
       </div>
 
-      <div id="p-ideal" class="flex flex-col gap-2 rounded-lg border border-primary/40 bg-primary/10 p-4" hidden></div>
+      <div class="flex flex-col gap-5 border-t border-border pt-5" id="player">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-base font-semibold">Ajustar o tom da música</h3>
+          <span id="p-note" class="text-sm text-muted-foreground"></span>
+        </div>
 
-      <div class="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
         <div class="flex flex-col gap-2">
-          <label for="p-semi" class="lbl">Subir ou descer o tom (−6 a +6 semitons), sem mudar a velocidade</label>
-          <div class="flex items-center gap-2">
-            <button id="p-minus" type="button" class="btn btn-o h-10 w-11 px-0" aria-label="Descer um semitom">−</button>
-            <input id="p-semi" type="range" min="-6" max="6" step="1" value="0" aria-describedby="p-semi-lbl">
-            <button id="p-plus" type="button" class="btn btn-o h-10 w-11 px-0" aria-label="Subir um semitom">+</button>
+          <div class="flex items-center gap-3">
+            <button id="p-play" type="button" class="btn btn-p w-28" aria-label="Tocar">Tocar</button>
+            <span class="w-24 text-sm tabular-nums text-muted-foreground"><span id="p-time">0:00</span> / <span id="p-dur">0:00</span></span>
+            <span id="p-seg" class="ml-auto text-sm text-muted-foreground"></span>
           </div>
-          <div id="p-semi-lbl" class="text-sm text-muted-foreground tabular-nums">Sem alteração</div>
+          <input id="p-seek" type="range" min="0" max="1" step="0.25" value="0" aria-label="Posição na música">
         </div>
-        <button id="p-reset" type="button" class="btn btn-o h-10 px-4">Restaurar o tom original</button>
-      </div>
-      <p id="p-warn" class="rounded-md bg-mark/15 px-3 py-2 text-sm text-mark" hidden>Mudanças acima de ±4 semitons podem prejudicar a qualidade do áudio.</p>
 
-      <div class="grid grid-cols-2 gap-4 rounded-lg bg-muted/60 p-4">
-        <div><div class="lbl">Tom original</div><div id="p-orig" class="font-display text-5xl leading-none"></div></div>
-        <div><div class="lbl">Tom atual</div><div id="p-cur" class="font-display text-5xl leading-none text-primary"></div></div>
-      </div>
+        <div id="p-ideal" class="flex flex-col gap-2 rounded-lg border border-primary/40 bg-primary/10 p-4" hidden></div>
 
-      <div id="p-cmp" class="flex flex-col gap-1 rounded-lg border border-border p-4 text-sm" hidden></div>
-
-      <div class="flex flex-wrap items-center gap-2">
-        <button id="p-save" type="button" class="btn btn-o h-10 px-4">Salvar no repertório</button>
-        <button id="p-dl" type="button" class="btn btn-p h-10 px-4">Baixar áudio transposto (30 créditos)</button>
-      </div>
-      <p id="p-msg" role="status" class="text-sm text-muted-foreground"></p>
-      <p class="text-xs text-muted-foreground">O arquivo é gerado no seu navegador (MP3), para uso pessoal, em músicas de até 10 minutos. O download usa o tom que está no player. O repertório guarda o tom atual do player.</p>
-
-      <div class="flex flex-col gap-3">
-        <div class="piano sm" id="p-piano" role="group" aria-label="Teclado com as notas do tom atual. Toque nas teclas para ouvir"></div>
-        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-          <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#5fd4b0"></i>Notas do tom</span>
-          <span><i class="mr-1.5 inline-block h-3 w-3 rounded-full align-[-1px] bg-mark"></i>Nota principal</span>
-          <button id="p-chord" type="button" class="btn btn-o ml-auto h-9 px-3">Ouvir o tom no piano</button>
+        <div class="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+          <div class="flex flex-col gap-2">
+            <label for="p-semi" class="lbl">Subir ou descer o tom (−6 a +6 semitons), sem mudar a velocidade</label>
+            <div class="flex items-center gap-2">
+              <button id="p-minus" type="button" class="btn btn-o h-10 w-11 px-0" aria-label="Descer um semitom">−</button>
+              <input id="p-semi" type="range" min="-6" max="6" step="1" value="0" aria-describedby="p-semi-lbl">
+              <button id="p-plus" type="button" class="btn btn-o h-10 w-11 px-0" aria-label="Subir um semitom">+</button>
+            </div>
+            <div id="p-semi-lbl" class="text-sm text-muted-foreground tabular-nums">Sem alteração</div>
+          </div>
+          <button id="p-reset" type="button" class="btn btn-o h-10 px-4">Restaurar o tom original</button>
         </div>
+        <p id="p-warn" class="rounded-md bg-mark/15 px-3 py-2 text-sm text-mark" hidden>Mudanças acima de ±4 semitons podem prejudicar a qualidade do áudio.</p>
+
+        <div class="grid grid-cols-2 gap-4 rounded-lg bg-muted/60 p-4">
+          <div><div class="lbl">Tom original</div><div id="p-orig" class="font-display text-5xl leading-none"></div></div>
+          <div><div class="lbl">Tom atual</div><div id="p-cur" class="font-display text-5xl leading-none text-primary"></div></div>
+        </div>
+
+        <div id="p-cmp" class="flex flex-col gap-1 rounded-lg border border-border p-4 text-sm" hidden></div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="p-save" type="button" class="btn btn-o h-10 px-4">Salvar no repertório</button>
+          <button id="p-dl" type="button" class="btn btn-p h-10 px-4">Baixar áudio transposto (30 créditos)</button>
+        <button id="p-cifra" type="button" class="btn btn-o h-10 px-4">Transpor uma cifra neste tom</button>
+        </div>
+        <p id="p-msg" role="status" class="text-sm text-muted-foreground"></p>
+        <p class="text-xs text-muted-foreground">O arquivo é gerado no seu navegador (MP3), para uso pessoal, em músicas de até 10 minutos. O download usa o tom que está no player. O repertório guarda o tom atual do player.</p>
+
+        <div class="flex flex-col gap-3">
+          <div class="piano sm" id="p-piano" role="group" aria-label="Teclado com as notas do tom atual. Toque nas teclas para ouvir"></div>
+          <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+            <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#5fd4b0"></i>Notas do tom</span>
+            <span><i class="mr-1.5 inline-block h-3 w-3 rounded-full align-[-1px] bg-mark"></i>Nota principal</span>
+            <button id="p-chord" type="button" class="btn btn-o ml-auto h-9 px-3">Ouvir o tom no piano</button>
+          </div>
+        </div>
+        <p id="p-capo" class="max-w-prose text-sm"></p>
       </div>
-      <p id="p-capo" class="max-w-prose text-sm"></p>
-    </div>
-  </section>
-
-  <section id="r-key" class="card flex flex-col gap-6 p-5 sm:p-6" aria-label="Tom estimado da sua voz">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold">O tom da sua voz</h2><span class="badge" id="badge">Exemplo</span>
-    </div>
-    <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
-      <div id="k-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
-      <div class="flex min-w-0 flex-col gap-1 pb-1">
-        <div id="k-pt" class="text-2xl font-semibold"></div>
-        <div id="k-conf" class="text-sm text-muted-foreground"></div>
-        <button id="b-keyplay" type="button" class="btn btn-o mt-2 h-9 self-start px-3">Ouvir este tom no piano</button>
-      </div>
-    </div>
-    <div id="cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
-      <p id="cands-msg" class="text-sm"></p>
-      <div id="chips" class="flex flex-wrap gap-2"></div>
-    </div>
-    <p id="k-sum" class="max-w-prose"></p>
-    <div>
-      <h3 class="lbl mb-3">Notas que você mais cantou</h3>
-      <div class="hist" id="hist"></div>
-    </div>
-    <div class="flex flex-col gap-3 border-t border-border pt-5">
-      <h3 class="text-base font-semibold">Transpor a música</h3>
-      <label for="orig" class="lbl">Tom original da música (opcional)</label>
-      <select id="orig" class="inp max-w-xs"></select>
-      <p id="trans-out" class="max-w-prose"></p>
-    </div>
-  </section>
-
-  <section id="r-range" class="card flex flex-col gap-5 p-5 sm:p-6" aria-label="Extensão vocal">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold">Sua extensão vocal</h2><span class="badge" id="badge2">Exemplo</span>
-    </div>
-    <div class="flex flex-col gap-1">
-      <div id="v-type" class="font-display text-5xl leading-none"></div>
-      <p id="r-sum" class="max-w-prose text-muted-foreground"></p>
-      <p id="r-conf" class="text-sm text-muted-foreground"></p>
-    </div>
-    <div>
-      <div class="piano" id="piano" role="group" aria-label="Teclado com a extensão da voz. Toque nas teclas para ouvir"></div>
-      <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
-        <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#3f9a82"></i>Extensão alcançada</span>
-        <span><i class="mr-1.5 inline-block h-3 w-3 rounded-sm align-[-1px]" style="background:#5fd4b0"></i>Faixa confortável</span>
-        <span><i class="mr-1.5 inline-block h-3 w-3 rounded-full align-[-1px] bg-mark"></i>Nota mais grave e mais aguda</span>
-      </div>
-    </div>
-    <div class="flex flex-wrap gap-2">
-      <button id="p-lo" type="button" class="btn btn-o h-10 px-4"></button>
-      <button id="p-hi" type="button" class="btn btn-o h-10 px-4"></button>
-      <button id="p-all" type="button" class="btn btn-o h-10 px-4">Ouvir toda a extensão</button>
-    </div>
-    <p class="text-sm text-muted-foreground">Toque em qualquer tecla para ouvir a nota e cantar junto. O som é de piano sintetizado, e a classificação de voz é aproximada.</p>
-    <div class="flex flex-wrap items-center gap-2">
-      <button type="button" id="b-range2" class="btn btn-p self-start">Descobrir minha extensão vocal</button>
-      <button type="button" id="b-pdf" class="btn btn-o self-start" hidden>Baixar relatório em PDF</button>
-      <span id="pdf-msg" role="status" class="text-sm text-muted-foreground"></span>
-    </div>
-  </section>
-
-  <section id="r-cifra" class="card flex flex-col gap-5 p-5 sm:p-6" aria-labelledby="h-cifra">
-    <div>
-      <h2 id="h-cifra" class="font-display text-3xl leading-none">Cifra transposta</h2>
-      <p class="mt-2 text-sm text-muted-foreground">Cole a cifra, escolha o novo tom e, se quiser, o capotraste. Os acordes são trocados e o alinhamento com a letra é mantido. Gratuito e feito no seu navegador: o texto não é enviado para lugar nenhum.</p>
-    </div>
-    <div class="flex flex-col gap-2">
-      <label for="c-in" class="lbl">Cole a cifra aqui</label>
-      <textarea id="c-in" class="ta" spellcheck="false" placeholder="Cole aqui a cifra. Exemplo:&#10;&#10;G        D&#10;Letra da primeira linha&#10;Em       C&#10;Letra da segunda linha"></textarea>
-    </div>
-    <div class="grid gap-4 sm:grid-cols-3">
-      <div class="flex flex-col gap-1.5"><label for="c-orig" class="lbl">Tom original</label><select id="c-orig" class="inp"></select></div>
-      <div class="flex flex-col gap-1.5"><label for="c-dest" class="lbl">Transpor para</label><select id="c-dest" class="inp"></select></div>
-      <div class="flex flex-col gap-1.5"><label for="c-capo" class="lbl">Capotraste</label><select id="c-capo" class="inp"></select></div>
-    </div>
-    <p id="c-info" class="text-sm text-muted-foreground"></p>
-    <div id="c-capo-sug" class="flex flex-wrap items-center gap-2" hidden></div>
-    <div id="c-out" class="cifra-out" hidden></div>
-    <div class="flex flex-wrap items-center gap-2">
-      <button id="c-copy" type="button" class="btn btn-p h-10 px-4" disabled>Copiar</button>
-      <button id="c-txt" type="button" class="btn btn-o h-10 px-4" disabled>Baixar .txt</button>
-      <button id="c-player" type="button" class="btn btn-o h-10 px-4" hidden>Usar o ajuste do player</button>
-    </div>
-    <div class="flex flex-wrap items-center gap-2">
-      <input id="c-title" class="inp max-w-xs" maxlength="120" placeholder="Nome da música (para o repertório)" aria-label="Nome da música para o repertório">
-      <button id="c-save" type="button" class="btn btn-o h-10 px-4">Salvar no repertório</button>
-    </div>
-    <p id="c-msg" role="status" class="text-sm text-muted-foreground"></p>
-    <p class="text-xs text-muted-foreground">Reconhece acordes escritos com letras (C, Dm7, F#m, Bb/D, G7M...). Cifras escritas com Dó, Ré, Mi não são reconhecidas.</p>
-  </section>
-
-  <div>
-    <p class="mb-1 text-center text-xs text-muted-foreground">Publicidade</p>
-    <aside class="ad" aria-label="Publicidade" data-ad="A">Espaço para anúncio</aside>
+    </section>
   </div>
 
-  <section id="repertorio" class="card flex flex-col gap-4 p-5 sm:p-6" aria-labelledby="h-rep" hidden>
-    <div>
-      <h2 id="h-rep" class="text-lg font-semibold">Seu repertório</h2>
-      <p class="mt-1 text-sm text-muted-foreground">Músicas salvas com o tom para você cantar. Salve pelo player ou pela cifra, sem gastar créditos.</p>
-    </div>
-    <ul id="rep-list" class="flex flex-col divide-y divide-border"></ul>
-  </section>
-
-  <section id="historico" class="card flex flex-col gap-4 p-5 sm:p-6" hidden>
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <h2 class="text-lg font-semibold">Seu histórico</h2>
-      <div class="flex gap-1">
-        <button id="b-clear" type="button" class="btn btn-g text-muted-foreground">Limpar histórico</button>
-        <button id="b-delacc" type="button" class="btn btn-g text-muted-foreground">Excluir minha conta</button>
+  <div id="v-cifra" class="flex flex-col gap-6" hidden>
+    <section id="r-cifra" class="card vcard flex flex-col gap-5 p-5 sm:p-6" style="--c:32 88% 62%" aria-labelledby="h-cifra">
+      <div>
+        <h2 id="h-cifra" class="font-display text-4xl leading-none">Cifra transposta</h2>
+        <p class="mt-2 text-sm text-muted-foreground">Cole a cifra, escolha o novo tom e, se quiser, o capotraste. Os acordes são trocados e o alinhamento com a letra é mantido. Gratuito e feito no seu navegador: o texto não é enviado para lugar nenhum.</p>
       </div>
-    </div>
-    <ul id="hist-list" class="flex flex-col divide-y divide-border"></ul>
-  </section>
+      <div class="flex flex-col gap-2">
+        <label for="c-in" class="lbl">Cole a cifra aqui</label>
+        <textarea id="c-in" class="ta" spellcheck="false" placeholder="Cole aqui a cifra. Exemplo:&#10;&#10;G        D&#10;Letra da primeira linha&#10;Em       C&#10;Letra da segunda linha"></textarea>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="flex flex-col gap-1.5"><label for="c-orig" class="lbl">Tom original</label><select id="c-orig" class="inp"></select></div>
+        <div class="flex flex-col gap-1.5"><label for="c-dest" class="lbl">Transpor para</label><select id="c-dest" class="inp"></select></div>
+        <div class="flex flex-col gap-1.5"><label for="c-capo" class="lbl">Capotraste</label><select id="c-capo" class="inp"></select></div>
+      </div>
+      <p id="c-info" class="text-sm text-muted-foreground"></p>
+      <div id="c-capo-sug" class="flex flex-wrap items-center gap-2" hidden></div>
+      <div id="c-out" class="cifra-out" hidden></div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="c-copy" type="button" class="btn btn-p h-10 px-4" disabled>Copiar</button>
+        <button id="c-txt" type="button" class="btn btn-o h-10 px-4" disabled>Baixar .txt</button>
+        <button id="c-player" type="button" class="btn btn-o h-10 px-4" hidden>Usar o ajuste do player</button>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <input id="c-title" class="inp max-w-xs" maxlength="120" placeholder="Nome da música (para o repertório)" aria-label="Nome da música para o repertório">
+        <button id="c-save" type="button" class="btn btn-o h-10 px-4">Salvar no repertório</button>
+      </div>
+      <p id="c-msg" role="status" class="text-sm text-muted-foreground"></p>
+      <p class="text-xs text-muted-foreground">Reconhece acordes escritos com letras (C, Dm7, F#m, Bb/D, G7M...). Cifras escritas com Dó, Ré, Mi não são reconhecidas.</p>
+    </section>
+  </div>
 
-  <section class="flex flex-col gap-6" aria-labelledby="h-como">
-    <h2 id="h-como" class="font-display text-4xl leading-none">Como funciona</h2>
-    <ol class="grid gap-4 sm:grid-cols-3">
-      <li class="card p-5"><div class="font-display text-4xl text-primary">1</div><h3 class="mt-1 font-semibold">Descubra a sua voz</h3><p class="mt-1 text-sm text-muted-foreground">Cante um trecho de uma música ou deslize do grave ao agudo. O site mostra o seu tom e a faixa em que você canta com conforto.</p></li>
-      <li class="card p-5"><div class="font-display text-4xl text-primary">2</div><h3 class="mt-1 font-semibold">Descubra a música</h3><p class="mt-1 text-sm text-muted-foreground">Envie a música. O site estima o tom, avisa quando há mais de uma possibilidade e mostra se o tom muda no meio.</p></li>
-      <li class="card p-5"><div class="font-display text-4xl text-primary">3</div><h3 class="mt-1 font-semibold">Ajuste e cante</h3><p class="mt-1 text-sm text-muted-foreground">Suba ou desça a música em semitons sem mudar a velocidade, ouça as notas no piano e veja onde pôr o capotraste.</p></li>
-    </ol>
+  <div id="v-repertorio" class="flex flex-col gap-6" hidden>
+    <section id="rep-login" class="card vcard flex flex-col gap-3 p-5 sm:p-6" style="--c:340 75% 65%">
+      <h2 class="font-display text-4xl leading-none">Seu repertório</h2>
+      <p class="max-w-prose text-sm text-muted-foreground">Guarde cada música com o tom certo para a sua voz e volte quando precisar. É grátis: só precisa entrar na sua conta.</p>
+      <button type="button" data-login class="btn btn-p self-start">Entrar</button>
+    </section>
+    <section id="repertorio" class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:340 75% 65%" aria-labelledby="h-rep" hidden>
+      <div>
+        <h2 id="h-rep" class="font-display text-4xl leading-none">Seu repertório</h2>
+        <p class="mt-1 text-sm text-muted-foreground">Músicas salvas com o tom para você cantar. Salve pelo player ou pela cifra, sem gastar créditos.</p>
+      </div>
+      <ul id="rep-list" class="flex flex-col divide-y divide-border"></ul>
+    </section>
+  </div>
+
+  <div id="v-historico" class="flex flex-col gap-6" hidden>
+    <section id="hist-login" class="card vcard flex flex-col gap-3 p-5 sm:p-6" style="--c:265 70% 70%">
+      <h2 class="font-display text-4xl leading-none">Seu histórico</h2>
+      <p class="max-w-prose text-sm text-muted-foreground">Entre na sua conta para ver os testes que você já fez.</p>
+      <button type="button" data-login class="btn btn-p self-start">Entrar</button>
+    </section>
+    <section id="historico" class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:265 70% 70%" hidden>
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h2 class="text-lg font-semibold">Seu histórico</h2>
+        <div class="flex gap-1">
+          <button id="b-clear" type="button" class="btn btn-g text-muted-foreground">Limpar histórico</button>
+          <button id="b-delacc" type="button" class="btn btn-g text-muted-foreground">Excluir minha conta</button>
+        </div>
+      </div>
+      <ul id="hist-list" class="flex flex-col divide-y divide-border"></ul>
+    </section>
+  </div>
+
+  <section data-home class="flex flex-col gap-5" aria-labelledby="h-sobre">
     <div class="flex flex-col gap-2">
-      <h3 class="text-lg font-semibold">Perguntas frequentes</h3>
-      <details class="card p-4"><summary class="font-medium">O resultado é exato?</summary><p class="mt-2 text-sm text-muted-foreground">É uma estimativa. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção; ouça cada uma no piano e escolha a que combina. A confiança aparece junto de cada resultado.</p></details>
-      <details class="card p-4"><summary class="font-medium">Por que mudanças acima de ±4 semitons soam piores?</summary><p class="mt-2 text-sm text-muted-foreground">Mudar o tom sem mudar a velocidade exige processar o som. Quanto maior a mudança, mais o áudio pode ficar metálico ou com ecos. Até ±4 costuma soar bem.</p></details>
-      <details class="card p-4"><summary class="font-medium">Posso baixar a música alterada?</summary><p class="mt-2 text-sm text-muted-foreground">Sim. Depois de analisar a música e ajustar o tom no player, use o botão “Baixar áudio transposto”. Custa 30 créditos, o arquivo é gerado no seu navegador (MP3) e vale para uso pessoal, só em músicas que você tem direito de usar. Limite: músicas de até 10 minutos.</p></details>
-      <details class="card p-4"><summary class="font-medium">Quando os créditos renovam?</summary><p class="mt-2 text-sm text-muted-foreground">No dia 1º de cada mês você volta a ter 100 créditos. Os que sobraram do mês anterior não acumulam.</p></details>
+      <h2 id="h-sobre" class="font-display text-4xl leading-none" style="text-wrap:balance">Uma ferramenta poderosa e gratuita, pronta para te ajudar</h2>
+      <p class="max-w-3xl text-muted-foreground">Feita para músicos, estudantes e também para quem canta e não toca nenhum instrumento.</p>
     </div>
-  </section>
-
-  <section class="flex flex-col gap-4" aria-labelledby="h-sobre">
-    <h2 id="h-sobre" class="font-display text-4xl leading-none">Uma ferramenta poderosa e gratuita, pronta para te ajudar</h2>
-    <p class="max-w-3xl text-muted-foreground">Feita para músicos, estudantes e também para quem canta e não toca nenhum instrumento. O Tom da Voz descobre o tom certo para a sua voz e para as músicas.</p>
-    <ul class="grid gap-2 sm:grid-cols-2 text-sm">
-      <li class="card p-4"><b>Tom e extensão da sua voz:</b> cante alguns segundos e veja a nota em que você canta com conforto e a faixa que alcança.</li>
-      <li class="card p-4"><b>Tom de qualquer música:</b> envie um áudio e descubra o tom, inclusive quando ele muda no meio da música.</li>
-      <li class="card p-4"><b>Ajuste para a sua voz:</b> suba ou desça a música de −6 a +6 semitons até caber na sua voz.</li>
-      <li class="card p-4"><b>Sugestão de capotraste:</b> veja em qual casa colocar o capotraste para tocar com acordes mais fáceis.</li>
-      <li class="card p-4"><b>Seu tom ideal:</b> o site cruza a sua região confortável com o tom da música e sugere quanto subir ou descer.</li>
-      <li class="card p-4"><b>Cifra transposta:</b> cole a cifra e troque os acordes para o seu tom, com sugestão de capotraste.</li>
-      <li class="card p-4"><b>Relatório em PDF:</b> leve para o professor ou para o coral a sua extensão, região confortável e tipo vocal provável.</li>
-      <li class="card p-4"><b>Repertório salvo:</b> guarde cada música com o tom certo para você e volte quando precisar.</li>
-    </ul>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <a class="tile" href="#voz" style="--c:162 52% 60%"><span class="em" aria-hidden="true">🎤</span><span><b>Tom da sua voz</b><span class="d">Cante um trecho e veja em que nota você canta com conforto.</span></span></a>
+      <a class="tile" href="#voz" style="--c:162 52% 60%"><span class="em" aria-hidden="true">📏</span><span><b>Extensão vocal</b><span class="d">Do grave ao agudo, com o tipo de voz provável.</span></span></a>
+      <a class="tile" href="#voz" style="--c:162 52% 60%"><span class="em" aria-hidden="true">📄</span><span><b>Relatório em PDF</b><span class="d">Leve a sua voz para o professor ou para o coral.</span></span></a>
+      <a class="tile" href="#musica" style="--c:205 80% 62%"><span class="em" aria-hidden="true">🎵</span><span><b>Tom de qualquer música</b><span class="d">Envie o áudio e veja o tom, até quando ele muda.</span></span></a>
+      <a class="tile" href="#musica" style="--c:205 80% 62%"><span class="em" aria-hidden="true">🎯</span><span><b>Seu tom ideal</b><span class="d">O site diz quanto subir ou descer cada música.</span></span></a>
+      <a class="tile" href="#musica" style="--c:205 80% 62%"><span class="em" aria-hidden="true">🎚️</span><span><b>Ajuste de −6 a +6</b><span class="d">Mude o tom sem mudar a velocidade e baixe o MP3.</span></span></a>
+      <a class="tile" href="#cifra" style="--c:32 88% 62%"><span class="em" aria-hidden="true">🎸</span><span><b>Cifra transposta</b><span class="d">Cole a cifra, troque os acordes e veja o capotraste.</span></span></a>
+      <a class="tile" href="#repertorio" style="--c:340 75% 65%"><span class="em" aria-hidden="true">⭐</span><span><b>Repertório salvo</b><span class="d">Cada música guardada no tom certo para você.</span></span></a>
+    </div>
     <p class="text-sm text-muted-foreground">Os áudios são processados no seu próprio navegador e não ficam guardados. <a href="sobre.html" class="link">Saiba mais sobre o Tom da Voz</a>.</p>
   </section>
 
-  <section class="flex flex-col gap-4" aria-labelledby="h-aprenda">
+  <section data-home class="flex flex-col gap-4" aria-labelledby="h-como">
+    <h2 id="h-como" class="font-display text-4xl leading-none">Como funciona</h2>
+    <ol class="grid gap-3 sm:grid-cols-3">
+      <li class="scard" style="--c:162 52% 60%"><span class="num">1</span><h3>Descubra a sua voz</h3><p>Cante um trecho ou deslize do grave ao agudo. O site mostra o seu tom e onde você canta com conforto.</p></li>
+      <li class="scard" style="--c:205 80% 62%"><span class="num">2</span><h3>Descubra a música</h3><p>Envie o áudio. O site estima o tom e avisa se ele muda no meio.</p></li>
+      <li class="scard" style="--c:32 88% 62%"><span class="num">3</span><h3>Ajuste e cante</h3><p>Suba ou desça a música sem mudar a velocidade, transponha a cifra e salve no repertório.</p></li>
+    </ol>
+  </section>
+
+  <section data-home class="flex flex-col gap-4" aria-labelledby="h-aprenda">
     <div class="flex flex-wrap items-baseline justify-between gap-2">
       <h2 id="h-aprenda" class="font-display text-4xl leading-none">Aprenda mais</h2>
       <a href="artigos.html" class="link text-sm text-muted-foreground">Ver todos os artigos</a>
     </div>
-    <div class="grid gap-4 sm:grid-cols-2">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <a href="importancia-da-musica.html" class="acard" style="--c:162 52% 60%"><h3>A importância da música</h3><p>Emoção, aprendizado e convivência: por que vale a pena fazer música, mesmo sem ser profissional.</p></a>
       <a href="extensao-vocal-e-tipos-de-voz.html" class="acard" style="--c:32 88% 62%"><h3>Extensão vocal e tipos de voz</h3><p>Faixas de referência de baixo a soprano e como medir a sua extensão sem forçar.</p></a>
       <a href="como-escolher-o-tom-para-cantar.html" class="acard" style="--c:205 80% 62%"><h3>Como escolher o tom para cantar</h3><p>O passo a passo para encaixar uma música na sua voz, contando semitons.</p></a>
       <a href="tecnica-vocal-dicas.html" class="acard" style="--c:265 70% 70%"><h3>Técnica vocal: 10 dicas</h3><p>Postura, respiração, relaxamento e afinação: dez dicas práticas para cantar melhor.</p></a>
       <a href="aquecimento-vocal.html" class="acard" style="--c:340 75% 65%"><h3>Aquecimento vocal</h3><p>Uma rotina de 8 a 10 minutos para preparar a voz com segurança.</p></a>
       <a href="como-cantar-em-coral.html" class="acard" style="--c:95 55% 58%"><h3>Como cantar em coral</h3><p>Naipes, preparação, escuta e boas práticas para quem vai cantar em grupo.</p></a>
+      <a href="como-usar-a-cifra-transposta.html" class="acard" style="--c:48 90% 60%"><h3>Como usar a cifra transposta</h3><p>Cole a cifra, escolha o tom e o capotraste e copie o resultado, com o alinhamento da letra.</p></a>
+      <a href="tom-ideal-repertorio-e-relatorio.html" class="acard" style="--c:185 70% 55%"><h3>Tom ideal, repertório e relatório em PDF</h3><p>Como o site sugere o tom ideal, guarda suas músicas e gera o relatório da sua voz.</p></a>
     </div>
   </section>
 
-  <div>
-    <p class="mb-1 text-center text-xs text-muted-foreground">Publicidade</p>
-    <aside class="ad" aria-label="Publicidade" data-ad="B">Espaço para anúncio</aside>
-  </div>
+  <section data-home class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <h2 class="font-display text-4xl leading-none">Perguntas frequentes</h2>
+      <details class="card p-4"><summary class="font-medium">O resultado é exato?</summary><p class="mt-2 text-sm text-muted-foreground">É uma estimativa. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção; ouça cada uma no piano e escolha a que combina. A confiança aparece junto de cada resultado.</p></details>
+      <details class="card p-4"><summary class="font-medium">Por que mudanças acima de ±4 semitons soam piores?</summary><p class="mt-2 text-sm text-muted-foreground">Mudar o tom sem mudar a velocidade exige processar o som. Quanto maior a mudança, mais o áudio pode ficar metálico ou com ecos. Até ±4 costuma soar bem.</p></details>
+      <details class="card p-4"><summary class="font-medium">Posso baixar a música alterada?</summary><p class="mt-2 text-sm text-muted-foreground">Sim. Depois de analisar a música e ajustar o tom no player, use o botão “Baixar áudio transposto”. Custa 30 créditos, o arquivo é gerado no seu navegador (MP3) e vale para uso pessoal, só em músicas que você tem direito de usar. Limite: músicas de até 10 minutos.</p></details>
+      <details class="card p-4"><summary class="font-medium">Quando os créditos renovam?</summary><p class="mt-2 text-sm text-muted-foreground">No dia 1º de cada mês você volta a ter 100 créditos. Os que sobraram do mês anterior não acumulam.</p></details>
+    </div>
+  </section>
 
   <footer class="flex flex-col gap-3 border-t border-border pt-6 text-sm text-muted-foreground">
     <p>A estimativa vem das notas da melodia e da música. Tons relativos (como G e Em) usam as mesmas notas, por isso o site pode sugerir mais de uma opção.</p>
@@ -1157,7 +1220,7 @@ $('f-mail').addEventListener('submit',function(e){
 function renderUser(){
   var u=S.user;
   $('b-login').textContent=u?'Sair ('+u.name.split(' ')[0]+')':'Entrar';
-  $('n-hist').hidden=!u; $('historico').hidden=!u; $('credit-pill').hidden=!u; $('n-rep').hidden=!u; $('repertorio').hidden=!u;
+  $('n-hist').hidden=!u; $('historico').hidden=!u; $('hist-login').hidden=!!u; $('credit-pill').hidden=!u; $('repertorio').hidden=!u; $('rep-login').hidden=!!u;
   renderCredits();
 }
 function renderCredits(){
@@ -1613,7 +1676,7 @@ function renderIdeal(){
   if(inf.need){
     box.appendChild(el('p','text-sm text-muted-foreground','Descubra a sua voz (extensão vocal ou tom da melodia) e o site cruza a sua região confortável com o tom desta música, sugerindo quanto subir ou descer.'));
     var gb=el('button','btn btn-o h-9 self-start px-3','Ir para "Sua voz"'); gb.type='button';
-    gb.addEventListener('click',function(){ $('h-voz').scrollIntoView({behavior:'smooth',block:'start'}); });
+    gb.addEventListener('click',function(){ go('voz'); });
     box.appendChild(gb); return;
   }
   var p=el('p','text-sm');
@@ -1877,7 +1940,7 @@ function openInCifra(r){
   var k=parseKeyName(r.tom_original);
   if(k) $('c-orig').value=k.t+'-'+(k.minor?1:0);
   $('c-dest').value=String(mod12(+r.semitons||0)); $('c-title').value=r.titulo; C.sig=null;
-  renderCifra(); $('r-cifra').scrollIntoView({behavior:'smooth',block:'start'}); $('c-in').focus();
+  renderCifra(); go('cifra'); $('c-in').focus();
 }
 buildCifraSelects();
 $('c-in').addEventListener('input',renderCifra);
@@ -1895,12 +1958,14 @@ $('c-txt').addEventListener('click',function(){
   var title=$('c-title').value.trim()||'cifra';
   saveBlob(new Blob([C.text],{type:'text/plain;charset=utf-8'}),safeName(title)+' - transposta.txt');
 });
-$('c-player').addEventListener('click',function(){
+function cifraFromPlayer(){
   if(!M) return;
   var k=mKey(); $('c-orig').value=k.t+'-'+(k.minor?1:0); $('c-dest').value=String(mod12(P.semis));
   if(!$('c-title').value) $('c-title').value=M.name.replace(/\.[^.]+$/,'').slice(0,120);
-  C.sig=null; renderCifra(); $('r-cifra').scrollIntoView({behavior:'smooth',block:'start'});
-});
+  C.sig=null; renderCifra(); go('cifra');
+}
+$('c-player').addEventListener('click',cifraFromPlayer);
+$('p-cifra').addEventListener('click',cifraFromPlayer);
 $('c-save').addEventListener('click',function(){
   var title=$('c-title').value.trim();
   if(!title){ localMsg('c-msg','Digite o nome da música para salvar no repertório.',true); return; }
@@ -1911,6 +1976,39 @@ $('c-save').addEventListener('click',function(){
 renderCifra();
 
 /* ============================================================
+   ÁREAS: uma ferramenta por vez (menu no topo, endereço #voz, #musica...)
+   ============================================================ */
+var VIEWS=['voz','musica','cifra','repertorio','historico'], curView=null;
+function viewFromHash(){ var h=(location.hash||'').replace('#',''); return VIEWS.indexOf(h)>=0?h:'home'; }
+function voiceSummary(){
+  if(!R.example&&R.res) return 'Sua voz: '+R.res.type+', de '+noteName(R.res.lo)+' a '+noteName(R.res.hi)+' (confortável: '+noteName(R.res.clo)+' a '+noteName(R.res.chi)+').';
+  if(!K.example&&K.res) return 'Sua voz: você cantou de '+noteName(K.res.lo)+' a '+noteName(K.res.hi)+'.';
+  return '';
+}
+function renderVoiceStrip(){
+  var box=$('m-voice'), t=voiceSummary(); box.textContent='';
+  box.appendChild(el('span',t?null:'text-muted-foreground',t||'Descubra a sua voz para receber o tom ideal de cada música.'));
+  var a=el('a','btn btn-o h-9 px-3',t?'Refazer':'Descobrir minha voz'); a.href='#voz'; box.appendChild(a);
+}
+function showView(v){
+  var warn='';
+  if(live&&v!=='voz'){ v='voz'; warn='Termine a gravação antes de trocar de área: toque em "Parar e analisar".'; if(location.hash!=='#voz') history.replaceState(null,'','#voz'); }
+  var first=curView===null, changed=v!==curView;
+  if(curView==='musica'&&v!=='musica') pausePlayback();
+  curView=v;
+  document.body.setAttribute('data-view',v);
+  VIEWS.forEach(function(n){ $('v-'+n).hidden=(n!==v); });
+  document.querySelectorAll('#tools .tool').forEach(function(a){ if(a.getAttribute('data-v')===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  if(changed&&!S.busy&&!live) setStatus('');
+  if(warn) setStatus(warn,true);
+  if(v==='musica'){ renderVoiceStrip(); if(M) renderCompare(); }
+  if(changed&&!first) window.scrollTo(0,0);
+}
+function go(v){ if(viewFromHash()!==v) history.pushState(null,'',v==='home'?location.pathname+location.search:'#'+v); showView(v); }
+window.addEventListener('hashchange',function(){ showView(viewFromHash()); });
+showView(viewFromHash());
+
+/* ============================================================
    ANÚNCIOS E COOKIES
    ============================================================ */
 function loadAds(mode){
@@ -1918,13 +2016,6 @@ function loadAds(mode){
   window.adsbygoogle=window.adsbygoogle||[]; if(mode!=='all') window.adsbygoogle.requestNonPersonalizedAds=1;
   var s=document.createElement('script'); s.async=true; s.crossOrigin='anonymous';
   s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+encodeURIComponent(CFG.ADSENSE_CLIENT); document.head.appendChild(s);
-  document.querySelectorAll('[data-ad]').forEach(function(a){
-    var slot=CFG['AD_SLOT_'+a.dataset.ad]; if(!slot) return;
-    a.textContent=''; a.className='min-h-[90px]';
-    var ins=document.createElement('ins'); ins.className='adsbygoogle'; ins.style.display='block';
-    ins.setAttribute('data-ad-client',CFG.ADSENSE_CLIENT); ins.setAttribute('data-ad-slot',slot); ins.setAttribute('data-ad-format','auto'); ins.setAttribute('data-full-width-responsive','true');
-    a.appendChild(ins); try{ window.adsbygoogle.push({}); }catch(e){}
-  });
 }
 function initAds(){
   if(!CFG.ADSENSE_CLIENT) return;
