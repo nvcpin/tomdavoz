@@ -155,6 +155,178 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   .link{@apply underline underline-offset-4 hover:text-foreground cursor-pointer}
 }
 </style>
+
+
+<style id="preview-bento">
+:root{--background:225 19% 9%;--foreground:216 24% 95%;--card:224 17% 14%;--border:222 14% 25%;--muted:224 14% 20%;--muted-foreground:219 15% 73%;--primary:165 63% 70%;--primary-foreground:167 39% 12%;--mark:40 78% 72%;color-scheme:dark}
+body{background:#13151c}body::before{display:none}header{background:#151821!important;backdrop-filter:none!important}header>div{max-width:1200px!important;height:72px!important}header a.font-display{font-family:Figtree,system-ui,sans-serif;font-weight:700;letter-spacing:-.04em;font-size:1.45rem}
+header a.font-display::before{content:"";display:inline-block;width:20px;height:24px;margin-right:8px;vertical-align:-5px;background:linear-gradient(90deg,#8ce3c6 0 14%,transparent 14% 28%,#8ce3c6 28% 44%,transparent 44% 58%,#8ce3c6 58% 73%,transparent 73% 86%,#8ce3c6 86%);clip-path:polygon(0 36%,14% 36%,14% 62%,28% 62%,28% 12%,44% 12%,44% 88%,58% 88%,58% 0,73% 0,73% 100%,86% 100%,86% 32%,100% 32%,100% 68%,86% 68%,86% 100%,73% 100%,73% 0,58% 0,58% 88%,44% 88%,44% 12%,28% 12%,28% 62%,14% 62%,14% 36%)}
+main{max-width:1200px!important}.font-display{font-family:Figtree,system-ui,sans-serif;font-weight:650;letter-spacing:-.035em}
+body[data-view=home] main{gap:28px;padding-top:28px}
+.pv-hero{display:grid;grid-template-columns:1fr .85fr;gap:40px;align-items:center;background:#1b202c;border:1px solid #343b48;border-radius:24px;padding:clamp(24px,5vw,56px)}
+.pv-kicker{display:block;font-size:.7rem;font-weight:700;letter-spacing:.13em;color:#8ce3c6}
+.pv-hero h1{font-size:clamp(3rem,6vw,5.4rem);font-weight:700;line-height:.98;letter-spacing:-.065em;margin:14px 0 22px}.pv-hero h1 span{color:#8ce3c6}
+.pv-hero p{color:#bdc6d6;font-size:1.05rem;line-height:1.65;max-width:45ch;margin-bottom:24px}
+.pv-cta{display:inline-flex;background:#8ce3c6;color:#132e28;font-weight:700;padding:13px 20px;border-radius:10px}.pv-cta:hover{background:#a9efda}
+.pv-hero small{display:block;color:#aeb9c9;font-size:.82rem;margin-top:12px}
+.pv-visual{background:#141821;border:1px solid #353e4a;border-radius:16px;padding:19px;color:#edf4f7;min-width:0}
+.pv-visual svg{width:100%;height:auto;max-height:120px}.pv-cap{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.65rem;letter-spacing:.045em;color:#b7c1d0}
+.pv-note{font-size:4rem;line-height:1.15;color:#8ce3c6;font-weight:700;margin-top:10px}.pv-note span{font-size:1rem;color:#e5edf3;font-weight:500}
+.pv-piano{height:74px;display:flex;gap:3px;margin:12px 0 16px}.pv-piano i{flex:1;background:#e4e9ee;border-radius:0 0 4px 4px;position:relative}.pv-piano i.on{background:#8ce3c6}
+.pv-piano i:nth-child(7n+1)::after,.pv-piano i:nth-child(7n+2)::after,.pv-piano i:nth-child(7n+4)::after,.pv-piano i:nth-child(7n+5)::after,.pv-piano i:nth-child(7n+6)::after{content:"";position:absolute;right:-6px;width:60%;height:60%;background:#141821;border-radius:0 0 3px 3px;z-index:1}
+.pv-intro h2,#h-sobre{font-size:clamp(1.65rem,3vw,2.3rem);line-height:1.12;font-weight:700;letter-spacing:-.04em;margin:7px 0}.pv-intro p{font-size:.95rem;color:hsl(var(--muted-foreground))}
+body[data-view=home] #tools{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:-12px}
+body[data-view=home] #tools .tool{grid-column:span 2;position:relative;min-height:174px;padding:20px;gap:11px}
+body[data-view=home] #tools .tool:nth-child(n+4){grid-column:span 3;min-height:143px}
+.tool{background:#20242f;border:1px solid #373d49;border-radius:16px;box-shadow:none;--c:165 62% 70%!important}
+.tool[data-v=musica]{--c:210 73% 73%!important}.tool[data-v=ritmo]{--c:264 72% 79%!important}.tool[data-v=cifra]{--c:39 76% 72%!important}.tool[data-v=repertorio]{--c:338 66% 77%!important}
+.tool .ti{background:hsl(var(--c) / .12);color:hsl(var(--c));width:48px;height:48px;border-radius:12px}
+.tool b{font-size:1.14rem;color:hsl(var(--foreground));font-weight:650}.tool small{font-size:.86rem;line-height:1.45}
+.tool .cost{color:hsl(var(--c));background:transparent;font-size:.73rem;padding:0}.pv-arrow{position:absolute;right:18px;top:18px;color:hsl(var(--muted-foreground));font-size:1.3rem}
+.tool:hover{background:#292e3a;border-color:hsl(var(--c) / .6)}
+body:not([data-view=home]) #tools{background:rgba(19,21,28,.97);border-radius:12px;padding:7px;gap:5px}body:not([data-view=home]) .tool{min-height:0;border-radius:9px;background:transparent;border-color:transparent}body:not([data-view=home]) .tool .ti{color:hsl(var(--muted-foreground))}body:not([data-view=home]) .tool .ti svg{width:20px;height:20px}body:not([data-view=home]) .tool[aria-current=page]{background:#293c39;border-color:#527a6d;box-shadow:none}body:not([data-view=home]) .tool[aria-current=page] b,body:not([data-view=home]) .tool[aria-current=page] .ti{color:#a3ecd7}body:not([data-view=home]) .pv-arrow{display:none}
+.card{background:hsl(var(--card))!important;backdrop-filter:none!important;border-radius:14px}.vcard{border-top:1px solid hsl(var(--border))!important}.vcard h2{color:hsl(var(--foreground))}.seg{--c:165 63% 70%!important}.btn{border-radius:9px}.btn-p{font-weight:700}.badge{border-radius:6px}
+body[data-view=home] section[aria-label="Seus créditos"]{padding:14px 18px;background:#1b202a!important}
+.pv-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:24px 0 8px;border-top:1px solid #343b48}.pv-showcase .pv-intro,.pv-privacy{grid-column:1/-1}.pv-showcase .pv-intro{margin-bottom:6px}
+.pv-feature{display:flex;flex-direction:column;gap:18px;min-width:0;background:#1d222d;border:1px solid #343b48;border-radius:18px;padding:19px}
+.pv-feature>div:first-child{flex:1}.pv-feature h3{font-size:1.55rem;line-height:1.15;letter-spacing:-.035em;font-weight:700;margin:9px 0 12px}.pv-feature p{color:#bfc9d7;font-size:.9rem;line-height:1.6;margin-bottom:15px}.pv-feature .pv-visual{padding:12px;border-radius:12px}
+.pv-link{display:inline-block;color:#a2eed7;font-weight:600;font-size:.85rem;margin-right:10px;margin-bottom:5px;text-underline-offset:3px}.pv-link:hover{text-decoration:underline}
+.pv-keys{display:flex;align-items:center;justify-content:space-around;padding:7px 0}.pv-keys small{display:block;color:#bec9d6;font-size:.7rem}.pv-keys strong{font-size:2.5rem;color:#8ce3c6}.pv-track{height:5px;background:#4e5e70;border-radius:5px;margin:11px 0}.pv-track i{display:block;width:66%;height:5px;background:#8ce3c6;border-radius:5px}
+.pv-tempo{font-size:1.9rem;font-weight:700;color:#8ce3c6;margin:5px 0}.pv-tempo small{font-size:.75rem;color:#c5d0dc}
+.pv-beats{display:grid;grid-template-columns:42px repeat(16,minmax(0,1fr));gap:2px;align-items:center;margin:4px 0}.pv-beats b{font-size:.6rem;font-weight:500}.pv-beats i{height:19px;background:#354252;border-radius:2px}.pv-beats i.on{background:#8ce3c6}.pv-beats:nth-of-type(4) i.on{background:#8aafd9}.pv-beats:nth-of-type(5) i.on{background:#e4b680}.pv-beats+.pv-cap{margin-top:11px}
+.pv-chords{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:12px 0}.pv-chords b{background:#303c4b;padding:9px 0;text-align:center;border-radius:6px;font-size:1rem}.pv-new b{background:#31534e;color:#b0f4e0}
+.pv-privacy{color:hsl(var(--muted-foreground));font-size:.8rem;padding:4px 0}
+body[data-view=home] h2.font-display{font-size:1.75rem;line-height:1.16}
+body[data-view=home] section[aria-labelledby="h-como"]{border-radius:18px;background:#222a37;padding:24px}
+.scard{--c:165 63% 70%!important;border:0;border-radius:0;background:transparent;padding:8px 12px 8px 0}.scard .num{background:#344b48;color:#a2eed7;font-family:Figtree,sans-serif;font-size:1rem}.scard h3{color:#f0f4f9}
+.acard{--c:165 63% 70%!important;border:1px solid #373e4c;border-radius:13px;background:#1e222c;padding:17px}.acard h3{color:#eaf1f6}.acard:hover{border-color:#7db4a3}
+body[data-view=home] section[aria-labelledby="h-aprenda"]{padding:10px 0}
+body[data-view=home] main>section[data-home] details.card{background:transparent!important;border:0;border-bottom:1px solid #343b48;border-radius:0}details summary::after{content:"+";float:right;color:#8ce3c6}details[open] summary::after{content:"−"}
+dialog::backdrop{background:rgb(0 0 0 / .7)}
+@media(max-width:900px){.pv-showcase{grid-template-columns:repeat(2,minmax(0,1fr))}.pv-feature:last-of-type{grid-column:1/-1}.pv-feature:last-of-type .pv-visual{max-width:440px;width:100%}}
+@media(max-width:639px){header>div{height:60px!important}header a.font-display{font-size:1.2rem}header a.font-display::before{display:none}.pv-hero{grid-template-columns:1fr;gap:24px;padding:23px}.pv-hero h1{font-size:3.4rem}.pv-piano{height:56px}body[data-view=home] #tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}body[data-view=home] #tools .tool,body[data-view=home] #tools .tool:nth-child(n+4){grid-column:span 1;min-height:156px;padding:14px}body[data-view=home] #tools .tool:nth-child(3){grid-column:1/-1;min-height:130px}body[data-view=home] #tools .tool:last-child:nth-child(odd){grid-column:span 1}.tool .ti{width:40px;height:40px}.pv-arrow{right:13px;top:13px}.pv-showcase{grid-template-columns:1fr}.pv-feature:last-of-type{grid-column:auto}.pv-feature:last-of-type .pv-visual{max-width:none}.pv-beats i{height:21px}body:not([data-view=home]) .tool .ti{width:auto;height:auto}body[data-view=home] main{gap:22px}}
+</style>
+<style>
+/* Internal studio preview */
+body:not([data-view=home]) main{max-width:1160px!important;gap:20px;padding-top:18px}
+body:not([data-view=home]) #tools{top:0;padding:6px;border:1px solid #343b48;border-radius:13px;gap:5px;background:#171b24;box-shadow:0 6px 16px #10121966}
+body:not([data-view=home]) #tools .tool{padding:10px 8px;min-width:0;min-height:48px;gap:8px}
+body:not([data-view=home]) #tools .tool .ti{flex-shrink:0;color:hsl(var(--c));width:24px;height:24px;background:transparent}
+body:not([data-view=home]) #tools .tool b{font-weight:600;font-size:.88rem}
+body:not([data-view=home]) #tools .tool[aria-current=page]{background:hsl(var(--c) / .10);border-color:hsl(var(--c) / .38)}
+body:not([data-view=home]) #tools .tool[aria-current=page] b{color:hsl(var(--c))}
+body:not([data-view=home]) [aria-label="Seus créditos"]{background:#1b202a!important;padding:12px 16px;border-radius:12px}
+body:not([data-view=home]) .vcard{border-radius:18px;padding:clamp(18px,3vw,30px);min-width:0;box-shadow:none}
+body:not([data-view=home]) .vcard h2.font-display{font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.12;font-weight:700}
+body:not([data-view=home]) .vcard p{line-height:1.6}
+.studio-heading{display:flex;align-items:center;gap:10px;margin-bottom:13px;font-size:.68rem;font-weight:700;letter-spacing:.13em;color:#8ce3c6}
+.studio-icon{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:none;border-radius:11px;background:#283d3b;color:#9be9d1}
+#v-musica .studio-icon{background:#25394d;color:#a9cff5}#v-musica .studio-heading{color:#a9cff5}
+#v-ritmo .studio-icon{background:#38304c;color:#c8b5f6}#v-ritmo .studio-heading{color:#c8b5f6}
+#v-cifra .studio-icon{background:#473b2c;color:#efce99}#v-cifra .studio-heading{color:#efce99}
+#v-repertorio .studio-icon{background:#432f3d;color:#edb2ca}#v-repertorio .studio-heading{color:#edb2ca}
+#actions{gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#actions>div{background:#1b202b;border-color:#363e4b;border-radius:14px;padding:18px;gap:10px;min-width:0}
+#actions>div:last-child{grid-column:1/-1}
+#actions h3{font-size:1.03rem}#actions p{font-size:.86rem}
+#actions .btn,#actions .chip{min-height:44px;height:auto;white-space:normal;text-align:center;padding-block:9px;line-height:1.3}
+#actions>div:last-child .studio-icon{background:#303c4e;color:#a8c5ea}
+#v-voz #r-key,#v-voz #r-range{background:#202632!important}
+#v-voz #r-key h2,#v-voz #r-range h2{font-size:1.15rem}
+#v-voz #k-big,#v-musica #m-big{font-size:clamp(4rem,10vw,7.5rem);font-family:Figtree,system-ui,sans-serif;font-weight:700;line-height:1}
+#v-voz #k-pt,#v-voz #v-type{letter-spacing:-.035em}
+#v-voz .piano,#v-musica .piano{border-color:#465162}
+#v-voz .hist{height:104px}
+#v-musica #player,#v-cifra .ta,#v-ritmo .rt-wrap{scroll-margin-top:85px}
+#v-musica #player{border-color:#3b4452}
+#v-cifra .ta,#v-cifra .cifra-out{background:#151923;border-radius:10px;border-color:#3c4655}
+#v-musica label:has(#file-music),#v-ritmo label:has(#file-ritmo){min-height:68px;border:1px dashed #688d85;background:#263b38;color:#a9efda;border-radius:12px;align-self:stretch}
+#v-musica label:has(#file-music):hover,#v-ritmo label:has(#file-ritmo):hover{background:#324c47}
+#r-ritmo{background:#202632!important}#r-ritmo .rt-wrap{padding:12px 8px;border-radius:10px;background:#161b24}
+#r-ritmo .rt-ctl{gap:8px}#r-ritmo .rt-ctl .seg{border-radius:8px;background:#1b202b}#r-ritmo .rt-ctl .seg[aria-pressed=true]{background:#30443d}#r-ritmo .rt-c{border-radius:5px}
+@media(min-width:1000px){
+#v-voz:not([hidden]){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+#v-voz>section:first-child,#v-voz>div:last-child{grid-column:1/-1}
+#actions{grid-template-columns:repeat(3,minmax(0,1fr))}#actions>div:last-child{grid-column:auto}
+#v-voz #r-key,#v-voz #r-range{align-self:stretch}}
+@media(max-width:639px){
+body:not([data-view=home]) main{gap:14px;padding:12px 12px 24px}
+body:not([data-view=home]) #tools{gap:3px;padding:4px;border-radius:10px}
+body:not([data-view=home]) #tools .tool{padding:7px 1px;min-height:54px;gap:3px}
+body:not([data-view=home]) #tools .tool b{font-size:clamp(.57rem,2.5vw,.72rem);white-space:nowrap}
+body:not([data-view=home]) #tools .tool .ti svg{width:19px;height:19px}
+body:not([data-view=home]) .vcard{padding:16px}
+#actions{gap:8px}#actions>div{padding:12px;gap:8px}#actions .btn{padding-inline:7px;font-size:.78rem}
+#actions>div:last-child .btn{font-size:.9rem}#actions h3{font-size:.93rem}#actions p{font-size:.78rem}
+.studio-icon{width:36px;height:36px}.studio-icon svg{width:20px;height:20px}
+#v-voz>section:first-child>p:last-child{font-size:.8rem}#r-ritmo .rt-wrap{padding:10px 5px}}
+@media(max-width:350px){#actions{grid-template-columns:1fr}#actions>div:last-child{grid-column:auto}}
+</style>
+<style>
+/* Alternating surfaces: light workspace, dark presentation and selected result panels. */
+body{--background:220 25% 97%;--foreground:218 32% 19%;--card:0 0% 100%;--border:217 22% 86%;--muted:216 26% 93%;--muted-foreground:216 18% 37%;--primary:165 54% 29%;--primary-foreground:0 0% 100%;--mark:34 68% 32%;background:#f5f7fa;color:hsl(var(--foreground));color-scheme:light}
+header, .pv-hero, .pv-showcase, body:not([data-view=home]) #tools, body:not([data-view=home]) #r-key, body:not([data-view=home]) #r-ritmo{
+ --background:225 19% 9%;--foreground:216 24% 95%;--card:224 17% 14%;--border:222 14% 25%;--muted:224 14% 20%;--muted-foreground:219 15% 73%;--primary:165 63% 70%;--primary-foreground:167 39% 12%;--mark:40 78% 72%;color:hsl(var(--foreground));color-scheme:dark
+}
+header{border-color:#343b48}
+.pv-hero{background:#1b202c}
+body[data-view=home] .pv-intro:not(.pv-showcase .pv-intro) .pv-kicker{color:#32776a}
+body[data-view=home] #tools .tool{background:#fff;border-color:#dce3eb;--c:165 49% 29%!important}
+body[data-view=home] #tools .tool[data-v=musica]{--c:211 57% 39%!important}
+body[data-view=home] #tools .tool[data-v=ritmo]{--c:264 43% 42%!important}
+body[data-view=home] #tools .tool[data-v=cifra]{--c:33 65% 35%!important}
+body[data-view=home] #tools .tool[data-v=repertorio]{--c:338 45% 42%!important}
+body[data-view=home] #tools .tool:hover{background:#f9fbfd;border-color:hsl(var(--c) / .55)}
+body[data-view=home] section[aria-label="Seus créditos"],body:not([data-view=home]) [aria-label="Seus créditos"]{background:#eaf0f5!important;border-color:#dce3eb}
+.pv-showcase{background:#202632;border:1px solid #343b48;border-radius:22px;padding:clamp(18px,3vw,32px)}
+.pv-showcase .pv-feature{background:#1a202b}
+.pv-showcase .pv-privacy{color:#c5d0dc}
+body[data-view=home] section[aria-labelledby="h-como"]{background:#e7edf3;border:1px solid #dce3eb}
+.scard .num{background:#d4e5e1;color:#28695c}.scard h3{color:#23364c}
+.acard{background:#fff;border-color:#dce3eb}.acard h3{color:#23364c}
+body[data-view=home] main>section[data-home] details.card{border-bottom-color:#dce3eb}
+details summary::after{color:#32776a}
+body:not([data-view=home]) #tools{background:#1b202c}
+body:not([data-view=home]) #tools .tool:hover{background:#292e3a}
+body:not([data-view=home]) .vcard{border-color:#dce3eb}
+body:not([data-view=home]) #actions>div{background:#f3f6fa;border-color:#dce3eb}
+body:not([data-view=home]) .studio-heading{color:#356d61}
+body:not([data-view=home]) .studio-icon{background:#e4f1ec;color:#356d61}
+body:not([data-view=home]) #v-musica .studio-icon,body:not([data-view=home]) #actions>div:last-child .studio-icon{background:#e6eef7;color:#375a84}
+body:not([data-view=home]) #v-musica .studio-heading{color:#375a84}
+body:not([data-view=home]) #v-ritmo .studio-icon{background:#eee9f6;color:#6a4b96}
+body:not([data-view=home]) #v-ritmo .studio-heading{color:#6a4b96}
+body:not([data-view=home]) #v-cifra .studio-icon{background:#f6eddf;color:#8a602c}
+body:not([data-view=home]) #v-cifra .studio-heading{color:#8a602c}
+body:not([data-view=home]) #v-repertorio .studio-icon{background:#f6e9ef;color:#9a4b70}
+body:not([data-view=home]) #v-repertorio .studio-heading{color:#9a4b70}
+body:not([data-view=home]) #v-voz #r-key,body:not([data-view=home]) #r-ritmo{background:#202632!important;border-color:#343b48}
+body:not([data-view=home]) #v-voz #r-range{background:#fff!important;border-color:#dce3eb}
+body:not([data-view=home]) #v-voz .piano,body:not([data-view=home]) #v-musica .piano{border-color:#d3dce6}
+body:not([data-view=home]) #v-musica #player{border-color:#dce3eb}
+body:not([data-view=home]) #v-cifra .ta{background:#f7f9fb;border-color:#dce3eb}
+body:not([data-view=home]) #v-cifra .cifra-out{--foreground:216 24% 95%;--primary:165 63% 70%;background:#202632;color:hsl(var(--foreground));border-color:#343b48;color-scheme:dark}
+body:not([data-view=home]) #v-musica label:has(#file-music),body:not([data-view=home]) #v-ritmo label:has(#file-ritmo){background:#eaf1f8;color:#344e70;border-color:#8199b4}
+body:not([data-view=home]) #v-musica label:has(#file-music):hover,body:not([data-view=home]) #v-ritmo label:has(#file-ritmo):hover{background:#dce8f4}
+</style>
+<style>
+/* Balanced landing-page tool cards; internal navigation unaffected. */
+body[data-view=home] #tools{grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:1fr;align-items:stretch;gap:12px}
+body[data-view=home] #tools .tool{grid-column:auto!important;min-height:184px;padding:18px;gap:11px}
+body[data-view=home] #tools .tool .tx{flex:1}
+body[data-view=home] #tools .tool .cost{margin-top:auto}
+@media(max-width:1023px) and (min-width:640px){
+ body[data-view=home] #tools{grid-template-columns:repeat(6,minmax(0,1fr))}
+ body[data-view=home] #tools .tool{grid-column:span 2!important}
+ body[data-view=home] #tools .tool:nth-child(4){grid-column:2/span 2!important}
+ body[data-view=home] #tools .tool:nth-child(5){grid-column:4/span 2!important}
+}
+@media(max-width:639px){
+ body[data-view=home] #tools{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+ body[data-view=home] #tools .tool{grid-column:span 2!important;min-height:166px;padding:14px}
+ body[data-view=home] #tools .tool:nth-child(5){grid-column:2/span 2!important}
+}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
@@ -172,18 +344,16 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 
 <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:py-10">
 
-  <section data-home class="flex flex-col gap-3">
-    <h1 class="font-display text-5xl leading-none sm:text-6xl" style="text-wrap:balance">Descubra em que tom você canta</h1>
-    <p class="max-w-prose text-lg text-muted-foreground">Sem tocar nada: descubra o tom da sua voz e das músicas e ajuste tudo para cantar com conforto. <b class="text-foreground">100 créditos grátis todo mês.</b></p>
-  </section>
+  <section data-home class="pv-hero pv-band"><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
   <h1 data-tool class="sr-only">Tom da Voz</h1>
 
+  <div data-home class="pv-intro"><span class="pv-kicker">FERRAMENTAS</span><h2>Seu estúdio musical</h2><p>Análises com créditos e ferramentas gratuitas, no seu ritmo.</p></div>
   <nav id="tools" aria-label="Ferramentas">
-    <a class="tool" data-v="voz" href="#voz" style="--c:162 52% 60%"><span class="ti" aria-hidden="true">🎤</span><span class="tx"><b>Minha voz</b><small>Descubra o seu tom e a sua extensão vocal</small></span><em class="cost">10 créditos por análise</em></a>
-    <a class="tool" data-v="musica" href="#musica" style="--c:205 80% 62%"><span class="ti" aria-hidden="true">🎵</span><span class="tx"><b>Música</b><small>Veja o tom e ajuste para a sua voz</small></span><em class="cost">20 créditos por música</em></a>
-    <a class="tool" data-v="cifra" href="#cifra" style="--c:32 88% 62%"><span class="ti" aria-hidden="true">🎸</span><span class="tx"><b>Cifra</b><small>Troque os acordes e use o capotraste</small></span><em class="cost">Grátis</em></a>
-    <a class="tool" data-v="repertorio" href="#repertorio" style="--c:340 75% 65%"><span class="ti" aria-hidden="true">⭐</span><span class="tx"><b>Repertório</b><small>Guarde cada música no tom certo</small></span><em class="cost">Grátis, com conta</em></a>
-    <a class="tool" data-v="ritmo" href="#ritmo" style="--c:14 85% 62%"><span class="ti" aria-hidden="true">🥁</span><span class="tx"><b>Ritmo</b><small>Envie um áudio e veja a batida em grade</small></span><em class="cost">20 créditos por áudio</em></a>
+    <a class="tool" data-v="voz" href="#voz" style="--c:162 52% 60%"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></span><span class="tx"><b>Minha voz</b><small>Descubra sua tonalidade e extensão vocal.</small></span><em class="cost">10 créditos por análise</em><span class="pv-arrow" aria-hidden="true">↗</span></a>
+    <a class="tool" data-v="musica" href="#musica" style="--c:205 80% 62%"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="5.5" cy="18" rx="3.5" ry="2.5"/><ellipse cx="17.5" cy="16" rx="3.5" ry="2.5"/></svg></span><span class="tx"><b>Música</b><small>Identifique o tom e ajuste a música à sua voz.</small></span><em class="cost">20 créditos por música</em><span class="pv-arrow" aria-hidden="true">↗</span></a>
+    <a class="tool" data-v="ritmo" href="#ritmo" style="--c:14 85% 62%"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="8" rx="9" ry="3.5"/><path d="M3 8v9c0 2 4 4 9 4s9-2 9-4V8M3 10l5 9 4-8 4 8 5-9M8 2l8 4M16 2L8 6"/></svg></span><span class="tx"><b>Ritmo</b><small>Descubra o BPM e pratique a batida em uma grade.</small></span><em class="cost">20 créditos por áudio</em><span class="pv-arrow" aria-hidden="true">↗</span></a>
+    <a class="tool" data-v="cifra" href="#cifra" style="--c:32 88% 62%"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5l8-3 3 3-3 8M17 7l-6 6M8 9c-2-1-4 0-4 2v2c-4 1-3 6 0 8s7 1 8-3h2c2 0 3-2 2-4"/><circle cx="8" cy="16" r="2"/></svg></span><span class="tx"><b>Cifra</b><small>Transponha acordes e consulte o capotraste.</small></span><em class="cost">Grátis</em><span class="pv-arrow" aria-hidden="true">↗</span></a>
+    <a class="tool" data-v="repertorio" href="#repertorio" style="--c:340 75% 65%"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h14v18H6a2 2 0 0 1 0-4h14M9 7h7m-7 4h5"/></svg></span><span class="tx"><b>Repertório</b><small>Organize suas músicas no tom ideal.</small></span><em class="cost">Grátis, com conta</em><span class="pv-arrow" aria-hidden="true">↗</span></a>
   </nav>
 
   <div id="demo-banner" class="rounded-lg border border-mark/40 bg-mark/10 px-4 py-3 text-sm" hidden>
@@ -206,23 +376,23 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   <div id="v-voz" class="flex flex-col gap-6" hidden>
     <section class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:162 52% 60%" aria-labelledby="h-voz">
       <div>
-        <h2 id="h-voz" class="font-display text-4xl leading-none">Minha voz</h2>
+        <div class="studio-heading"><span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></span><span>ANÁLISE VOCAL</span></div><h2 id="h-voz" class="font-display text-4xl leading-none">Minha voz</h2>
         <p class="mt-2 text-sm text-muted-foreground">Cante pelo microfone ou envie uma gravação só da sua voz, sem música de fundo. Descubra o seu tom e a faixa em que você canta com conforto.</p>
       </div>
 
       <div id="actions" class="grid gap-3 md:grid-cols-3">
         <div class="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4">
-          <h3 class="font-semibold">Cantar agora</h3>
+          <span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></span><h3 class="font-semibold">Cantar agora</h3>
           <p class="flex-1 text-sm text-muted-foreground">Cante um trecho de uma música e veja o tom da sua voz.</p>
           <button id="b-key" type="button" class="btn btn-p w-full">Cantar uma música</button>
         </div>
         <div class="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4">
-          <h3 class="font-semibold">Medir a extensão</h3>
+          <span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-7 4 14 3-10 2 3h3"/></svg></span><h3 class="font-semibold">Medir a extensão</h3>
           <p class="flex-1 text-sm text-muted-foreground">Deslize do grave ao agudo e descubra a faixa em que você canta.</p>
           <button id="b-range" type="button" class="btn btn-o w-full">Descobrir minha extensão vocal</button>
         </div>
         <div class="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4">
-          <h3 class="font-semibold" id="l-up-mode">Enviar uma gravação</h3>
+          <span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V3m-5 5 5-5 5 5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></span><h3 class="font-semibold" id="l-up-mode">Enviar uma gravação</h3>
           <p class="text-sm text-muted-foreground">Uma gravação só da sua voz, sem música de fundo.</p>
           <div class="flex flex-wrap gap-2" role="group" aria-labelledby="l-up-mode">
             <button type="button" class="chip" id="m-key" aria-pressed="true">Tom da melodia</button>
@@ -313,7 +483,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   <div id="v-musica" class="flex flex-col gap-6" hidden>
     <section class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:205 80% 62%" aria-labelledby="h-musica">
       <div>
-        <h2 id="h-musica" class="font-display text-4xl leading-none">Música</h2>
+        <div class="studio-heading"><span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13M9 9l12-2"/><ellipse cx="5.5" cy="18" rx="3.5" ry="2.5"/><ellipse cx="17.5" cy="16" rx="3.5" ry="2.5"/></svg></span><span>ANÁLISE MUSICAL</span></div><h2 id="h-musica" class="font-display text-4xl leading-none">Música</h2>
         <p class="mt-2 text-sm text-muted-foreground">Envie uma música para descobrir o tom, ver se ele muda ao longo da faixa e comparar com a sua voz. Depois, suba ou desça o tom para cantar com mais conforto.</p>
       </div>
       <label class="btn btn-p relative w-full sm:w-auto sm:self-start sm:px-8">Enviar uma música<input id="file-music" type="file" accept="audio/*,video/mp4,video/quicktime,video/webm,.mp3,.m4a,.wav,.ogg,.flac,.mp4,.mov,.webm" class="absolute inset-0 h-full w-full cursor-pointer opacity-0"></label>
@@ -410,7 +580,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   <div id="v-cifra" class="flex flex-col gap-6" hidden>
     <section id="r-cifra" class="card vcard flex flex-col gap-5 p-5 sm:p-6" style="--c:32 88% 62%" aria-labelledby="h-cifra">
       <div>
-        <h2 id="h-cifra" class="font-display text-4xl leading-none">Cifra transposta</h2>
+        <div class="studio-heading"><span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5l8-3 3 3-3 8M17 7l-6 6M8 9c-2-1-4 0-4 2v2c-4 1-3 6 0 8s7 1 8-3h2c2 0 3-2 2-4"/><circle cx="8" cy="16" r="2"/></svg></span><span>TRANSPOSIÇÃO</span></div><h2 id="h-cifra" class="font-display text-4xl leading-none">Cifra transposta</h2>
         <p class="mt-2 text-sm text-muted-foreground">Cole a cifra, escolha o novo tom e, se quiser, o capotraste. Os acordes são trocados e o alinhamento com a letra é mantido. Gratuito e feito no seu navegador: o texto não é enviado para lugar nenhum.</p>
       </div>
       <div class="flex flex-col gap-2">
@@ -442,7 +612,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   <div id="v-ritmo" class="flex flex-col gap-6" hidden>
     <section class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:14 85% 62%" aria-labelledby="h-ritmo">
       <div>
-        <h2 id="h-ritmo" class="font-display text-4xl leading-none">Ritmo</h2>
+        <div class="studio-heading"><span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="8" rx="9" ry="3.5"/><path d="M3 8v9c0 2 4 4 9 4s9-2 9-4V8M3 10l5 9 4-8 4 8 5-9M8 2l8 4M16 2L8 6"/></svg></span><span>LABORATÓRIO DE RITMOS</span></div><h2 id="h-ritmo" class="font-display text-4xl leading-none">Ritmo</h2>
         <p class="mt-2 text-sm text-muted-foreground">Envie um áudio com bateria, percussão ou palmas. O site descobre o andamento e monta a batida em uma grade, no estilo da bateria do Desafio. Você pode ouvir, corrigir qualquer quadradinho e levar para o ensaio.</p>
       </div>
       <label class="btn btn-p relative w-full sm:w-auto sm:self-start sm:px-8">Enviar um áudio<input id="file-ritmo" type="file" accept="audio/*,video/mp4,video/quicktime,video/webm,.mp3,.m4a,.wav,.ogg,.flac,.mp4,.mov,.webm" class="absolute inset-0 h-full w-full cursor-pointer opacity-0"></label>
@@ -497,7 +667,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
     </section>
     <section id="repertorio" class="card vcard flex flex-col gap-4 p-5 sm:p-6" style="--c:340 75% 65%" aria-labelledby="h-rep" hidden>
       <div>
-        <h2 id="h-rep" class="font-display text-4xl leading-none">Seu repertório</h2>
+        <div class="studio-heading"><span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h14v18H6a2 2 0 0 1 0-4h14M9 7h7m-7 4h5"/></svg></span><span>BIBLIOTECA MUSICAL</span></div><h2 id="h-rep" class="font-display text-4xl leading-none">Seu repertório</h2>
         <p class="mt-1 text-sm text-muted-foreground">Músicas salvas com o tom para você cantar. Salve pelo player ou pela cifra, sem gastar créditos.</p>
       </div>
       <ul id="rep-list" class="flex flex-col divide-y divide-border"></ul>
@@ -522,27 +692,9 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
     </section>
   </div>
 
-  <section data-home class="flex flex-col gap-5" aria-labelledby="h-sobre">
-    <div class="flex flex-col gap-2">
-      <h2 id="h-sobre" class="font-display text-4xl leading-none" style="text-wrap:balance">Uma ferramenta poderosa e gratuita, pronta para te ajudar</h2>
-      <p class="max-w-3xl text-muted-foreground">Feita para músicos, estudantes e também para quem canta e não toca nenhum instrumento.</p>
-    </div>
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <a class="tile" href="#voz" style="--c:162 52% 60%"><span class="em" aria-hidden="true">🎤</span><span><b>Tom da sua voz</b><span class="d">Cante um trecho e veja em que nota você canta com conforto.</span></span></a>
-      <a class="tile" href="#voz" style="--c:162 52% 60%"><span class="em" aria-hidden="true">📏</span><span><b>Extensão vocal</b><span class="d">Do grave ao agudo, com o tipo de voz provável.</span></span></a>
-      <a class="tile" href="#voz" style="--c:162 52% 60%"><span class="em" aria-hidden="true">📄</span><span><b>Relatório em PDF</b><span class="d">Leve a sua voz para o professor ou para o coral.</span></span></a>
-      <a class="tile" href="#musica" style="--c:205 80% 62%"><span class="em" aria-hidden="true">🎵</span><span><b>Tom de qualquer música</b><span class="d">Envie o áudio e veja o tom, até quando ele muda.</span></span></a>
-      <a class="tile" href="#musica" style="--c:205 80% 62%"><span class="em" aria-hidden="true">🎯</span><span><b>Seu tom ideal</b><span class="d">O site diz quanto subir ou descer cada música.</span></span></a>
-      <a class="tile" href="#musica" style="--c:205 80% 62%"><span class="em" aria-hidden="true">🎚️</span><span><b>Ajuste de −6 a +6</b><span class="d">Mude o tom sem mudar a velocidade e baixe o MP3.</span></span></a>
-      <a class="tile" href="#cifra" style="--c:32 88% 62%"><span class="em" aria-hidden="true">🎸</span><span><b>Cifra transposta</b><span class="d">Cole a cifra, troque os acordes e veja o capotraste.</span></span></a>
-      <a class="tile" href="#ritmo" style="--c:14 85% 62%"><span class="em" aria-hidden="true">🥁</span><span><b>Ritmo em grade</b><span class="d">Envie um áudio e veja a batida montada em quadradinhos.</span></span></a>
-      <a class="tile" href="#ritmo" style="--c:14 85% 62%"><span class="em" aria-hidden="true">⏱️</span><span><b>Andamento (BPM)</b><span class="d">Descubra a velocidade e o compasso do que você tocou.</span></span></a>
-      <a class="tile" href="#repertorio" style="--c:340 75% 65%"><span class="em" aria-hidden="true">⭐</span><span><b>Repertório salvo</b><span class="d">Cada música guardada no tom certo para você.</span></span></a>
-    </div>
-    <p class="text-sm text-muted-foreground">Os áudios são processados no seu próprio navegador e não ficam guardados. <a href="sobre.html" class="link">Saiba mais sobre o Tom da Voz</a>.</p>
-  </section>
+<section data-home class="pv-showcase pv-band" aria-labelledby="h-sobre"><div class="pv-intro"><span class="pv-kicker">EXPLORE O TOM DA VOZ</span><h2 id="h-sobre">Conheça as possibilidades.</h2><p>Da descoberta da voz ao ensaio, com recursos para diferentes níveis de experiência.</p></div><article class="pv-feature "><div><span class="pv-kicker">01 · VOZ E MÚSICA</span><h3>Cante no tom que combina com você.</h3><p>Descubra seu tom, extensão vocal e tipo de voz provável. Gere um relatório em PDF, analise músicas e ajuste o tom de −6 a +6 semitons sem mudar a velocidade.</p><a class="pv-link" href="#voz">Explorar minha voz →</a><a class="pv-link" href="#musica">Analisar música →</a></div><div class="pv-visual"><div class="pv-cap"><span>AJUSTE DE TOM</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-keys"><div><small>Original</small><strong>G</strong></div><span>→</span><div><small>Atual</small><strong>A</strong></div></div><div class="pv-track"><i></i></div><div class="pv-cap"><span>−6</span><span> +2 semitons　 +6</span></div></div></article><article class="pv-feature pv-reverse"><div><span class="pv-kicker">02 · RITMO</span><h3>Veja a batida. Ouça. Pratique.</h3><p>Envie um áudio para estimar o andamento e o compasso. Edite as batidas na grade, ouça em loop e ajuste a velocidade de estudo.</p><a class="pv-link" href="#ritmo">Explorar ritmo →</a></div><div class="pv-visual"><div class="pv-cap"><span>GRADE DE BATERIA</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-tempo">90 <small>BPM · 4/4</small></div><div class="pv-beats"><b>Chimbal</b><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i></div><div class="pv-beats"><b>Caixa</b><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-beats"><b>Bumbo</b><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Reprodução em loop</span><span>Velocidade de estudo</span></div></div></article><article class="pv-feature "><div><span class="pv-kicker">03 · CIFRA E REPERTÓRIO</span><h3>Prepare suas músicas para cantar.</h3><p>Transponha acordes, consulte o capotraste e organize suas músicas no tom certo. Cifra e repertório não consomem créditos.</p><a class="pv-link" href="#cifra">Transpor cifra →</a><a class="pv-link" href="#repertorio">Meu repertório →</a></div><div class="pv-visual"><div class="pv-cap"><span>CIFRA TRANSPOSTA</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-chords"><b>G</b><b>D</b><b>Em</b><b>C</b></div><div class="pv-cap"><span>Tom original</span><span>Novo tom ↓</span></div><div class="pv-chords pv-new"><b>A</b><b>E</b><b>F#m</b><b>D</b></div></div></article><p class="pv-privacy">Os áudios são processados no seu próprio navegador e não ficam guardados. <a href="sobre.html" class="link">Saiba mais sobre o Tom da Voz.</a></p></section>
 
-  <section data-home class="flex flex-col gap-4" aria-labelledby="h-como">
+    <section data-home class="flex flex-col gap-4" aria-labelledby="h-como">
     <h2 id="h-como" class="font-display text-4xl leading-none">Como funciona</h2>
     <ol class="grid gap-3 sm:grid-cols-3">
       <li class="scard" style="--c:162 52% 60%"><span class="num">1</span><h3>Descubra a sua voz</h3><p>Cante um trecho ou deslize do grave ao agudo. O site mostra o seu tom e onde você canta com conforto.</p></li>
