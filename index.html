@@ -349,6 +349,84 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
  body[data-view=home] .pv-feature{padding:24px}
 }
 </style>
+<style>
+/* Data-driven tonal visualization; no effect on analysis or credits. */
+.tdv-analysis-viz[hidden]{display:none!important}
+.tdv-analysis-viz{position:relative;isolation:isolate;overflow:hidden;min-width:0;background:radial-gradient(ellipse at 50% 42%,#1b383b 0,#17252e 46%,#141e28 85%);border:1px solid #36515a;border-radius:18px;padding:20px;color:#e9f4f4}
+.tdv-analysis-viz .av-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.tdv-analysis-viz .av-eyebrow{font-size:.68rem;letter-spacing:.14em;font-weight:700;color:#8ce3c6}
+.tdv-analysis-viz .av-status{font-size:.75rem;color:#b9d2d2;border:1px solid #49636a;border-radius:99px;padding:4px 9px}
+.tdv-analysis-viz .av-title{color:#edf8f7!important;font-size:1.5rem!important;line-height:1.15;font-weight:650;letter-spacing:-.035em;margin-top:10px}
+.tdv-analysis-viz .av-chart{display:block;width:100%;height:auto;max-width:360px;margin:4px auto 0;overflow:visible}
+.tdv-analysis-viz .av-desc{font-size:.78rem;color:#b9cecf;line-height:1.5;margin:4px 0 0}
+.tdv-analysis-viz .av-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.73rem;color:#d6e6e5}
+.tdv-analysis-viz .av-legend span{display:inline-flex;gap:6px;align-items:center}
+.tdv-analysis-viz .av-legend i{width:9px;height:9px;border-radius:3px;background:#8ce3c6}
+.tdv-analysis-viz .av-legend span:nth-child(2) i{background:#f3ca80}
+.tdv-analysis-viz .av-legend span:nth-child(3) i{background:#52656d}
+.tdv-analysis-viz .av-wave{width:100%;height:36px;display:block;opacity:.75;margin:0 0 10px}
+.tdv-analysis-viz .av-appear{animation:tdvReveal .65s ease-out both;transform-origin:center}
+@keyframes tdvReveal{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.tdv-analysis-viz .av-appear{animation:none}}
+@media(min-width:900px){#tdv-music-visual{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);align-items:center;column-gap:32px}#tdv-music-visual .av-chart{grid-column:2;grid-row:1/6}#tdv-music-visual .av-top,#tdv-music-visual .av-title,#tdv-music-visual .av-legend,#tdv-music-visual .av-desc,#tdv-music-visual .av-wave{grid-column:1}}
+@media(max-width:639px){.tdv-analysis-viz{padding:15px}.tdv-analysis-viz .av-title{font-size:1.25rem!important}}
+</style>
+<style>
+/* Cinematic hero and coordinated analysis surfaces. */
+body[data-view=home] .pv-hero{position:relative;isolation:isolate;min-height:clamp(390px,48vw,650px);align-items:center}
+.pv-hero .tdv-banner-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-1;opacity:0;transition:opacity .4s;pointer-events:none}
+.pv-hero.tdv-video-ready .tdv-banner-video{opacity:1}
+.pv-hero.tdv-video-ready::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(8,14,20,.92),rgba(8,14,20,.72) 36%,rgba(8,14,20,.24) 78%,rgba(8,14,20,.16))}
+.pv-hero.tdv-video-ready>div:first-of-type{position:relative;z-index:1;max-width:650px}
+.pv-hero.tdv-video-ready>.pv-visual{visibility:hidden}
+@media(min-width:640px){
+.pv-hero .tdv-banner-video,.pv-hero.tdv-video-ready::after{left:50%;right:auto;width:100vw;transform:translateX(-50%)}
+}
+@media(max-width:639px){
+body[data-view=home] .pv-hero{min-height:0}
+body[data-view=home] .pv-hero.tdv-video-ready{min-height:440px;display:flex;align-items:center;padding:30px 22px;overflow:hidden}
+.pv-hero.tdv-video-ready>.pv-visual{display:none}
+.pv-hero.tdv-video-ready::after{background:linear-gradient(90deg,rgba(8,14,20,.87),rgba(8,14,20,.48)),linear-gradient(0deg,rgba(8,14,20,.4),transparent)}
+.pv-hero.tdv-video-ready h1{font-size:clamp(2.65rem,11vw,3.6rem)}
+}
+#tdv-range-visual{background:radial-gradient(ellipse at 50% 42%,#213d3d,#17262e 58%,#141e28)}
+#tdv-range-visual .av-chart{max-width:360px}
+#tdv-range-visual .av-range-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.77rem;color:#c5d9d7}
+#tdv-range-visual .av-range-legend strong{display:block;font-size:1rem;color:#edf8f7}
+#tdv-range-visual .av-range-legend>div{padding:8px 10px;background:#12212b80;border-radius:8px}
+#tdv-voice-visual,#tdv-range-visual{padding:clamp(14px,2vw,22px)}
+@media(prefers-reduced-motion:reduce){.pv-hero .tdv-banner-video{transition:none}}
+/* Compact, horizontal vocal result; retain a readable stacked mobile layout. */
+#v-voz #r-key{gap:18px}
+#r-key .tdv-voice-row{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start;min-width:0}
+#r-key .tdv-voice-details{display:flex;flex-direction:column;gap:16px;min-width:0}
+#r-key #k-sum:empty,#r-key #k-conf:empty{display:none}
+#r-key #cands[hidden]{display:none!important}
+#r-key #tdv-voice-visual{padding:14px}
+#r-key #tdv-voice-visual .av-title{font-size:1.15rem!important}
+#r-key #tdv-voice-visual .av-chart{max-width:265px;margin:0 auto}
+#r-key #tdv-voice-visual .av-wave{height:24px;margin-bottom:6px}
+#r-key #tdv-voice-visual .av-legend{gap:5px 9px}
+#r-key #tdv-voice-visual .av-desc{font-size:.73rem}
+@media(min-width:1280px){
+ #r-key .tdv-voice-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+ #v-voz #r-key #k-big{font-size:clamp(3.7rem,6vw,6rem)}
+ #r-key .tdv-voice-details>div:first-child{column-gap:12px;align-items:center}
+ #r-key #k-pt{font-size:1.3rem}
+ #r-key #b-keyplay{height:auto;min-height:36px;white-space:normal;line-height:1.25;text-align:left}
+ #r-key .hist{height:94px;gap:3px}
+ #r-key .hist span{font-size:.66rem}
+}
+.pv-hero .tdv-banner-video{z-index:0}
+.pv-hero.tdv-video-ready::after{z-index:1}
+.pv-hero.tdv-video-ready>div:first-of-type{z-index:2}
+/* Printable percussion notation, synchronized with the rhythm grid. */
+.tdv-score-panel[hidden]{display:none!important}
+.tdv-score-panel{display:flex;flex-direction:column;gap:12px;min-width:0;padding:16px;border:1px solid #465162;border-radius:12px;background:#191f2a}
+.tdv-score-panel p{color:#bdc6d6}
+.tdv-score-sheet{width:100%;overflow-x:auto;background:#fff;border-radius:8px}
+.tdv-score-sheet svg{display:block;width:100%;min-width:500px;height:auto}
+</style>
 </head>
 <body class="bg-background text-foreground font-sans antialiased" data-view="home">
 
@@ -366,7 +444,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
 
 <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:gap-8 sm:py-10">
 
-  <section data-home class="pv-hero pv-band"><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
+  <section data-home class="pv-hero pv-band"><video class="tdv-banner-video" id="tdv-banner-video" src="banner-tomdavoz.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video><div><span class="pv-kicker">TECNOLOGIA PARA A SUA MÚSICA</span><h1>Sua música.<br><span>Seu tom.</span></h1><p>Descubra como sua voz soa, encontre a tonalidade de uma música e transforme batidas em exercícios. Tudo em um só lugar.</p><a href="#voz" class="pv-cta">Começar pela minha voz →</a><small>100 créditos grátis todo mês.</small></div><div class="pv-visual" role="img" aria-label="Exemplo de análise vocal: Sol maior, onda sonora e piano"><div class="pv-cap"><span>ANÁLISE VOCAL</span><span>EXEMPLO ILUSTRATIVO</span></div><div class="pv-note">G <span>Sol maior</span></div><svg viewBox="0 0 420 100" aria-hidden="true"><path d="M0 50H420" stroke="#657987" stroke-dasharray="4 5"/><path d="M0 50 Q10 30 20 50 T40 50 T60 50 T80 50 Q90 10 100 50 T120 50 Q130 82 140 50 T160 50 Q170 4 180 50 T200 50 Q210 90 220 50 T240 50 Q250 20 260 50 T280 50 Q290 3 300 50 T320 50 Q330 85 340 50 T360 50 Q370 27 380 50 T400 50 T420 50" fill="none" stroke="#71dfc0" stroke-width="3" stroke-linecap="round"/></svg><div class="pv-piano" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><div class="pv-cap"><span>Tom e extensão vocal</span><span>Piano virtual</span></div></div></section>
   <h1 data-tool class="sr-only">Tom da Voz</h1>
 
   <div data-home class="pv-intro"><span class="pv-kicker">FERRAMENTAS</span><h2>Seu estúdio musical</h2><p>Análises com créditos e ferramentas gratuitas, no seu ritmo.</p></div>
@@ -441,6 +519,8 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold">O tom da sua voz</h2><span class="badge" id="badge">Exemplo</span>
       </div>
+      <div class="tdv-voice-row">
+        <div class="tdv-voice-details">
       <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
         <div id="k-big" class="font-display text-8xl leading-[.8] text-primary sm:text-9xl"></div>
         <div class="flex min-w-0 flex-col gap-1 pb-1">
@@ -457,6 +537,9 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
       <div>
         <h3 class="lbl mb-3">Notas que você mais cantou</h3>
         <div class="hist" id="hist"></div>
+      </div>
+        </div>
+        <div id="tdv-voice-visual" class="tdv-analysis-viz" hidden></div>
       </div>
       <div class="flex flex-col gap-3 border-t border-border pt-5">
         <h3 class="text-base font-semibold">Transpor a música</h3>
@@ -475,6 +558,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
         <p id="r-sum" class="max-w-prose text-muted-foreground"></p>
         <p id="r-conf" class="text-sm text-muted-foreground"></p>
       </div>
+      <div id="tdv-range-visual" class="tdv-analysis-viz" hidden></div>
       <div>
         <div class="piano" id="piano" role="group" aria-label="Teclado com a extensão da voz. Toque nas teclas para ouvir"></div>
         <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
@@ -531,6 +615,7 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
           <div id="m-where" class="text-sm text-muted-foreground"></div>
         </div>
       </div>
+      <div id="tdv-music-visual" class="tdv-analysis-viz" hidden></div>
       <div id="m-cands" class="flex flex-col gap-3 rounded-lg bg-muted/60 p-4" hidden>
         <p id="m-cands-msg" class="text-sm"></p>
         <div id="m-chips" class="flex flex-wrap gap-2"></div>
@@ -673,9 +758,18 @@ body[data-view=home] #tools .tool .cost{margin-top:auto}
         <div class="rt-ctl"><span class="t">Início</span><button type="button" class="seg" id="rt-rot">Mudar onde o compasso começa</button></div>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <button type="button" id="rt-copy" class="btn btn-o h-10 px-4">Copiar como texto</button>
+        <button type="button" id="rt-score" class="btn btn-o h-10 px-4" aria-expanded="false" aria-controls="rt-score-panel">Ver partitura</button>
         <button type="button" id="rt-png" class="btn btn-o h-10 px-4">Baixar imagem</button>
         <span id="rt-msg" role="status" class="text-sm text-muted-foreground"></span>
+      </div>
+      <div id="rt-score-panel" class="tdv-score-panel" hidden>
+        <h3 class="text-lg font-semibold">Partitura de bateria</h3>
+        <p class="text-sm">Um compasso do ritmo da grade, atualizado ao editar as batidas. Repita conforme a música. A transcrição automática é aproximada.</p>
+        <div id="rt-score-sheet" class="tdv-score-sheet"></div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="rt-score-png" class="btn btn-o h-10 px-4">Baixar partitura (PNG)</button>
+          <button type="button" id="rt-score-svg" class="btn btn-o h-10 px-4">Baixar partitura (SVG)</button>
+        </div>
       </div>
       <p id="rt-note" class="text-sm text-muted-foreground"></p>
     </section>
@@ -1538,6 +1632,32 @@ var EX=[10,1,18,1,12,3,6,22,1,14,1,16], exk=rankKeys(EX);
 var K={res:{hist:EX,keys:exk,lo:55,hi:69,frames:0,level:conf(exk)},opts:options(exk),sel:0,example:true};
 var R={res:{lo:48,hi:69,clo:52,chi:64,type:'Barítono',level:'alta'},example:true};
 
+
+/* Display-only vocal range gauge. The values come from the existing range result. */
+function renderRangeVisual(r,example){
+  var host=$('tdv-range-visual');
+  if(!host||!r||![r.lo,r.hi,r.clo,r.chi].every(Number.isFinite))return;
+  var low=Math.min(LO,Math.floor(r.lo)),high=Math.max(HI,Math.ceil(r.hi)),ns='http://www.w3.org/2000/svg';
+  host.textContent='';host.hidden=false;
+  var top=el('div','av-top');top.appendChild(el('span','av-eyebrow','MAPA DA EXTENSÃO'));top.appendChild(el('span','av-status',example?'Exemplo':'Confiança '+r.level));host.appendChild(top);
+  host.appendChild(el('h3','av-title',example?'Visualização da extensão':'Extensão analisada'));
+  var chart=document.createElementNS(ns,'svg');chart.setAttribute('viewBox','0 0 340 300');chart.setAttribute('class','av-chart av-appear');chart.setAttribute('role','img');chart.setAttribute('aria-label','Extensão de '+noteName(r.lo)+' a '+noteName(r.hi)+'; faixa confortável de '+noteName(r.clo)+' a '+noteName(r.chi));
+  function add(tag,attrs,txt){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k]);});if(txt!=null)e.textContent=txt;chart.appendChild(e);return e;}
+  function point(m,rad){var a=(140+260*(m-low)/(high-low))*Math.PI/180;return [170+rad*Math.cos(a),145+rad*Math.sin(a)];}
+  function arc(a,b,rad,col,w){if(b<=a)return;var p=point(a,rad),q=point(b,rad);add('path',{d:'M'+p.join(' ')+' A'+rad+' '+rad+' 0 '+((b-a)/(high-low)*260>180?1:0)+' 1 '+q.join(' '),fill:'none',stroke:col,'stroke-width':w,'stroke-linecap':'round'});}
+  arc(low,high,112,'#364c55',16);arc(r.lo,r.hi,112,'#438e80',16);arc(r.clo,r.chi,112,'#8ce3c6',16);
+  for(var m=Math.ceil(low/3)*3;m<=high;m+=3){var p=point(m,90),q=point(m,98);add('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#719391','stroke-width':m%12===0?1.7:'.8'});}
+  for(var m=Math.ceil(low/12)*12;m<=high;m+=12){var p=point(m,132);add('text',{x:p[0],y:p[1]+4,fill:'#c3d7d7','font-size':'10','text-anchor':'middle'},noteName(m));}
+  [r.lo,r.hi].forEach(function(m){var p=point(m,112);add('circle',{cx:p[0],cy:p[1],r:5,fill:'#f3ca80',stroke:'#17262e','stroke-width':'1.5'});});
+  add('circle',{cx:170,cy:145,r:67,fill:'#8ce3c6','fill-opacity':'.06',stroke:'#456964'});
+  add('text',{x:170,y:137,fill:'#8ce3c6','font-size':'18','font-weight':'650','text-anchor':'middle'},r.type);
+  add('text',{x:170,y:160,fill:'#e4f1ef','font-size':'17','text-anchor':'middle'},noteName(r.lo)+' – '+noteName(r.hi));
+  add('text',{x:170,y:177,fill:'#b9cecf','font-size':'10','text-anchor':'middle'},'EXTENSÃO ESTIMADA');
+  host.appendChild(chart);
+  var legend=el('div','av-range-legend');[['Nota mais grave',noteName(r.lo)],['Nota mais aguda',noteName(r.hi)],['Faixa confortável',noteName(r.clo)+' – '+noteName(r.chi)],['Extensão alcançada',Math.max(0,Math.round(r.hi-r.lo))+' semitons']].forEach(function(a){var d=el('div');d.appendChild(el('span',null,a[0]));d.appendChild(el('strong',null,a[1]));legend.appendChild(d);});host.appendChild(legend);
+  host.appendChild(el('p','av-desc','O arco representa a extensão estimada no áudio. O verde mais claro indica a região confortável estimada; os pontos dourados marcam os extremos.'));
+}
+
 function renderRange(){
   var r=R.res; $('badge2').hidden=!R.example;
   $('v-type').textContent=r.type; $('b-pdf').hidden=R.example;
@@ -1547,11 +1667,46 @@ function renderRange(){
   $('p-hi').textContent='Ouvir a mais aguda ('+noteName(r.hi)+')';
   var rl=Math.round(r.lo), rh=Math.round(r.hi), cl=Math.round(r.clo), ch=Math.round(r.chi);
   buildPiano($('piano'),LO,HI,function(m){ return m>=cl&&m<=ch?'cmf':(m>=rl&&m<=rh?'rng':''); },function(m){ return m===rl||m===rh; });
+  renderRangeVisual(r,R.example);
   renderCompare();
 }
 $('p-lo').addEventListener('click',function(){ play([Math.round(R.res.lo)],0,2.2); });
 $('p-hi').addEventListener('click',function(){ play([Math.round(R.res.hi)],0,2.2); });
 $('p-all').addEventListener('click',function(){ var l=[],m; for(m=Math.round(R.res.lo);m<=Math.round(R.res.hi);m+=2) l.push(m); play(l,.34,1.2); });
+
+
+// Visual-only chart: histogram values are computed by the existing analysis.
+function renderTonalVisual(id,res,key,example,isMusic){
+  var host=$(id);
+  if(!host||!res||!key||!res.hist||res.hist.length!==12)return;
+  var max=Math.max.apply(null,res.hist)||1, sc=key.minor?SC_MIN:SC_MAJ, ns='http://www.w3.org/2000/svg';
+  host.textContent=''; host.hidden=false;
+  var top=el('div','av-top');top.appendChild(el('span','av-eyebrow',isMusic?'MAPA HARMÔNICO':'MAPA DA VOZ'));top.appendChild(el('span','av-status',example?'Exemplo':'Confiança '+res.level));host.appendChild(top);
+  host.appendChild(el('h3','av-title',example?'Visualização da análise':'Análise concluída'));
+  var chart=document.createElementNS(ns,'svg'); chart.setAttribute('viewBox','0 0 340 340');chart.setAttribute('class','av-chart av-appear');chart.setAttribute('role','img');chart.setAttribute('aria-label','Distribuição relativa de notas: '+SHARP.map(function(n,j){return n+' '+Math.round(res.hist[j]/max*100)+'% da nota mais presente';}).join(', '));
+  function add(tag,attrs,txt){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k]);});if(txt!=null)e.textContent=txt;chart.appendChild(e);return e;}
+  function pt(r,j){var a=(j*30-90)*Math.PI/180;return [170+r*Math.cos(a),170+r*Math.sin(a)];}
+  [48,75,102,129].forEach(function(r){add('circle',{cx:170,cy:170,r:r,fill:'none',stroke:'#375058','stroke-width':'.8'});});
+  var xy=[];
+  for(var j=0;j<12;j++){
+    var v=Math.max(0,Number(res.hist[j])||0)/max,p=pt(129,j),q=pt(48+81*v,j);xy.push(q.join(','));
+    add('line',{x1:170,y1:170,x2:p[0],y2:p[1],stroke:'#344a53','stroke-width':'.7'});
+  }
+  add('polygon',{points:xy.join(' '),fill:'#8ce3c6','fill-opacity':'.16',stroke:'#76d7c0','stroke-width':'1.7','stroke-linejoin':'round'});
+  for(var j=0;j<12;j++){
+    var root=j===key.t, inside=sc.indexOf((j-key.t+12)%12)>=0, q=xy[j].split(','), p=pt(149,j);
+    add('circle',{cx:q[0],cy:q[1],r:root?5.5:3.6,fill:root?'#f3ca80':inside?'#8ce3c6':'#71848a',stroke:'#18262e','stroke-width':'1'});
+    add('text',{x:p[0],y:p[1]+4,fill:root?'#f3ca80':inside?'#c6f5e8':'#a3b4ba','font-size':root?'13':'11','font-weight':root?'700':'500','text-anchor':'middle'},SHARP[j]);
+  }
+  add('circle',{cx:170,cy:170,r:42,fill:'#14232b',stroke:'#557078','stroke-width':'1'});
+  add('text',{x:170,y:171,fill:'#8ce3c6','font-size':'27','font-weight':'700','text-anchor':'middle'},keyShort(key.t,key.minor));
+  add('text',{x:170,y:188,fill:'#c9d8d9','font-size':'10','text-anchor':'middle'},key.minor?'MENOR':'MAIOR');
+  host.appendChild(chart);
+  var wave=document.createElementNS(ns,'svg');wave.setAttribute('viewBox','0 0 360 36');wave.setAttribute('class','av-wave');wave.setAttribute('aria-hidden','true');
+  ['#8ce3c6','#f3ca80'].forEach(function(c,j){var path=document.createElementNS(ns,'path');path.setAttribute('d',j?'M0 18 Q30 6 60 18 T120 18 T180 18 T240 18 T300 18 T360 18':'M0 18 Q30 34 60 18 T120 18 T180 18 T240 18 T300 18 T360 18');path.setAttribute('fill','none');path.setAttribute('stroke',c);path.setAttribute('stroke-width','1.2');wave.appendChild(path);});host.appendChild(wave);
+  var legend=el('div','av-legend');['Notas da escala','Tônica','Fora da escala'].forEach(function(t){var sp=el('span');sp.appendChild(el('i'));sp.appendChild(document.createTextNode(t));legend.appendChild(sp);});host.appendChild(legend);
+  host.appendChild(el('p','av-desc','Quanto mais distante do centro, maior a presença relativa da nota '+(isMusic?'no áudio analisado.':'na voz analisada.')+' O gráfico não representa acordes nem uma linha do tempo.'));
+}
 
 function renderKey(){
   var res=K.res, c=K.opts[K.sel], lvl=res.level;
@@ -1573,6 +1728,7 @@ function renderKey(){
     var d=el('div',pc===c.t?'ton':(sc.indexOf((pc-c.t+12)%12)>=0?'in':'')), b=el('b'); b.style.height=Math.max(2,Math.round(res.hist[pc]/mx*88))+'%';
     d.appendChild(b); d.appendChild(el('span',null,SHARP[pc])); hs.appendChild(d);
   }
+  renderTonalVisual('tdv-voice-visual',res,c,K.example,false);
   transpose(); renderCompare();
 }
 $('b-keyplay').addEventListener('click',function(){ var c=K.opts[K.sel]; playKey(c.t,c.minor); });
@@ -1755,6 +1911,7 @@ function renderMusic(){
       b.addEventListener('click',function(){ M.sel=i; renderMusic(); playKey(o.t,o.minor); }); chips.appendChild(b);
     });
   }
+  renderTonalVisual('tdv-music-visual',r,k,false,true);
   renderChanges(); renderPlayer(true);
 }
 function renderChanges(){
@@ -2537,19 +2694,61 @@ function rtRender(){
     bt.setAttribute('aria-pressed',on?'true':'false');
   });
   $('rt-note').textContent=res.confidence==='alta'?'Grade montada a partir de '+res.bars+' compassos repetidos. Toque nos quadrados para corrigir o que ficou diferente do original.':'O ritmo desse áudio não é muito regular, então a grade é só um ponto de partida. Teste "Metade", "Dobro", o compasso e o início, e corrija à mão.';
+  document.querySelectorAll('#r-ritmo .seg[data-rt="spb"]').forEach(function(bt){bt.textContent=(res.M*(+bt.getAttribute('data-v')))+' colunas';});
+  rtScoreRefresh();
 }
 function rtApply(){
   var was=RTP.playing; rtStop();
   if(!rtBuild()){ setStatus('Esse ajuste não deu certo para esse áudio. Voltei para o anterior.',true); return false; }
   rtRender(); if(was) rtPlay(); return true;
 }
-function rtText(){
-  var res=RT.res, lab=rtLabels(res.spb,res.M), out=[], pad=function(s){ return (s+'        ').slice(0,8); }, line=function(f){ var parts=[], g, s; for(g=0;g<res.M;g++){ var a=[]; for(s=0;s<res.spb;s++) a.push(f(g*res.spb+s)); parts.push(a.join(' ')); } return parts.join(' | '); };
-  out.push('Tom da Voz · Ritmo · '+RT.bpm+' BPM · compasso '+res.M+'/4');
-  out.push(pad('')+line(function(i){ return lab[i].charAt(0); }));
-  RT_NAMES.forEach(function(n){ out.push(pad(RT_LAB[n])+line(function(i){ return RT.rows[n][i]?'x':'.'; })); });
-  return out.join('\n');
+// One quantized percussion voice: simultaneous hits share a stem.
+function rtScore(){
+  if(!RT)return '';
+  var r=RT.res,spb=r.spb,M=r.M,N=r.steps,W=900,H=260,first=143,last=851,step=(last-first)/N,ink='#18232d',s=[];
+  function line(x1,y1,x2,y2,w){s.push('<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+ink+'" stroke-width="'+(w||1.3)+'" stroke-linecap="round"/>');}
+  function text(x,y,t,size,bold,anchor){s.push('<text x="'+x+'" y="'+y+'" font-family="Arial,sans-serif" font-size="'+size+'" font-weight="'+(bold?'700':'400')+'" text-anchor="'+(anchor||'start')+'" fill="'+ink+'">'+t+'</text>');}
+  function ellipse(x,y){s.push('<ellipse cx="'+x+'" cy="'+y+'" rx="6.5" ry="4.4" transform="rotate(-18 '+x+' '+y+')" fill="'+ink+'"/>');}
+  function cross(x,y){line(x-5,y-5,x+5,y+5,1.8);line(x-5,y+5,x+5,y-5,1.8);}
+  function flags(x,y,count){for(var f=0;f<count;f++){var yy=y+f*9;s.push('<path d="M '+x+' '+yy+' C '+(x+2)+' '+(yy+7)+' '+(x+15)+' '+(yy+10)+' '+(x+10)+' '+(yy+22)+' C '+(x+10)+' '+(yy+13)+' '+(x+3)+' '+(yy+12)+' '+x+' '+(yy+9)+' Z" fill="'+ink+'"/>');}}
+  function rest(x){var y=120;line(x+5,y-12,x-4,y+12,1.8);for(var k=0;k<(spb===4?2:1);k++){var yy=y-8+k*9;s.push('<circle cx="'+(x-4-k*3)+'" cy="'+yy+'" r="3.2" fill="'+ink+'"/><path d="M '+(x-4-k*3)+' '+yy+' Q '+x+' '+(yy+4)+' '+(x+3-k*3)+' '+(yy-2)+'" fill="none" stroke="'+ink+'" stroke-width="1.5"/>');}}
+  function hit(j){return RT_NAMES.some(function(n){return RT.rows[n][j];});}
+  function pos(j){return first+(j+.5)*step;}
+  s.push('<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Partitura de bateria, '+M+'/4, '+RT.bpm+' BPM"><rect width="100%" height="100%" fill="#fff"/>');
+  text(28,31,'Partitura de bateria',22,true);text(28,53,'Tom da Voz  ·  '+RT.bpm+' BPM  ·  '+M+'/4  ·  '+(spb===3?'Tercinas de colcheias':spb===4?'Semicolcheias':'Colcheias'),13,false);
+  for(var y=105;y<=153;y+=12)line(28,y,869,y,1.1);
+  // Unpitched percussion clef and meter.
+  s.push('<rect x="47" y="116" width="5" height="26" fill="'+ink+'"/><rect x="56" y="116" width="5" height="26" fill="'+ink+'"/>');
+  text(86,124,String(M),25,true,'middle');text(86,149,'4',25,true,'middle');line(117,105,117,153,1.5);
+  line(859,105,859,153,1.5);line(867,105,867,153,4);
+  s.push('<circle cx="851" cy="123" r="2.7" fill="'+ink+'"/><circle cx="851" cy="135" r="2.7" fill="'+ink+'"/>');
+  for(var j=0;j<N;j++){
+    var x=pos(j);
+    if(!hit(j)){rest(x);continue;}
+    var bottom=0;
+    if(RT.rows.hat[j]){cross(x,99);bottom=99;}
+    if(RT.rows.snare[j]){ellipse(x,123);bottom=123;}
+    if(RT.rows.kick[j]){ellipse(x,147);bottom=147;}
+    line(x+5.5,74,x+5.5,bottom,1.5);
+  }
+  for(var b=0;b<M;b++){
+    var a=b*spb,z=a+spb,j=a;
+    if(spb===3){var lx=pos(a)-9,rx=pos(z-1)+9,cx=(lx+rx)/2;line(lx,66,lx,60,1);line(lx,60,cx-7,60,1);line(cx+7,60,rx,60,1);line(rx,60,rx,66,1);text(cx,64,'3',12,true,'middle');}
+    while(j<z){if(!hit(j)){j++;continue;}var k=j+1;while(k<z&&hit(k))k++;
+      if(k-j===1)flags(pos(j)+5.5,74,spb===4?2:1);
+      else{line(pos(j)+5.5,74,pos(k-1)+5.5,74,4);if(spb===4)line(pos(j)+5.5,83,pos(k-1)+5.5,83,4);}
+      j=k;
+    }
+    if(b>0) s.push('<line x1="'+(first+a*step)+'" y1="164" x2="'+(first+a*step)+'" y2="170" stroke="#a8b1ba" stroke-width="1"/>');
+    text(first+(a+spb/2)*step,182,String(b+1),12,true,'middle');
+  }
+  cross(36,211);text(49,215,'Chimbal',13,false);ellipse(159,211);text(172,215,'Caixa',13,false);ellipse(260,211);text(273,215,'Bumbo',13,false);
+  text(28,242,'Compasso repetível · transcrição aproximada da grade editável · tomdavoz.com.br',12,false);
+  s.push('</svg>');return s.join('');
 }
+function rtScoreRefresh(){var panel=$('rt-score-panel');if(RT&&panel&&!panel.hidden)$('rt-score-sheet').innerHTML=rtScore();}
+function rtScoreSave(blob,ext){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='partitura-bateria-'+RT.bpm+'bpm.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}
+function rtScoreDownload(png){if(!RT)return;var blob=new Blob([rtScore()],{type:'image/svg+xml;charset=utf-8'});if(!png){rtScoreSave(blob,'svg');rtMsg('Partitura baixada.');return;}var u=URL.createObjectURL(blob),im=new Image();im.onload=function(){var cv=document.createElement('canvas');cv.width=1800;cv.height=520;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);cv.toBlob(function(b){if(b){rtScoreSave(b,'png');rtMsg('Partitura baixada.');}else rtMsg('Não consegui gerar a imagem.');},'image/png');};im.onerror=function(){URL.revokeObjectURL(u);rtMsg('Não consegui gerar a imagem.');};im.src=u;}
 function rtPng(){
   var res=RT.res, N=res.steps, cw=44, ch=44, gap=6, lx=100, top=120, W=lx+N*(cw+gap)+(res.M-1)*10+30, H=top+3*(ch+gap)+60, cv=document.createElement('canvas'), x, i, s, n, px, py, lab=rtLabels(res.spb,res.M), sc=2;
   cv.width=W*sc; cv.height=H*sc; x=cv.getContext('2d'); x.scale(sc,sc);
@@ -2603,10 +2802,11 @@ $('file-ritmo').addEventListener('change',function(e){ var f=e.target.files&&e.t
 $('rt-grid').addEventListener('click',function(e){
   var b=e.target.closest&&e.target.closest('.rt-c'); if(!b||!RT) return;
   var n=b.getAttribute('data-n'), s=+b.getAttribute('data-s'); RT.rows[n][s]=!RT.rows[n][s]; b.setAttribute('aria-pressed',RT.rows[n][s]?'true':'false');
+  rtScoreRefresh();
   if(!RTP.playing) rtHit(n,audio().currentTime+.01);
 });
 $('rt-play').addEventListener('click',function(){ if(RTP.playing) rtStop(); else rtPlay(); });
-$('rt-bpm-r').addEventListener('input',function(){ if(!RT) return; RT.bpm=+this.value; $('rt-bpm-v').textContent=RT.bpm+' BPM'; });
+$('rt-bpm-r').addEventListener('input',function(){ if(!RT) return; RT.bpm=+this.value; $('rt-bpm-v').textContent=RT.bpm+' BPM'; rtScoreRefresh(); });
 document.querySelectorAll('#r-ritmo .seg[data-rt]').forEach(function(bt){
   bt.addEventListener('click',function(){
     if(!RT||S.busy) return; var k=this.getAttribute('data-rt'), v=+this.getAttribute('data-v'), o=RT.opts, old=JSON.stringify(o);
@@ -2618,11 +2818,9 @@ document.querySelectorAll('#r-ritmo .seg[data-rt]').forEach(function(bt){
   });
 });
 $('rt-rot').addEventListener('click',function(){ if(!RT||S.busy) return; RT.opts.d=(RT.opts.d+1)%RT.opts.M; rtApply(); rtMsg('Início do compasso mudou de lugar.'); });
-$('rt-copy').addEventListener('click',function(){
-  if(!RT) return; var t=rtText();
-  var fb=function(){ var a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(_){} a.remove(); rtMsg(ok?'Copiado.':'Não consegui copiar neste navegador.'); };
-  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ rtMsg('Copiado.'); },fb); else fb();
-});
+$('rt-score').addEventListener('click',function(){if(!RT)return;var panel=$('rt-score-panel');panel.hidden=!panel.hidden;this.setAttribute('aria-expanded',String(!panel.hidden));this.textContent=panel.hidden?'Ver partitura':'Ocultar partitura';rtScoreRefresh();});
+$('rt-score-png').addEventListener('click',function(){rtScoreDownload(true);});
+$('rt-score-svg').addEventListener('click',function(){rtScoreDownload(false);});
 $('rt-png').addEventListener('click',function(){
   if(!RT) return; var cv=rtPng();
   cv.toBlob(function(bl){ if(!bl){ rtMsg('Não consegui gerar a imagem.'); return; } var u=URL.createObjectURL(bl), a=document.createElement('a'); a.href=u; a.download='ritmo-'+RT.bpm+'bpm.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); },4000); rtMsg('Imagem baixada.'); },'image/png');
@@ -2810,6 +3008,21 @@ $('b-legal-x').addEventListener('click',function(){ $('dlg-legal').close(); });
   B.init(function(){ afterAuth(); }).then(function(){ afterAuth(); },function(){ setStatus('Não consegui carregar o sistema de login. Recarregue a página.',true); });
 })();
 
+})();
+</script>
+<script>
+(function(){
+ var v=document.getElementById('tdv-banner-video');if(!v)return;
+ var hero=v.closest('.pv-hero'),reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+ var fallbackUrls=['https://tomdavoz.com.br/banner-tomdavoz.mp4','https://raw.githubusercontent.com/nvcpin/tomdavoz/main/banner-tomdavoz.mp4'],attempted=new Set([v.src]),failed=false;
+ function active(){return document.body.getAttribute('data-view')==='home'&&!document.hidden&&!reduce.matches;}
+ function prepare(){v.defaultMuted=true;v.muted=true;v.loop=true;v.playsInline=true;}
+ function update(){if(!active()){v.pause();return;}if(failed)return;prepare();var p=v.play();if(p&&p.catch)p.catch(function(e){if(active()&&e.name==='NotSupportedError')nextSource();});}
+ function nextSource(){if(failed)return;var next=fallbackUrls.find(function(url){return !attempted.has(url);});if(!next){failed=true;hero.classList.remove('tdv-video-ready');return;}attempted.add(next);v.src=next;v.load();update();}
+ v.addEventListener('playing',function(){if(!active()){v.pause();return;}hero.classList.add('tdv-video-ready');});
+ v.addEventListener('error',nextSource);
+ new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-view']});document.addEventListener('visibilitychange',update);if(reduce.addEventListener)reduce.addEventListener('change',function(){if(reduce.matches)hero.classList.remove('tdv-video-ready');update();});
+ prepare();if(reduce.matches)v.autoplay=false;if(v.error)nextSource();else update();
 })();
 </script>
 </body>
